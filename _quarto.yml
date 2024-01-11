@@ -2,13 +2,44 @@ project:
   type: website
 
 website:
-  title: "ISSS608-VAA"
+  title: "Noel's Learning Journey in Visual Analytics"
   navbar:
     left:
-      - href: index.qmd
-        text: Home
-      - about.qmd
-
+      - text: Hands-on Exercises
+        menu: 
+          - text: Hands-on Exercise 1
+            #href: 
+            
+          - text: Hands-on Exercise 2
+            #href: 
+            
+          - text: Hands-on Exercise 3
+            #href: 
+            
+      - text: In-class Exercises
+        menu: 
+          - text: In-class Exercise 1
+            #href: 
+            
+          - text: In-class Exercise 2
+            #href: 
+            
+          - text: In-class Exercise 3
+            #href: 
+            
+          - text: In-class Exercise 4
+            #href: 
+            
+          - text: In-class Exercise 5
+            #href: 
+            
+      - text: Take-home Exercises
+        menu: 
+          - text: Take-home Exercise 1
+            #href: 
+            
+          - text: Take-home Exercise 2
+            #href: 
 format:
   html:
     theme: cosmo

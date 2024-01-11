@@ -2,4 +2,6 @@
 title: "Noel's Learning Journey in Visual Analytics"
 ---
 
-Welcome!
+Welcome to Noel's ISSS608 website!
+
+This website documents my learning journey in Visual Analytics :)
