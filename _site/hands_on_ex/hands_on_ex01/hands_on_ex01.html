@@ -261,7 +261,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="import-data" class="level2">
 <h2 class="anchored" data-anchor-id="import-data">2.2. Import Data</h2>
 <p>Next, we will read the data provided by the Course Instructor into the R environment. We will use the <code>read_csv()</code> function from the <code>readr</code> package found in <code>tidyverse</code>.</p>
+<blockquote class="blockquote">
 <p>Note: use read_csv() from the readr package instead of read.csv() from the R base package. read_csv() is typically faster, produces tibble tables and are more reproducible.</p>
+</blockquote>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>exam_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/Exam_data.csv"</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(exam_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

@@ -37,7 +37,7 @@ pacman::p_load(tidyverse)
 
 Next, we will read the data provided by the Course Instructor into the R environment. We will use the `read_csv()` function from the `readr` package found in `tidyverse`.
 
-Note: use read_csv() from the readr package instead of read.csv() from the R base package. read_csv() is typically faster, produces tibble tables and are more reproducible.
+> Note: use read_csv() from the readr package instead of read.csv() from the R base package. read_csv() is typically faster, produces tibble tables and are more reproducible.
 
 ```{r}
 exam_data <- read_csv("data/Exam_data.csv")
