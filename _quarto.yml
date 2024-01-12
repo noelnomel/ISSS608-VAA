@@ -7,7 +7,7 @@ website:
     left:
       - text: Hands-on Exercises
         menu: 
-          - text: Hands-on Exercise 1
+          - text: Hands-on Exercise 1 ggplot2 Methods
             href: hands_on_ex/hands_on_ex01/hands_on_ex01.html
             
           - text: Hands-on Exercise 2
