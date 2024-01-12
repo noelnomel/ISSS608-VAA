@@ -317,11 +317,26 @@ $ SCIENCE &lt;dbl&gt; 15, 16, 16, 31, 25, 16, 25, 27, 15, 37, 42, 22, 32, 36, 35
 </section>
 <section id="grammar-of-graphics" class="level1">
 <h1>4. Grammar of Graphics</h1>
-<p>Grammar of Graphics provide a structured framework for data visualisation, where graphs are broken up into semantic components such as scales and layers. There are two principles in the Grammar of Graphics: 1. Graphics - distinct layers of grammatical elements 2. Meaningful plots through aesthetic mapping</p>
+<p>Grammar of Graphics provide a structured framework for data visualisation, where graphs are broken up into semantic components such as scales and layers. There are two principles in the Grammar of Graphics:</p>
+<ol type="1">
+<li><p>Graphics - distinct layers of grammatical elements</p></li>
+<li><p>Meaningful plots through aesthetic mapping</p></li>
+</ol>
+<blockquote class="blockquote">
 <p>Drawing parallels with the grammar we know in languages… if a statistical graphic is a language, then the Grammar of Graphics provide the rules to combine different components to give the graphic clearer and deeper meaning.</p>
+</blockquote>
 <section id="layered-grammar-of-graphics" class="level2">
 <h2 class="anchored" data-anchor-id="layered-grammar-of-graphics">4.1. Layered Grammar of Graphics</h2>
-<p>ggplot2 is an implementation of Leland Wilkinson’s Grammar of Graphics with seven layers: 1. Data: the data set used for plotting 2. Aesthetics: use attributes of the data to influence visual characteristics 3. Geometrics: visual elements used for the data such as point, bar or line 4. Facets: create multiple variations of the same graph by splitting data into subsets such as paneling and multiple plots 5. Statistics: statistical transformation to summarise the data such as mean and confidence intervals 6. Coordinate systems: define the plane on which data is mapped on the graphic 7. Themes: non-data elements of the plot such as main title, axis title, legend background</p>
+<p>ggplot2 is an implementation of Leland Wilkinson’s Grammar of Graphics with seven layers:</p>
+<ol type="1">
+<li><p><strong>Data</strong>: the data set used for plotting</p></li>
+<li><p><strong>Aesthetics</strong>: use attributes of the data to influence visual characteristics</p></li>
+<li><p><strong>Geometrics</strong>: visual elements used for the data such as point, bar or line</p></li>
+<li><p><strong>Facets</strong>: create multiple variations of the same graph by splitting data into subsets such as paneling and multiple plots</p></li>
+<li><p><strong>Statistics</strong>: statistical transformation to summarise the data such as mean and confidence intervals</p></li>
+<li><p><strong>Coordinate systems</strong>: define the plane on which data is mapped on the graphic</p></li>
+<li><p><strong>Themes</strong>: non-data elements of the plot such as main title, axis title, legend background</p></li>
+</ol>
 <p>We will explore each layer in the subsequent sub-sections.</p>
 </section>
 </section>
@@ -607,10 +622,10 @@ $ SCIENCE &lt;dbl&gt; 15, 16, 16, 31, 25, 16, 25, 27, 15, 37, 42, 22, 32, 36, 35
 <h1>10. Coordinates</h1>
 <p>The Coordinates functions map the position of objects onto the plane of the plot. Some possible coordinate systems to use include:</p>
 <ol type="1">
-<li><code>coord_cartesian()</code></li>
-<li><code>coord_flip()</code></li>
-<li><code>coord_fix()</code></li>
-<li><code>coord_quickmap()</code></li>
+<li><p><code>coord_flip()</code></p></li>
+<li><p><code>coord_cartesian()</code></p></li>
+<li><p><code>coord_fix()</code></p></li>
+<li><p><code>coord_quickmap()</code></p></li>
 </ol>
 <section id="coord_flip" class="level2">
 <h2 class="anchored" data-anchor-id="coord_flip">10.1. <code>coord_flip()</code></h2>

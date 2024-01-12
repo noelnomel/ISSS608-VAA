@@ -73,25 +73,35 @@ ggplot(data = exam_data, aes(x = MATHS)) +
 ```
 :::
 
-It is relatively simple to create a statistical graph using R Graphics, but ggplot2 offers more versatility and flexibility in the way data is presented visually. 
+It is relatively simple to create a statistical graph using R Graphics, but ggplot2 offers more versatility and flexibility in the way data is presented visually.
 
 # 4. Grammar of Graphics
 
 Grammar of Graphics provide a structured framework for data visualisation, where graphs are broken up into semantic components such as scales and layers. There are two principles in the Grammar of Graphics:
-1. Graphics - distinct layers of grammatical elements
-2. Meaningful plots through aesthetic mapping
 
-Drawing parallels with the grammar we know in languages... if a statistical graphic is a language, then the Grammar of Graphics provide the rules to combine different components to give the graphic clearer and deeper meaning. 
+1.  Graphics - distinct layers of grammatical elements
+
+2.  Meaningful plots through aesthetic mapping
+
+> Drawing parallels with the grammar we know in languages... if a statistical graphic is a language, then the Grammar of Graphics provide the rules to combine different components to give the graphic clearer and deeper meaning.
 
 ## 4.1. Layered Grammar of Graphics
+
 ggplot2 is an implementation of Leland Wilkinson's Grammar of Graphics with seven layers:
-1. Data: the data set used for plotting
-2. Aesthetics: use attributes of the data to influence visual characteristics
-3. Geometrics: visual elements used for the data such as point, bar or line
-4. Facets: create multiple variations of the same graph by splitting data into subsets such as paneling and multiple plots
-5. Statistics: statistical transformation to summarise the data such as mean and confidence intervals
-6. Coordinate systems: define the plane on which data is mapped on the graphic
-7. Themes: non-data elements of the plot such as main title, axis title, legend background
+
+1.  **Data**: the data set used for plotting
+
+2.  **Aesthetics**: use attributes of the data to influence visual characteristics
+
+3.  **Geometrics**: visual elements used for the data such as point, bar or line
+
+4.  **Facets**: create multiple variations of the same graph by splitting data into subsets such as paneling and multiple plots
+
+5.  **Statistics**: statistical transformation to summarise the data such as mean and confidence intervals
+
+6.  **Coordinate systems**: define the plane on which data is mapped on the graphic
+
+7.  **Themes**: non-data elements of the plot such as main title, axis title, legend background
 
 We will explore each layer in the subsequent sub-sections.
 
@@ -102,6 +112,7 @@ We can call the `ggplot()` function using the exam_data data set:
 ```{r}
 ggplot(data = exam_data)
 ```
+
 This code initialises a ggplot object and it generates a blank canvas without the inclusion of other layers.
 
 # 6. Aesthetics
@@ -114,10 +125,12 @@ We will add on to the previous code chunk:
 ggplot(data = exam_data,
        aes(x = MATHS))
 ```
-We can see that the x-axis and x-axis label are added to the plot. 
+
+We can see that the x-axis and x-axis label are added to the plot.
 
 # 7. Geometrics
-Geometric objects are the actual marks put on the plot. We will explore some examples below. 
+
+Geometric objects are the actual marks put on the plot. We will explore some examples below.
 
 ::: panel-tabset
 #### 7.1. `geom_bar()`
@@ -136,7 +149,7 @@ ggplot(data = exam_data,
   geom_dotplot(dotsize = 0.5)
 ```
 
-In a dot plot, the width of a dot corresponds to the bin width (or maximum width, depending on the binning algorithm), and dots are stacked, with each dot representing one obeservation. 
+In a dot plot, the width of a dot corresponds to the bin width (or maximum width, depending on the binning algorithm), and dots are stacked, with each dot representing one obeservation.
 
 Hence, we can observe that the y-axis in the plot above is misleading as it is labelled as count and ranges from 0 to 1. We can remove the y-axis by using `scale_y_continuous`:
 
@@ -155,7 +168,7 @@ ggplot(data = exam_data,
   geom_histogram()
 ```
 
-Note: Default bin is 30.
+| Note: Default bin is 30.
 
 #### 7.4. `geom_density()`
 
@@ -175,6 +188,7 @@ ggplot(data = exam_data,
            color = GENDER)) +
   geom_density()
 ```
+
 #### 7.5. `geom_boxplot()`
 
 The boxplot visualises five summary statistics - median, lower and upper quartile, and minimum and maximum - and the outlier points.
@@ -216,6 +230,7 @@ ggplot(data = exam_data,
            x = ENGLISH)) +
   geom_point()
 ```
+
 #### 7.8. Combining `geom` objects
 
 We can plot more than one `geom` object into one plot. For example, we can plot a `geom_boxplot()` with `geom_point()`:
@@ -253,7 +268,8 @@ ggplot(data = exam_data,
   geom_histogram(bins = 20,
                  color = "grey30")
 ```
-Note: This approach can be used to adjust the colour, fill, and alpha of the geometric object.
+
+| Note: This approach can be used to adjust the colour, fill, and alpha of the geometric object.
 
 # 8. Statistics
 
@@ -273,6 +289,7 @@ ggplot(data = exam_data,
 ```
 
 ## 8.2. Using the `geom()` Method
+
 Mean values can also be added through the `geom()` function:
 
 ```{r}
@@ -308,6 +325,7 @@ ggplot(data = exam_data,
   geom_smooth(method = lm,
               size = 0.5)
 ```
+
 # 9. Facets
 
 Facets are used to create small multiples in one plot, with each small multiples displaying a different subset of the data. Two types of facets are supported by `ggplot2`: `facet_wrap()` and `facet_grid()`.
@@ -324,7 +342,8 @@ ggplot(data = exam_data,
 ```
 
 ## 9.2. `facet_grid()`
-`facet_grid()` forms a matrix of panels defined by row and column facetting variables. It is most useful when used with two discrete variables, and all combinations of the variables exist in the data. 
+
+`facet_grid()` forms a matrix of panels defined by row and column facetting variables. It is most useful when used with two discrete variables, and all combinations of the variables exist in the data.
 
 ```{r}
 ggplot(data = exam_data, 
@@ -337,10 +356,13 @@ ggplot(data = exam_data,
 
 The Coordinates functions map the position of objects onto the plane of the plot. Some possible coordinate systems to use include:
 
-1. `coord_cartesian()`
-2. `coord_flip()`
-3. `coord_fix()`
-4. `coord_quickmap()`
+1.  `coord_flip()`
+
+2.  `coord_cartesian()`
+
+3.  `coord_fix()`
+
+4.  `coord_quickmap()`
 
 ## 10.1. `coord_flip()`
 
@@ -356,6 +378,7 @@ ggplot(data = exam_data,
 #### `coord_flip()`
 
 `coord_flip()` flips the vertical bar charts into horizontal bar charts:
+
 ```{r}
 ggplot(data = exam_data,
        aes(x = RACE)) +
@@ -383,6 +406,7 @@ We can observe that the y- and x-axes in the plot is not equal and could appear 
 #### `coord_cartesian()`
 
 We can use `coord_cartesian()` to set the limits of both the x- and y-axes from 0 to 100.
+
 ```{r}
 ggplot(data = exam_data,
        aes(x = MATHS,
@@ -400,6 +424,7 @@ ggplot(data = exam_data,
 Themes control elements of the graph that are not related to the data, such as background colour, size of fonts, gridlines, and colour of labels.
 
 ## 11.1. Working with `theme`
+
 For example, we can apply the `theme_gray()` to a bar chart:
 
 ```{r}
