@@ -202,10 +202,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#coord_flip" id="toc-coord_flip" class="nav-link" data-scroll-target="#coord_flip">10.1. <code>coord_flip()</code></a></li>
   <li><a href="#changing-the-range-of-the-y--and-x-axes" id="toc-changing-the-range-of-the-y--and-x-axes" class="nav-link" data-scroll-target="#changing-the-range-of-the-y--and-x-axes">10.2. Changing the range of the y- and x-axes</a></li>
   </ul></li>
-  <li><a href="#themes" id="toc-themes" class="nav-link" data-scroll-target="#themes">11. Themes</a>
-  <ul class="collapse">
-  <li><a href="#working-with-theme" id="toc-working-with-theme" class="nav-link" data-scroll-target="#working-with-theme">11.1. Working with <code>theme</code></a></li>
-  </ul></li>
+  <li><a href="#themes" id="toc-themes" class="nav-link" data-scroll-target="#themes">11. Themes</a></li>
   </ul>
 </nav>
     </div>
@@ -701,9 +698,10 @@ $ SCIENCE &lt;dbl&gt; 15, 16, 16, 31, 25, 16, 25, 27, 15, 37, 42, 22, 32, 36, 35
 <section id="themes" class="level1">
 <h1>11. Themes</h1>
 <p>Themes control elements of the graph that are not related to the data, such as background colour, size of fonts, gridlines, and colour of labels.</p>
-<section id="working-with-theme" class="level2">
-<h2 class="anchored" data-anchor-id="working-with-theme">11.1. Working with <code>theme</code></h2>
-<p>For example, we can apply the <code>theme_gray()</code> to a bar chart:</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true"><code>theme_gray()</code></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false"><code>theme_classic()</code></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-3" role="tab" aria-controls="tabset-5-3" aria-selected="false"><code>theme_minimal()</code></a></li></ul>
+<div class="tab-content">
+<div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
 <div class="cell">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> exam_data,</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> RACE)) <span class="sc">+</span></span>
@@ -714,7 +712,8 @@ $ SCIENCE &lt;dbl&gt; 15, 16, 16, 31, 25, 16, 25, 27, 15, 37, 42, 22, 32, 36, 35
 <p><img src="hands_on_ex01_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>We can apply the <code>theme_classic()</code> to a bar chart:</p>
+</div>
+<div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
 <div class="cell">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> exam_data,</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> RACE)) <span class="sc">+</span></span>
@@ -725,7 +724,8 @@ $ SCIENCE &lt;dbl&gt; 15, 16, 16, 31, 25, 16, 25, 27, 15, 37, 42, 22, 32, 36, 35
 <p><img src="hands_on_ex01_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>We can apply the <code>theme_minimal()</code> to a bar chart:</p>
+</div>
+<div id="tabset-5-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-3-tab">
 <div class="cell">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> exam_data,</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> RACE)) <span class="sc">+</span></span>
@@ -736,9 +736,11 @@ $ SCIENCE &lt;dbl&gt; 15, 16, 16, 31, 25, 16, 25, 27, 15, 37, 42, 22, 32, 36, 35
 <p><img src="hands_on_ex01_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+</div>
+</div>
+</div>
 
 
-</section>
 </section>
 
 

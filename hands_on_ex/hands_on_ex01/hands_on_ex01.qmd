@@ -423,10 +423,8 @@ ggplot(data = exam_data,
 
 Themes control elements of the graph that are not related to the data, such as background colour, size of fonts, gridlines, and colour of labels.
 
-## 11.1. Working with `theme`
-
-For example, we can apply the `theme_gray()` to a bar chart:
-
+::: panel-tabset
+#### `theme_gray()`
 ```{r}
 ggplot(data = exam_data,
        aes(x = RACE)) +
@@ -434,9 +432,7 @@ ggplot(data = exam_data,
   coord_flip() + 
   theme_gray()
 ```
-
-We can apply the `theme_classic()` to a bar chart:
-
+#### `theme_classic()`
 ```{r}
 ggplot(data = exam_data,
        aes(x = RACE)) +
@@ -444,9 +440,7 @@ ggplot(data = exam_data,
   coord_flip() + 
   theme_classic()
 ```
-
-We can apply the `theme_minimal()` to a bar chart:
-
+#### `theme_minimal()`
 ```{r}
 ggplot(data = exam_data,
        aes(x = RACE)) +
@@ -454,3 +448,6 @@ ggplot(data = exam_data,
   coord_flip() + 
   theme_minimal()
 ```
+:::
+
+
