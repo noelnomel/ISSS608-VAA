@@ -12,5 +12,180 @@
     "title": "About",
     "section": "",
     "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html",
+    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html",
+    "title": "Hands-on Exercise 01: ggplot2 Methods",
+    "section": "",
+    "text": "In this first lesson, we learn to plot statistical graphics using ggplot2, which is a system created based on the principles of “Layered Grammar of Graphics”. The Layered Grammar of Graphics provide a framework to build a visualisation in a structured and defined manner1. ggplot2 is one of the packages in the tidyverse set of packages."
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#loading-required-library",
+    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#loading-required-library",
+    "title": "Hands-on Exercise 01: ggplot2 Methods",
+    "section": "2.1. Loading Required Library",
+    "text": "2.1. Loading Required Library\nFirst, we will load the tidyverse package into the R environment. We will do so using the pacman package, which can be installed using the following code:\n\ninstall.packages('pacman')\n\nWithout loading pacman into the R environment, we can call its pload function using pacman:: as shown in the code below:\n\npacman::p_load(tidyverse)"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#import-data",
+    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#import-data",
+    "title": "Hands-on Exercise 01: ggplot2 Methods",
+    "section": "2.2. Import Data",
+    "text": "2.2. Import Data\nNext, we will read the data provided by the Course Instructor into the R environment. We will use the read_csv() function from the readr package found in tidyverse.\nNote: use read_csv() from the readr package instead of read.csv() from the R base package. read_csv() is typically faster, produces tibble tables and are more reproducible.\n\nexam_data &lt;- read_csv(\"data/Exam_data.csv\")\nglimpse(exam_data)\n\nRows: 322\nColumns: 7\n$ ID      &lt;chr&gt; \"Student321\", \"Student305\", \"Student289\", \"Student227\", \"Stude…\n$ CLASS   &lt;chr&gt; \"3I\", \"3I\", \"3H\", \"3F\", \"3I\", \"3I\", \"3I\", \"3I\", \"3I\", \"3H\", \"3…\n$ GENDER  &lt;chr&gt; \"Male\", \"Female\", \"Male\", \"Male\", \"Male\", \"Female\", \"Male\", \"M…\n$ RACE    &lt;chr&gt; \"Malay\", \"Malay\", \"Chinese\", \"Chinese\", \"Malay\", \"Malay\", \"Chi…\n$ ENGLISH &lt;dbl&gt; 21, 24, 26, 27, 27, 31, 31, 31, 33, 34, 34, 36, 36, 36, 37, 38…\n$ MATHS   &lt;dbl&gt; 9, 22, 16, 77, 11, 16, 21, 18, 19, 49, 39, 35, 23, 36, 49, 30,…\n$ SCIENCE &lt;dbl&gt; 15, 16, 16, 31, 25, 16, 25, 27, 15, 37, 42, 22, 32, 36, 35, 45…\n\n\nUsing glimpse to view the data, it is observed that the data contains the examination grades of a batch of primary 3 students for the subjects English, Maths, and Science."
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#r-graphics-vs-ggplot2",
+    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#r-graphics-vs-ggplot2",
+    "title": "Hands-on Exercise 01: ggplot2 Methods",
+    "section": "3.1. R Graphics vs ggplot2",
+    "text": "3.1. R Graphics vs ggplot2\nFirst, we will do a comparison between the core graphical function of Base R, R Graphics, and ggplot2.\n\nR Graphicsggplot2\n\n\n\nhist(exam_data$MATHS)\n\n\n\n\n\n\n\nggplot(data = exam_data, aes(x = MATHS)) +\n  geom_histogram(bins = 10, \n                 boundary = 100,\n                 color = \"black\",\n                 fill = 'grey') +\n  ggtitle(\"Distribution of Maths Scores in Primary 3 Cohort\")\n\n\n\n\n\n\n\nIt is relatively simple to create a statistical graph using R Graphics, but ggplot2 offers more versatility and flexibility in the way data is presented visually."
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#footnotes",
+    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#footnotes",
+    "title": "Hands-on Exercise 01: ggplot2 Methods",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nhttps://towardsdatascience.com/a-comprehensive-guide-to-the-grammar-of-graphics-for-effective-visualization-of-multi-dimensional-1f92b4ed4149↩︎"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#layered-grammar-of-graphics",
+    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#layered-grammar-of-graphics",
+    "title": "Hands-on Exercise 01: ggplot2 Methods",
+    "section": "4.1. Layered Grammar of Graphics",
+    "text": "4.1. Layered Grammar of Graphics\nggplot2 is an implementation of Leland Wilkinson’s Grammar of Graphics with seven layers: 1. Data: the data set used for plotting 2. Aesthetics: use attributes of the data to influence visual characteristics 3. Geometrics: visual elements used for the data such as point, bar or line 4. Facets: create multiple variations of the same graph by splitting data into subsets such as paneling and multiple plots 5. Statistics: statistical transformation to summarise the data such as mean and confidence intervals 6. Coordinate systems: define the plane on which data is mapped on the graphic 7. Themes: non-data elements of the plot such as main title, axis title, legend background\nWe will explore each layer in the subsequent sub-sections."
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#geom_bar-1",
+    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#geom_bar-1",
+    "title": "Hands-on Exercise 01: ggplot2 Methods",
+    "section": "7.1. geom_bar()",
+    "text": "7.1. geom_bar()"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#geom_dotplot-1",
+    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#geom_dotplot-1",
+    "title": "Hands-on Exercise 01: ggplot2 Methods",
+    "section": "7.2. geom_dotplot()",
+    "text": "7.2. geom_dotplot()"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#geom_histogram-1",
+    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#geom_histogram-1",
+    "title": "Hands-on Exercise 01: ggplot2 Methods",
+    "section": "7.3. geom_histogram()",
+    "text": "7.3. geom_histogram()"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#modifying-a-geometric-object-using-geom",
+    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#modifying-a-geometric-object-using-geom",
+    "title": "Hands-on Exercise 01: ggplot2 Methods",
+    "section": "7.9. Modifying a geometric object using geom()",
+    "text": "7.9. Modifying a geometric object using geom()\nWe can customise a plot by adjusting the arguments within geom(), such as:\n\nggplot(data = exam_data, \n       aes(x = MATHS)) +\n  geom_histogram(bins = 20,\n                 color = \"black\",\n                 fill = \"light blue\")"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#modifying-a-geometric-object-using-aes",
+    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#modifying-a-geometric-object-using-aes",
+    "title": "Hands-on Exercise 01: ggplot2 Methods",
+    "section": "7.10. Modifying a geometric object using aes()",
+    "text": "7.10. Modifying a geometric object using aes()\nWe can add more details into the plot by adjusting the fill colour of the histogram by adjusting the arguments in aes():\n\nggplot(data = exam_data, \n       aes(x = MATHS,\n           fill = GENDER)) +\n  geom_histogram(bins = 20,\n                 color = \"grey30\")\n\n\n\n\nNote: This approach can be used to adjust the colour, fill, and alpha of the geometric object."
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#geom_density-1",
+    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#geom_density-1",
+    "title": "Hands-on Exercise 01: ggplot2 Methods",
+    "section": "7.6. geom_density()",
+    "text": "7.6. geom_density()"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#geom_boxplot-1",
+    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#geom_boxplot-1",
+    "title": "Hands-on Exercise 01: ggplot2 Methods",
+    "section": "7.7. geom_boxplot()",
+    "text": "7.7. geom_boxplot()"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#geom_violin-1",
+    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#geom_violin-1",
+    "title": "Hands-on Exercise 01: ggplot2 Methods",
+    "section": "7.8. geom_violin()",
+    "text": "7.8. geom_violin()"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#geom_point-1",
+    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#geom_point-1",
+    "title": "Hands-on Exercise 01: ggplot2 Methods",
+    "section": "7.9. geom_point()",
+    "text": "7.9. geom_point()"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#combining-geom-objects",
+    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#combining-geom-objects",
+    "title": "Hands-on Exercise 01: ggplot2 Methods",
+    "section": "7.10. Combining geom objects",
+    "text": "7.10. Combining geom objects"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#combining-geom-objects-1",
+    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#combining-geom-objects-1",
+    "title": "Hands-on Exercise 01: ggplot2 Methods",
+    "section": "7.10. Combining geom objects",
+    "text": "7.10. Combining geom objects"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#using-stat_summary",
+    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#using-stat_summary",
+    "title": "Hands-on Exercise 01: ggplot2 Methods",
+    "section": "8.1. Using stat_summary()",
+    "text": "8.1. Using stat_summary()\nWe can use the stat_summary() function to add mean values into a plot. We use the boxplot as an example:\n\nggplot(data = exam_data, \n       aes(y = MATHS,\n           x = GENDER)) +\n  geom_boxplot() +\n  stat_summary(geom = \"point\",\n               fun.y = \"mean\",\n               color = \"red\",\n               size = 4)"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#using-the-geom-method",
+    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#using-the-geom-method",
+    "title": "Hands-on Exercise 01: ggplot2 Methods",
+    "section": "8.2. Using the geom() Method",
+    "text": "8.2. Using the geom() Method\nMean values can also be added through the geom() function:\n\nggplot(data = exam_data, \n       aes(y = MATHS,\n           x = GENDER)) +\n  geom_boxplot() +\n  geom_point(stat = \"summary\",\n             fun.y  = \"mean\",\n             color = \"red\",\n             size = 4)"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#add-best-fit-curve-to-scatterplot",
+    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#add-best-fit-curve-to-scatterplot",
+    "title": "Hands-on Exercise 01: ggplot2 Methods",
+    "section": "8.3. Add Best Fit Curve to Scatterplot",
+    "text": "8.3. Add Best Fit Curve to Scatterplot\nWe can use geom_smooth() to plot a best fit curve on the scatterplot:\n\nggplot(data = exam_data, \n       aes(y = MATHS,\n           x = ENGLISH)) +\n  geom_point() +\n  geom_smooth(size = 0.5)\n\n\n\n\nThe default method used is loess, and this can be changed by specifying the preferred method:\n\nggplot(data = exam_data, \n       aes(y = MATHS,\n           x = ENGLISH)) +\n  geom_point() +\n  geom_smooth(method = lm,\n              size = 0.5)"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#facet_wrap",
+    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#facet_wrap",
+    "title": "Hands-on Exercise 01: ggplot2 Methods",
+    "section": "9.1 facet_wrap()",
+    "text": "9.1 facet_wrap()\nfacet_wrap() wraps a 1d sequence of panels into 2d, which is a better use of screen space than facet_grid():\n\nggplot(data = exam_data, \n       aes(x = MATHS)) +\n  geom_histogram(bins = 20) +\n  facet_wrap(~ CLASS)"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#facet_grid",
+    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#facet_grid",
+    "title": "Hands-on Exercise 01: ggplot2 Methods",
+    "section": "9.2. facet_grid()",
+    "text": "9.2. facet_grid()\nfacet_grid() forms a matrix of panels defined by row and column facetting variables. It is most useful when used with two discrete variables, and all combinations of the variables exist in the data.\n\nggplot(data = exam_data, \n       aes(x = MATHS)) +\n  geom_histogram() +\n  facet_grid(~ CLASS)"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#coord_flip",
+    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#coord_flip",
+    "title": "Hands-on Exercise 01: ggplot2 Methods",
+    "section": "10.1. coord_flip()",
+    "text": "10.1. coord_flip()\n\nOriginalcoord_flip()\n\n\n\nggplot(data = exam_data,\n       aes(x = RACE)) +\n  geom_bar()\n\n\n\n\n\n\ncoord_flip() flips the vertical bar charts into horizontal bar charts:\n\nggplot(data = exam_data,\n       aes(x = RACE)) +\n  geom_bar() +\n  coord_flip()"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#changing-the-range-of-the-y--and-x-axes",
+    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#changing-the-range-of-the-y--and-x-axes",
+    "title": "Hands-on Exercise 01: ggplot2 Methods",
+    "section": "10.2. Changing the range of the y- and x-axes",
+    "text": "10.2. Changing the range of the y- and x-axes\n\nOriginalcoord_cartesian()\n\n\n\nggplot(data = exam_data,\n       aes(x = MATHS,\n           y = ENGLISH)) +\n  geom_point() +\n  geom_smooth(method = lm,\n              size = 0.5)\n\n\n\n\nWe can observe that the y- and x-axes in the plot is not equal and could appear as misleading.\n\n\nWe can use coord_cartesian() to set the limits of both the x- and y-axes from 0 to 100.\n\nggplot(data = exam_data,\n       aes(x = MATHS,\n           y = ENGLISH)) +\n  geom_point() +\n  geom_smooth(method = lm,\n              size = 0.5) +\n  coord_cartesian(xlim = c(0,100),\n                  ylim = c(0,100))"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#working-with-theme",
+    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#working-with-theme",
+    "title": "Hands-on Exercise 01: ggplot2 Methods",
+    "section": "11.1. Working with theme",
+    "text": "11.1. Working with theme\nFor example, we can apply the theme_gray() to a bar chart:\n\nggplot(data = exam_data,\n       aes(x = RACE)) +\n  geom_bar() +\n  coord_flip() + \n  theme_gray()\n\n\n\n\nWe can apply the theme_classic() to a bar chart:\n\nggplot(data = exam_data,\n       aes(x = RACE)) +\n  geom_bar() +\n  coord_flip() + \n  theme_classic()\n\n\n\n\nWe can apply the theme_minimal() to a bar chart:\n\nggplot(data = exam_data,\n       aes(x = RACE)) +\n  geom_bar() +\n  coord_flip() + \n  theme_minimal()"
   }
 ]
