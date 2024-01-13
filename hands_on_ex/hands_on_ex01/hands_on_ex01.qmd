@@ -425,6 +425,7 @@ Themes control elements of the graph that are not related to the data, such as b
 
 ::: panel-tabset
 #### `theme_gray()`
+
 ```{r}
 ggplot(data = exam_data,
        aes(x = RACE)) +
@@ -432,7 +433,9 @@ ggplot(data = exam_data,
   coord_flip() + 
   theme_gray()
 ```
+
 #### `theme_classic()`
+
 ```{r}
 ggplot(data = exam_data,
        aes(x = RACE)) +
@@ -440,7 +443,9 @@ ggplot(data = exam_data,
   coord_flip() + 
   theme_classic()
 ```
+
 #### `theme_minimal()`
+
 ```{r}
 ggplot(data = exam_data,
        aes(x = RACE)) +
@@ -449,5 +454,3 @@ ggplot(data = exam_data,
   theme_minimal()
 ```
 :::
-
-
