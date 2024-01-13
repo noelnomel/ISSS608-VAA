@@ -9,3 +9,25 @@ execute:
   warning: false # do not display warning message
 editor: visual
 ---
+
+# 1. Getting Started
+
+First, we will download the *School questionnaire data file* from the [PISA 2022 Database](https://www.oecd.org/pisa/data/2022database/). As there is only the SAS and SPSS versions available, we will download the SAS version.
+
+## 1.1. Loading Relevant Packages
+
+Next, We will import the dataset into the R environment. In order to import a SAS file into R, we have to first load the `haven` package. We will do so by calling the `p_load()` function from the `pacman` package.
+
+In addition to `haven`, we will load `tidyverse` where the `ggplot2` package can be found. We will use `haven` to load the SAS file and `ggplot2` to plot the statistical graphs.
+
+```{r}
+pacman::p_load(haven, tidyverse)
+```
+
+## 1.2. Import Data
+
+We will now use the `read_sas` function from the `haven` package to load the dataset into R as stu_quest:
+
+```{r}
+stu_quest <- read_sas(data_file = "data/cy08msp_sch_qqq.sas7bdat")
+```
