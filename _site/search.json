@@ -193,7 +193,7 @@
     "href": "in_class_ex/in_class_ex01/in_class_ex01.html",
     "title": "In-class Exercise 01",
     "section": "",
-    "text": "First, we will download the School questionnaire data file from the PISA 2022 Database. As there is only the SAS and SPSS versions available, we will download the SAS version.\n\n\nNext, We will import the dataset into the R environment. In order to import a SAS file into R, we have to first load the haven package. We will do so by calling the p_load() function from the pacman package.\nIn addition to haven, we will load tidyverse where the ggplot2 package can be found. We will use haven to load the SAS file and ggplot2 to plot the statistical graphs.\n\npacman::p_load(haven, tidyverse)\n\n\n\n\nWe will now use the read_sas function from the haven package to load the dataset into R as stu_quest:\n\nstu_quest &lt;- read_sas(data_file = \"data/cy08msp_sch_qqq.sas7bdat\")"
+    "text": "First, we will download the School questionnaire data file from the PISA 2022 Database. As there is only the SAS and SPSS versions available, we will download the SAS version.\n\n\nNext, We will import the dataset into the R environment. In order to import a SAS file into R, we have to first load the haven package. We will do so by calling the p_load() function from the pacman package.\nIn addition to haven, we will load tidyverse where the ggplot2 package can be found. We will use haven to load the SAS file and ggplot2 to plot the statistical graphs.\n\npacman::p_load(haven, tidyverse)\n\n\n\n\nWe will now use the read_sas function from the haven package to load the dataset into R as stu_quest:\n\nstu_quest &lt;- read_sas(data_file = \"data/cy08msp_sch_qqq.sas7bdat\")\n\n\n\n\nAs this dataset consists of global responses, we will filter out only the responses from Singapore:\n\nstu_quest_SG &lt;- stu_quest %&gt;%\n  filter(CNT == \"SGP\")\n\nWe will store the filtered dataset in the rds format for future use on R:\n\nwrite_rds(stu_quest_SG, \"data/stu_quest_SG.rds\")\n\nThe rds file can be loaded into the R environment by using the read_rds() function from the readr package found in tidyverse:\n\nstu_quest_SG &lt;- read_rds(\"data/stu_quest_SG.rds\")"
   },
   {
     "objectID": "in_class_ex/in_class_ex01/in_class_ex01.html#loading-relevant-packages",
@@ -228,6 +228,13 @@
     "href": "take_home_ex/take_home_ex01/take_home_ex01.html#import-data",
     "title": "Is Every School Truly A Good School In Singapore?",
     "section": "2.2. Import Data",
-    "text": "2.2. Import Data\nWe will now use the read_sas function from the haven package to load the dataset into R as stu_quest:\n\nstu_quest &lt;- read_sas(data_file = \"data/cy08msp_sch_qqq.sas7bdat\")"
+    "text": "2.2. Import Data\nWe will now use the read_sas function from the haven package to load the dataset into R as stu_quest:\n\nstu_quest &lt;- read_sas(data_file = \"data/cy08msp_sch_qqq.sas7bdat\")\n\n\nNext, we can view the data set by navigating to the “Environment” panel in the top right hand corner of RStudio and double clicking on stu_quest (screenshot above). This action opens a view of the dataset in a new tab.\n\nWe can observe that the dataset contains responses of students from different countries labelled under the column “CNT”, and that there are 50 columns in the dataset."
+  },
+  {
+    "objectID": "in_class_ex/in_class_ex01/in_class_ex01.html#prepare-data",
+    "href": "in_class_ex/in_class_ex01/in_class_ex01.html#prepare-data",
+    "title": "In-class Exercise 01",
+    "section": "",
+    "text": "As this dataset consists of global responses, we will filter out only the responses from Singapore:\n\nstu_quest_SG &lt;- stu_quest %&gt;%\n  filter(CNT == \"SGP\")\n\nWe will store the filtered dataset in the rds format for future use on R:\n\nwrite_rds(stu_quest_SG, \"data/stu_quest_SG.rds\")\n\nThe rds file can be loaded into the R environment by using the read_rds() function from the readr package found in tidyverse:\n\nstu_quest_SG &lt;- read_rds(\"data/stu_quest_SG.rds\")"
   }
 ]

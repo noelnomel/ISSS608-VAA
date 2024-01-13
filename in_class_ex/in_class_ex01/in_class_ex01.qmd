@@ -31,3 +31,25 @@ We will now use the `read_sas` function from the `haven` package to load the dat
 ```{r}
 stu_quest <- read_sas(data_file = "data/cy08msp_sch_qqq.sas7bdat")
 ```
+
+## 1.3. Prepare Data
+
+As this dataset consists of global responses, we will filter out only the responses from Singapore:
+
+```{r}
+stu_quest_SG <- stu_quest %>%
+  filter(CNT == "SGP")
+```
+
+We will store the filtered dataset in the rds format for future use on R:
+
+```{r}
+#| eval: false
+write_rds(stu_quest_SG, "data/stu_quest_SG.rds")
+```
+
+The rds file can be loaded into the R environment by using the `read_rds()` function from the `readr` package found in `tidyverse`:
+
+```{r}
+stu_quest_SG <- read_rds("data/stu_quest_SG.rds")
+```
