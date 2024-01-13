@@ -187,5 +187,47 @@
     "title": "Hands-on Exercise 01: ggplot2 Methods",
     "section": "11.1. Working with theme",
     "text": "11.1. Working with theme\nFor example, we can apply the theme_gray() to a bar chart:\n\nggplot(data = exam_data,\n       aes(x = RACE)) +\n  geom_bar() +\n  coord_flip() + \n  theme_gray()\n\n\n\n\nWe can apply the theme_classic() to a bar chart:\n\nggplot(data = exam_data,\n       aes(x = RACE)) +\n  geom_bar() +\n  coord_flip() + \n  theme_classic()\n\n\n\n\nWe can apply the theme_minimal() to a bar chart:\n\nggplot(data = exam_data,\n       aes(x = RACE)) +\n  geom_bar() +\n  coord_flip() + \n  theme_minimal()"
+  },
+  {
+    "objectID": "in_class_ex/in_class_ex01/in_class_ex01.html",
+    "href": "in_class_ex/in_class_ex01/in_class_ex01.html",
+    "title": "In-class Exercise 01",
+    "section": "",
+    "text": "First, we will download the School questionnaire data file from the PISA 2022 Database. As there is only the SAS and SPSS versions available, we will download the SAS version.\n\n\nNext, We will import the dataset into the R environment. In order to import a SAS file into R, we have to first load the haven package. We will do so by calling the p_load() function from the pacman package.\nIn addition to haven, we will load tidyverse where the ggplot2 package can be found. We will use haven to load the SAS file and ggplot2 to plot the statistical graphs.\n\npacman::p_load(haven, tidyverse)\n\n\n\n\nWe will now use the read_sas function from the haven package to load the dataset into R as stu_quest:\n\nstu_quest &lt;- read_sas(data_file = \"data/cy08msp_sch_qqq.sas7bdat\")"
+  },
+  {
+    "objectID": "in_class_ex/in_class_ex01/in_class_ex01.html#loading-relevant-packages",
+    "href": "in_class_ex/in_class_ex01/in_class_ex01.html#loading-relevant-packages",
+    "title": "In-class Exercise 01",
+    "section": "",
+    "text": "Next, We will import the dataset into the R environment. In order to import a SAS file into R, we have to first load the haven package. We will do so by calling the p_load() function from the pacman package.\nIn addition to haven, we will load tidyverse where the ggplot2 package can be found. We will use haven to load the SAS file and ggplot2 to plot the statistical graphs.\n\npacman::p_load(haven, tidyverse)"
+  },
+  {
+    "objectID": "in_class_ex/in_class_ex01/in_class_ex01.html#import-data",
+    "href": "in_class_ex/in_class_ex01/in_class_ex01.html#import-data",
+    "title": "In-class Exercise 01",
+    "section": "",
+    "text": "We will now use the read_sas function from the haven package to load the dataset into R as stu_quest:\n\nstu_quest &lt;- read_sas(data_file = \"data/cy08msp_sch_qqq.sas7bdat\")"
+  },
+  {
+    "objectID": "take_home_ex/take_home_ex01/take_home_ex01.html",
+    "href": "take_home_ex/take_home_ex01/take_home_ex01.html",
+    "title": "Is Every School Truly A Good School In Singapore?",
+    "section": "",
+    "text": "Singapore often tops the charts in global rankings, and this is definitely the case for the nation’s education system. Education is often seen as the gateway to success, and parents, understandably, seek to find the best education opportunities for their children.\nIn this exercise, we delve deeper into the PISA 2022 database in the hopes of gaining insights:\n\nHow are Singaporean students performing in mathematics, reading, and science?\nAre there any relationships between the students’ demographic and their performance in school?\nIs there any relationship between the schools that the students are in and their results?\nIs every school a good school that can bring out the best in every child?\n\nWe will use Exploratory Data Analysis (EDA) to address the above questions."
+  },
+  {
+    "objectID": "take_home_ex/take_home_ex01/take_home_ex01.html#loading-relevant-packages",
+    "href": "take_home_ex/take_home_ex01/take_home_ex01.html#loading-relevant-packages",
+    "title": "Is Every School Truly A Good School In Singapore?",
+    "section": "2.1. Loading Relevant Packages",
+    "text": "2.1. Loading Relevant Packages\nNext, We will import the dataset into the R environment. In order to import a SAS file into R, we have to first load the haven package. We will do so by calling the p_load() function from the pacman package.\nIn addition to haven, we will load tidyverse where the ggplot2 package can be found. We will use haven to load the SAS file and ggplot2 to plot the statistical graphs.\n\npacman::p_load(haven, tidyverse)"
+  },
+  {
+    "objectID": "take_home_ex/take_home_ex01/take_home_ex01.html#import-data",
+    "href": "take_home_ex/take_home_ex01/take_home_ex01.html#import-data",
+    "title": "Is Every School Truly A Good School In Singapore?",
+    "section": "2.2. Import Data",
+    "text": "2.2. Import Data\nWe will now use the read_sas function from the haven package to load the dataset into R as stu_quest:\n\nstu_quest &lt;- read_sas(data_file = \"data/cy08msp_sch_qqq.sas7bdat\")"
   }
 ]
