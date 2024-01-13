@@ -36,9 +36,15 @@ website:
       - text: Take-home Exercises
         menu: 
           - text: Take-home Exercise 1
-            #href: 
+            href: take_home_ex/take_home_ex01/take_home_ex01.html
             
           - text: Take-home Exercise 2
+            #href: 
+            
+          - text: Take-home Exercise 3
+            #href: 
+            
+          - text: Take-home Exercise 4
             #href: 
 format:
   html:
