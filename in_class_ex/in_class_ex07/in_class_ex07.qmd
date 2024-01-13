@@ -1,0 +1,11 @@
+---
+title: "In-class Exercise 07"
+date: "13 January 2024"
+date-modified: "last-modified"
+format: html
+execute: 
+  echo: true # all code chunks will appear
+  eval: true # all code chunks will run live
+  warning: false # do not display warning message
+editor: visual
+---

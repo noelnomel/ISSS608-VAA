@@ -11,10 +11,31 @@ website:
             href: hands_on_ex/hands_on_ex01/hands_on_ex01.html
             
           - text: Hands-on Exercise 2
-            #href: 
+            href: hands_on_ex/hands_on_ex02/hands_on_ex02.html
             
           - text: Hands-on Exercise 3
-            #href: 
+            href: hands_on_ex/hands_on_ex03/hands_on_ex03.html
+            
+          - text: Hands-on Exercise 4
+            href: hands_on_ex/hands_on_ex04/hands_on_ex04.html
+            
+          - text: Hands-on Exercise 5
+            href: hands_on_ex/hands_on_ex05/hands_on_ex05.html           
+            
+          - text: Hands-on Exercise 6
+            href: hands_on_ex/hands_on_ex06/hands_on_ex06.html  
+            
+          - text: Hands-on Exercise 7
+            href: hands_on_ex/hands_on_ex07/hands_on_ex07.html
+            
+          - text: Hands-on Exercise 8
+            href: hands_on_ex/hands_on_ex08/hands_on_ex08.html
+            
+          - text: Hands-on Exercise 9
+            href: hands_on_ex/hands_on_ex09/hands_on_ex09.html
+            
+          - text: Hands-on Exercise 10
+            href: hands_on_ex/hands_on_ex10/hands_on_ex10.html
             
       - text: In-class Exercises
         menu: 
@@ -22,16 +43,31 @@ website:
             href: in_class_ex/in_class_ex01/in_class_ex01.html
             
           - text: In-class Exercise 2
-            #href: 
+            href: in_class_ex/in_class_ex02/in_class_ex02.html
             
           - text: In-class Exercise 3
-            #href: 
+            href: in_class_ex/in_class_ex03/in_class_ex03.html
             
           - text: In-class Exercise 4
-            #href: 
+            href: in_class_ex/in_class_ex04/in_class_ex04.html
             
           - text: In-class Exercise 5
-            #href: 
+            href: in_class_ex/in_class_ex05/in_class_ex05.html
+            
+          - text: In-class Exercise 6
+            href: in_class_ex/in_class_ex06/in_class_ex06.html
+            
+          - text: In-class Exercise 7
+            href: in_class_ex/in_class_ex07/in_class_ex07.html
+            
+          - text: In-class Exercise 8
+            href: in_class_ex/in_class_ex08/in_class_ex08.html
+            
+          - text: In-class Exercise 9
+            href: in_class_ex/in_class_ex09/in_class_ex09.html
+            
+          - text: In-class Exercise 10
+            href: in_class_ex/in_class_ex10/in_class_ex10.html
             
       - text: Take-home Exercises
         menu: 
@@ -39,13 +75,13 @@ website:
             href: take_home_ex/take_home_ex01/take_home_ex01.html
             
           - text: Take-home Exercise 2
-            #href: 
+            href: take_home_ex/take_home_ex02/take_home_ex02.html
             
           - text: Take-home Exercise 3
-            #href: 
+            href: take_home_ex/take_home_ex03/take_home_ex03.html
             
           - text: Take-home Exercise 4
-            #href: 
+            href: take_home_ex/take_home_ex04/take_home_ex04.html
 format:
   html:
     theme: cosmo
