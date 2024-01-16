@@ -1,6 +1,6 @@
 ---
-title: "Hands-on Exercise 02"
-date: "13 January 2024"
+title: "Hands-on Exercise 02: Beyond ggplot2 Fundamentals"
+date: "14 January 2024"
 date-modified: "last-modified"
 format: html
 execute: 
@@ -9,3 +9,475 @@ execute:
   warning: false # do not display warning message
 editor: visual
 ---
+
+# 1. Overview
+
+In this second lesson, we learn about `ggplot2` extensions that helps us to create elegant and effective statistical graphs.
+
+# 2. Getting Started
+
+## 2.1. Installing and Loading Packages
+
+We will use the following R packages in addition to `tidyverse` for this exercise:
+
+1.  [`ggrepel`](https://cran.r-project.org/web/packages/ggrepel/vignettes/ggrepel.html): provides geoms for`ggplot2`to repel overlapping text labels
+
+2.  [`ggthemes`](https://cran.r-project.org/web/packages/ggthemes/index.html): provides extra themes, geoms, and scales for`ggplot2`
+
+3.  [`hrbrthemes`](https://cinc.rud.is/web/packages/hrbrthemes.html): provides typography-centric themes and theme components for `ggplot2`
+
+4.  [`patchwork`](https://cran.r-project.org/web/packages/patchwork/vignettes/patchwork.html): to make plot composition using `ggplot2` simple and powerful
+
+The packages to be used can be installed and loaded into the R environment using the `p_load()` function from the `pacman` package:
+
+```{r}
+pacman::p_load(tidyverse, ggrepel, ggthemes, 
+               hrbrthemes, patchwork)
+```
+
+## 2.2. Import Data
+
+Next, we will read the data provided by the Course Instructor into the R environment. We will use the `read_csv()` function from the `readr` package found in `tidyverse`.
+
+```{r}
+exam_data <- read_csv("data/Exam_data.csv")
+glimpse(exam_data)
+```
+
+Using `glimpse` to view the data, it is observed that the data contains the examination grades of a batch of primary 3 students for the subjects English, Maths, and Science.
+
+# 3. `ggrepel`
+
+One challenge of plotting statistical graphs is in annotating data points, especially when there are many points. An example is shown below:
+
+```{r}
+ggplot(data = exam_data,
+       aes(x = MATHS,
+           y = ENGLISH)) +
+  geom_point() +
+  geom_smooth(method = lm,
+              size = 0.5) +
+  geom_label(aes(label = ID),
+             hjust = .5, 
+             vjust = -.5) +
+  coord_cartesian(xlim = c(0,100),
+                  ylim = c(0,100)) +
+  ggtitle("English vs Maths Scores (Primary 3)")
+```
+
+We can overcome this challenge by using the `ggrepel` package by replacing `geom_text()` with `geom_text_repel()` and `geom_label()` with `geom_label_repel()`.
+
+```{r}
+ggplot(data = exam_data,
+       aes(x = MATHS,
+           y = ENGLISH)) +
+  geom_point() +
+  geom_smooth(method = lm,
+              size = 0.5) +
+  geom_label_repel(aes(label = ID),
+                   fontface = "bold") +
+  coord_cartesian(xlim = c(0,100),
+                  ylim = c(0,100)) +
+  ggtitle("English vs Maths Scores (Primary 3)")
+```
+
+It is observed that not all points are displayed on the plot as there are too many overlaps.
+
+# 4. Working with Themes
+
+`ggplot2` comes woth 8 built-in themes, and we visualise each theme below:
+
+::: panel-tabset
+#### `theme_gray()`
+
+```{r}
+ggplot(data = exam_data,
+       aes(x = RACE)) +
+  geom_bar() +
+  coord_flip() + 
+  theme_gray() + 
+  ggtitle("Distribution of Students by Race")
+```
+
+#### `theme_classic()`
+
+```{r}
+ggplot(data = exam_data,
+       aes(x = RACE)) +
+  geom_bar() +
+  coord_flip() + 
+  theme_classic() + 
+  ggtitle("Distribution of Students by Race")
+```
+
+#### `theme_minimal()`
+
+```{r}
+ggplot(data = exam_data,
+       aes(x = RACE)) +
+  geom_bar() +
+  coord_flip() + 
+  theme_minimal() + 
+  ggtitle("Distribution of Students by Race")
+```
+
+#### `theme_bw()`
+
+```{r}
+ggplot(data = exam_data,
+       aes(x = RACE)) +
+  geom_bar() +
+  coord_flip() + 
+  theme_bw() + 
+  ggtitle("Distribution of Students by Race")
+```
+
+#### `theme_dark()`
+
+```{r}
+ggplot(data = exam_data,
+       aes(x = RACE)) +
+  geom_bar() +
+  coord_flip() + 
+  theme_dark() + 
+  ggtitle("Distribution of Students by Race")
+```
+
+#### `theme_light()`
+
+```{r}
+ggplot(data = exam_data,
+       aes(x = RACE)) +
+  geom_bar() +
+  coord_flip() + 
+  theme_light() + 
+  ggtitle("Distribution of Students by Race")
+```
+
+#### `theme_linedraw()`
+
+```{r}
+ggplot(data = exam_data,
+       aes(x = RACE)) +
+  geom_bar() +
+  coord_flip() + 
+  theme_linedraw() + 
+  ggtitle("Distribution of Students by Race")
+```
+
+#### `theme_void()`
+
+```{r}
+ggplot(data = exam_data,
+       aes(x = RACE)) +
+  geom_bar() +
+  coord_flip() + 
+  theme_void() + 
+  ggtitle("Distribution of Students by Race")
+```
+:::
+
+## 4.1. `ggthemes`
+
+`ggthemes` provides additional `ggplot2` themes that replicate the look of plots by Edward Tufte, The Economist, Stata, Microsoft Excel, and The Wall Street Journal.
+
+::: panel-tabset
+#### `theme_economist()`
+
+```{r}
+ggplot(data = exam_data,
+       aes(x = RACE)) +
+  geom_bar() +
+  coord_flip() + 
+  theme_economist() + 
+  ggtitle("Distribution of Students by Race")
+```
+
+#### `theme_stata()`
+
+```{r}
+ggplot(data = exam_data,
+       aes(x = RACE)) +
+  geom_bar() +
+  coord_flip() + 
+  theme_stata() + 
+  ggtitle("Distribution of Students by Race")
+```
+
+#### `theme_excel_new()`
+
+```{r}
+ggplot(data = exam_data,
+       aes(x = RACE)) +
+  geom_bar() +
+  coord_flip() + 
+  theme_excel_new() + 
+  ggtitle("Distribution of Students by Race")
+```
+:::
+
+## 4.2. `hrbrthemes`
+
+`hrbrthemes` provide typograhic-centric themes to adjust the labels and fonts used in a `ggplot2` graph.
+
+::: panel-tabset
+#### `theme_ipsum()`
+
+```{r}
+ggplot(data = exam_data,
+       aes(x = RACE)) +
+  geom_bar() +
+  coord_flip() + 
+  theme_ipsum() + 
+  ggtitle("Distribution of Students by Race")
+```
+
+#### `theme_ipsum_es()`
+
+```{r}
+ggplot(data = exam_data,
+       aes(x = RACE)) +
+  geom_bar() +
+  coord_flip() + 
+  theme_ipsum_es() + 
+  ggtitle("Distribution of Students by Race")
+```
+
+#### Production Workflow
+
+```{r}
+ggplot(data = exam_data,
+       aes(x = RACE)) +
+  geom_bar() +
+  coord_flip() + 
+  theme_ipsum(axis_title_size = 16,
+              base_size = 15,
+              grid = "Y") + 
+  ggtitle("Distribution of Students by Race")
+```
+::: callout-tip
+-   `axis_title_size()`: to adjust font size of the axis title
+
+-   `base_size()`: to adjust default axis label
+
+-   `grid()`: to remove x-axis grid lines
+:::
+:::
+
+# 5. `patchwork`
+
+In this section, we we learn to use `patchwork`, a `ggplot2` extension, that is designed to combine different `ggplot2` graphs into one plot. 
+
+There are other methods available, such as the `ggarrange()` function from the `ggpubr` package, the `grid.arrange()` function from the `gridExtra` package, and the `plot_grid()` function from the `cowplot` package. 
+
+First, we create individual plots and assign them to variables. This will make combining the plots easier in the subsequent steps.
+
+```{r}
+maths <- ggplot(data = exam_data,
+                aes(x = MATHS)) +
+  geom_histogram(bins = 20,
+                 boundary = 100,
+                 color = "grey30",
+                 fill = "grey90") +
+  coord_cartesian(xlim = c(0,100)) +
+  ggtitle("Distribution of Maths Scores")
+
+english <- ggplot(data = exam_data,
+                aes(x = ENGLISH)) +
+  geom_histogram(bins = 20,
+                 boundary = 100,
+                 color = "grey30",
+                 fill = "grey90") +
+  coord_cartesian(xlim = c(0,100)) +
+  ggtitle("Distribution of English Scores")
+
+maths_vs_eng <- ggplot(data = exam_data,
+                aes(x = MATHS,
+                    y = ENGLISH)) +
+  geom_point() +
+  geom_smooth(method = lm,
+              size = 0.5) +
+  coord_cartesian(xlim = c(0,100),
+                  ylim = c(0,100)) +
+  ggtitle("English vs Maths Scores")
+```
+
+## 5.1. Combining Two `ggplot2` Graphs
+::: panel-tabset
+#### `patchwork`
+
+```{r}
+maths + english
+```
+
+```{r}
+maths / english
+```
+::: callout-tip
+-   use `+` to add plots to form a patchwork (keeps the grid as square as possible)
+
+-   use `|` to place plots on top of each other
+
+-   use `/` to place plots next to each other
+
+-   use `()` to create a subplot group
+:::
+
+#### `ggpubr`
+
+```{r}
+pacman::p_load(ggpubr)
+ggarrange(maths, english)
+```
+
+#### `gridExtra`
+
+```{r}
+pacman::p_load(gridExtra)
+grid.arrange(maths, english, ncol = 2, nrow = 1)
+```
+
+#### `cowplot`
+
+```{r}
+pacman::p_load(cowplot)
+plot_grid(maths, english, ncol = 2, nrow = 1)
+```
+:::
+
+## 5.2. Combining Three `ggplot2` Graphs
+
+::: panel-tabset
+#### `patchwork`
+
+```{r}
+(maths / english) | maths_vs_eng
+```
+
+```{r}
+maths_vs_eng / (maths | english)
+```
+
+#### `ggpubr`
+
+```{r}
+left <- ggarrange(maths, english, ncol = 1)
+ggarrange(left, maths_vs_eng)
+```
+
+#### `gridExtra`
+
+```{r}
+grid.arrange(arrangeGrob(maths, english), maths_vs_eng, ncol = 2)
+```
+
+#### `cowplot`
+
+```{r}
+left <- plot_grid(maths, english, ncol = 1) 
+plot_grid(left, maths_vs_eng)
+```
+:::
+
+## 5.3. Create Composite Figure with Tags
+
+::: panel-tabset
+#### `patchwork`
+
+```{r}
+((maths / english) | maths_vs_eng) +
+  plot_annotation(tag_levels = "A")
+```
+
+#### `ggpubr`
+
+```{r}
+right <- ggarrange(maths_vs_eng, ncol = 1, labels = "C")
+ggarrange(ggarrange(maths, english, ncol = 1, labels = c("A","B")), right)
+```
+
+#### `gridExtra`
+
+There is no direct method to create labels using `gridExtra`. Hence, the labels have to first be added to each individual plot before they are combined together using `grid.arrange()`.
+
+```{r}
+maths_E <- ggplot(data = exam_data,
+                aes(x = MATHS)) +
+  geom_histogram(bins = 20,
+                 boundary = 100,
+                 color = "grey30",
+                 fill = "grey90") +
+  coord_cartesian(xlim = c(0,100)) +
+  ggtitle("Distribution of Maths Scores") + 
+  labs(tag = "A")
+
+english_E <- ggplot(data = exam_data,
+                aes(x = ENGLISH)) +
+  geom_histogram(bins = 20,
+                 boundary = 100,
+                 color = "grey30",
+                 fill = "grey90") +
+  coord_cartesian(xlim = c(0,100)) +
+  ggtitle("Distribution of English Scores") +
+  labs(tag = "B")
+
+maths_vs_eng_E <- ggplot(data = exam_data,
+                aes(x = MATHS,
+                    y = ENGLISH)) +
+  geom_point() +
+  geom_smooth(method = lm,
+              size = 0.5) +
+  coord_cartesian(xlim = c(0,100),
+                  ylim = c(0,100)) +
+  ggtitle("English vs Maths Scores") +
+  labs(tag = "C")
+```
+
+```{r}
+grid.arrange(arrangeGrob(maths_E, english_E), maths_vs_eng_E, ncol = 2)
+```
+
+#### `cowplot`
+
+```{r}
+left <- plot_grid(maths, english, ncol = 1, labels = c("A","B")) 
+plot_grid(left, maths_vs_eng, labels = c("","C"))
+```
+:::
+
+## 5.4. Create Figure with Inset
+
+::: panel-tabset
+#### `patchwork`
+
+```{r}
+maths_vs_eng +
+  inset_element(maths,
+                left = 0.01,
+                bottom = 0.7, 
+                right = 0.5,
+                top = 1)
+```
+
+#### `cowplot`
+
+```{r}
+ggdraw(maths_vs_eng) +
+  draw_plot(maths, 0.1,0.7,0.5,0.3)
+```
+:::
+
+## 5.5. Adding Themes to Composite Figure
+
+Finally, we can add finishing touches to the composite figure by using `&` with the desired theme:
+```{r}
+((maths / english) | maths_vs_eng) & theme_economist()
+```
+
+
+
+
+
+
+
+
