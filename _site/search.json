@@ -240,70 +240,70 @@
   {
     "objectID": "hands_on_ex/hands_on_ex02/hands_on_ex02.html",
     "href": "hands_on_ex/hands_on_ex02/hands_on_ex02.html",
-    "title": "Hands-on Exercise 02: Beyond ggplot2 Fundamentals",
+    "title": "Hands-on Exercise 02: Customising ggplot2 Plots",
     "section": "",
     "text": "In this second lesson, we learn about ggplot2 extensions that helps us to create elegant and effective statistical graphs."
   },
   {
     "objectID": "hands_on_ex/hands_on_ex02/hands_on_ex02.html#installing-and-loading-packages",
     "href": "hands_on_ex/hands_on_ex02/hands_on_ex02.html#installing-and-loading-packages",
-    "title": "Hands-on Exercise 02: Beyond ggplot2 Fundamentals",
+    "title": "Hands-on Exercise 02: Customising ggplot2 Plots",
     "section": "2.1. Installing and Loading Packages",
     "text": "2.1. Installing and Loading Packages\nWe will use the following R packages in addition to tidyverse for this exercise:\n\nggrepel: provides geoms forggplot2to repel overlapping text labels\nggthemes: provides extra themes, geoms, and scales forggplot2\nhrbrthemes: provides typography-centric themes and theme components for ggplot2\npatchwork: to make plot composition using ggplot2 simple and powerful\n\nThe packages to be used can be installed and loaded into the R environment using the p_load() function from the pacman package:\n\npacman::p_load(tidyverse, ggrepel, ggthemes, \n               hrbrthemes, patchwork)"
   },
   {
     "objectID": "hands_on_ex/hands_on_ex02/hands_on_ex02.html#import-data",
     "href": "hands_on_ex/hands_on_ex02/hands_on_ex02.html#import-data",
-    "title": "Hands-on Exercise 02: Beyond ggplot2 Fundamentals",
+    "title": "Hands-on Exercise 02: Customising ggplot2 Plots",
     "section": "2.2. Import Data",
     "text": "2.2. Import Data\nNext, we will read the data provided by the Course Instructor into the R environment. We will use the read_csv() function from the readr package found in tidyverse.\n\nexam_data &lt;- read_csv(\"data/Exam_data.csv\")\nglimpse(exam_data)\n\nRows: 322\nColumns: 7\n$ ID      &lt;chr&gt; \"Student321\", \"Student305\", \"Student289\", \"Student227\", \"Stude…\n$ CLASS   &lt;chr&gt; \"3I\", \"3I\", \"3H\", \"3F\", \"3I\", \"3I\", \"3I\", \"3I\", \"3I\", \"3H\", \"3…\n$ GENDER  &lt;chr&gt; \"Male\", \"Female\", \"Male\", \"Male\", \"Male\", \"Female\", \"Male\", \"M…\n$ RACE    &lt;chr&gt; \"Malay\", \"Malay\", \"Chinese\", \"Chinese\", \"Malay\", \"Malay\", \"Chi…\n$ ENGLISH &lt;dbl&gt; 21, 24, 26, 27, 27, 31, 31, 31, 33, 34, 34, 36, 36, 36, 37, 38…\n$ MATHS   &lt;dbl&gt; 9, 22, 16, 77, 11, 16, 21, 18, 19, 49, 39, 35, 23, 36, 49, 30,…\n$ SCIENCE &lt;dbl&gt; 15, 16, 16, 31, 25, 16, 25, 27, 15, 37, 42, 22, 32, 36, 35, 45…\n\n\nUsing glimpse to view the data, it is observed that the data contains the examination grades of a batch of primary 3 students for the subjects English, Maths, and Science."
   },
   {
     "objectID": "hands_on_ex/hands_on_ex02/hands_on_ex02.html#ggthemes",
     "href": "hands_on_ex/hands_on_ex02/hands_on_ex02.html#ggthemes",
-    "title": "Hands-on Exercise 02: Beyond ggplot2 Fundamentals",
+    "title": "Hands-on Exercise 02: Customising ggplot2 Plots",
     "section": "4.1. ggthemes",
     "text": "4.1. ggthemes\nggthemes provides additional ggplot2 themes that replicate the look of plots by Edward Tufte, The Economist, Stata, Microsoft Excel, and The Wall Street Journal.\n\ntheme_economist()theme_stata()theme_excel_new()\n\n\n\nggplot(data = exam_data,\n       aes(x = RACE)) +\n  geom_bar() +\n  coord_flip() + \n  theme_economist() + \n  ggtitle(\"Distribution of Students by Race\")\n\n\n\n\n\n\n\nggplot(data = exam_data,\n       aes(x = RACE)) +\n  geom_bar() +\n  coord_flip() + \n  theme_stata() + \n  ggtitle(\"Distribution of Students by Race\")\n\n\n\n\n\n\n\nggplot(data = exam_data,\n       aes(x = RACE)) +\n  geom_bar() +\n  coord_flip() + \n  theme_excel_new() + \n  ggtitle(\"Distribution of Students by Race\")"
   },
   {
     "objectID": "hands_on_ex/hands_on_ex02/hands_on_ex02.html#hrbrthemes",
     "href": "hands_on_ex/hands_on_ex02/hands_on_ex02.html#hrbrthemes",
-    "title": "Hands-on Exercise 02: Beyond ggplot2 Fundamentals",
+    "title": "Hands-on Exercise 02: Customising ggplot2 Plots",
     "section": "4.2. hrbrthemes",
     "text": "4.2. hrbrthemes\nhrbrthemes provide typograhic-centric themes to adjust the labels and fonts used in a ggplot2 graph.\n\ntheme_ipsum()theme_ipsum_es()Production Workflow\n\n\n\nggplot(data = exam_data,\n       aes(x = RACE)) +\n  geom_bar() +\n  coord_flip() + \n  theme_ipsum() + \n  ggtitle(\"Distribution of Students by Race\")\n\n\n\n\n\n\n\nggplot(data = exam_data,\n       aes(x = RACE)) +\n  geom_bar() +\n  coord_flip() + \n  theme_ipsum_es() + \n  ggtitle(\"Distribution of Students by Race\")\n\n\n\n\n\n\n\nggplot(data = exam_data,\n       aes(x = RACE)) +\n  geom_bar() +\n  coord_flip() + \n  theme_ipsum(axis_title_size = 16,\n              base_size = 15,\n              grid = \"Y\") + \n  ggtitle(\"Distribution of Students by Race\")\n\n\n\n\n\n\n\n\n\n\nTip\n\n\n\n\naxis_title_size(): to adjust font size of the axis title\nbase_size(): to adjust default axis label\ngrid(): to remove x-axis grid lines"
   },
   {
     "objectID": "hands_on_ex/hands_on_ex02/hands_on_ex02.html#combining-two-ggplot2-graphs",
     "href": "hands_on_ex/hands_on_ex02/hands_on_ex02.html#combining-two-ggplot2-graphs",
-    "title": "Hands-on Exercise 02: Beyond ggplot2 Fundamentals",
+    "title": "Hands-on Exercise 02: Customising ggplot2 Plots",
     "section": "5.1. Combining Two ggplot2 Graphs",
     "text": "5.1. Combining Two ggplot2 Graphs\n\npatchworkggpubrgridExtracowplot\n\n\n\nmaths + english\n\n\n\n\n\nmaths / english\n\n\n\n\n\n\n\n\n\n\nTip\n\n\n\n\nuse + to add plots to form a patchwork (keeps the grid as square as possible)\nuse | to place plots on top of each other\nuse / to place plots next to each other\nuse () to create a subplot group\n\n\n\n\n\n\npacman::p_load(ggpubr)\nggarrange(maths, english)\n\n\n\n\n\n\n\npacman::p_load(gridExtra)\ngrid.arrange(maths, english, ncol = 2, nrow = 1)\n\n\n\n\n\n\n\npacman::p_load(cowplot)\nplot_grid(maths, english, ncol = 2, nrow = 1)"
   },
   {
     "objectID": "hands_on_ex/hands_on_ex02/hands_on_ex02.html#combining-three-ggplot2-graphs",
     "href": "hands_on_ex/hands_on_ex02/hands_on_ex02.html#combining-three-ggplot2-graphs",
-    "title": "Hands-on Exercise 02: Beyond ggplot2 Fundamentals",
+    "title": "Hands-on Exercise 02: Customising ggplot2 Plots",
     "section": "5.2. Combining Three ggplot2 Graphs",
     "text": "5.2. Combining Three ggplot2 Graphs\n\npatchworkggpubrgridExtracowplot\n\n\n\n(maths / english) | maths_vs_eng\n\n\n\n\n\nmaths_vs_eng / (maths | english)\n\n\n\n\n\n\n\nleft &lt;- ggarrange(maths, english, ncol = 1)\nggarrange(left, maths_vs_eng)\n\n\n\n\n\n\n\ngrid.arrange(arrangeGrob(maths, english), maths_vs_eng, ncol = 2)\n\n\n\n\n\n\n\nleft &lt;- plot_grid(maths, english, ncol = 1) \nplot_grid(left, maths_vs_eng)"
   },
   {
     "objectID": "hands_on_ex/hands_on_ex02/hands_on_ex02.html#create-composite-figure-with-tags",
     "href": "hands_on_ex/hands_on_ex02/hands_on_ex02.html#create-composite-figure-with-tags",
-    "title": "Hands-on Exercise 02: Beyond ggplot2 Fundamentals",
+    "title": "Hands-on Exercise 02: Customising ggplot2 Plots",
     "section": "5.3. Create Composite Figure with Tags",
     "text": "5.3. Create Composite Figure with Tags\n\npatchworkggpubrgridExtracowplot\n\n\n\n((maths / english) | maths_vs_eng) +\n  plot_annotation(tag_levels = \"A\")\n\n\n\n\n\n\n\nright &lt;- ggarrange(maths_vs_eng, ncol = 1, labels = \"C\")\nggarrange(ggarrange(maths, english, ncol = 1, labels = c(\"A\",\"B\")), right)\n\n\n\n\n\n\nThere is no direct method to create labels using gridExtra. Hence, the labels have to first be added to each individual plot before they are combined together using grid.arrange().\n\nmaths_E &lt;- ggplot(data = exam_data,\n                aes(x = MATHS)) +\n  geom_histogram(bins = 20,\n                 boundary = 100,\n                 color = \"grey30\",\n                 fill = \"grey90\") +\n  coord_cartesian(xlim = c(0,100)) +\n  ggtitle(\"Distribution of Maths Scores\") + \n  labs(tag = \"A\")\n\nenglish_E &lt;- ggplot(data = exam_data,\n                aes(x = ENGLISH)) +\n  geom_histogram(bins = 20,\n                 boundary = 100,\n                 color = \"grey30\",\n                 fill = \"grey90\") +\n  coord_cartesian(xlim = c(0,100)) +\n  ggtitle(\"Distribution of English Scores\") +\n  labs(tag = \"B\")\n\nmaths_vs_eng_E &lt;- ggplot(data = exam_data,\n                aes(x = MATHS,\n                    y = ENGLISH)) +\n  geom_point() +\n  geom_smooth(method = lm,\n              size = 0.5) +\n  coord_cartesian(xlim = c(0,100),\n                  ylim = c(0,100)) +\n  ggtitle(\"English vs Maths Scores\") +\n  labs(tag = \"C\")\n\n\ngrid.arrange(arrangeGrob(maths_E, english_E), maths_vs_eng_E, ncol = 2)\n\n\n\n\n\n\n\nleft &lt;- plot_grid(maths, english, ncol = 1, labels = c(\"A\",\"B\")) \nplot_grid(left, maths_vs_eng, labels = c(\"\",\"C\"))"
   },
   {
     "objectID": "hands_on_ex/hands_on_ex02/hands_on_ex02.html#create-figure-with-inset",
     "href": "hands_on_ex/hands_on_ex02/hands_on_ex02.html#create-figure-with-inset",
-    "title": "Hands-on Exercise 02: Beyond ggplot2 Fundamentals",
+    "title": "Hands-on Exercise 02: Customising ggplot2 Plots",
     "section": "5.4. Create Figure with Inset",
     "text": "5.4. Create Figure with Inset\n\npatchworkcowplot\n\n\n\nmaths_vs_eng +\n  inset_element(maths,\n                left = 0.01,\n                bottom = 0.7, \n                right = 0.5,\n                top = 1)\n\n\n\n\n\n\n\nggdraw(maths_vs_eng) +\n  draw_plot(maths, 0.1,0.7,0.5,0.3)"
   },
   {
     "objectID": "hands_on_ex/hands_on_ex02/hands_on_ex02.html#adding-themes-to-composite-figure",
     "href": "hands_on_ex/hands_on_ex02/hands_on_ex02.html#adding-themes-to-composite-figure",
-    "title": "Hands-on Exercise 02: Beyond ggplot2 Fundamentals",
+    "title": "Hands-on Exercise 02: Customising ggplot2 Plots",
     "section": "5.5. Adding Themes to Composite Figure",
     "text": "5.5. Adding Themes to Composite Figure\nFinally, we can add finishing touches to the composite figure by using & with the desired theme:\n\n((maths / english) | maths_vs_eng) & theme_economist()"
   }
