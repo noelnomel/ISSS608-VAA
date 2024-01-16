@@ -1,12 +1,5 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Noel’s Learning Journey in Visual Analytics",
-    "section": "",
-    "text": "Welcome to Noel’s ISSS608 website!\nThis website documents my learning journey in Visual Analytics :)"
-  },
-  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
@@ -42,39 +35,11 @@
     "text": "3.1. R Graphics vs ggplot2\nFirst, we will do a comparison between the core graphical function of Base R, R Graphics, and ggplot2.\n\nR Graphicsggplot2\n\n\n\nhist(exam_data$MATHS)\n\n\n\n\n\n\n\nggplot(data = exam_data, aes(x = MATHS)) +\n  geom_histogram(bins = 10, \n                 boundary = 100,\n                 color = \"black\",\n                 fill = 'grey') +\n  ggtitle(\"Distribution of Maths Scores in Primary 3 Cohort\")\n\n\n\n\n\n\n\nIt is relatively simple to create a statistical graph using R Graphics, but ggplot2 offers more versatility and flexibility in the way data is presented visually."
   },
   {
-    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#footnotes",
-    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#footnotes",
-    "title": "Hands-on Exercise 01: ggplot2 Methods",
-    "section": "Footnotes",
-    "text": "Footnotes\n\n\nhttps://towardsdatascience.com/a-comprehensive-guide-to-the-grammar-of-graphics-for-effective-visualization-of-multi-dimensional-1f92b4ed4149↩︎"
-  },
-  {
     "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#layered-grammar-of-graphics",
     "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#layered-grammar-of-graphics",
     "title": "Hands-on Exercise 01: ggplot2 Methods",
     "section": "4.1. Layered Grammar of Graphics",
     "text": "4.1. Layered Grammar of Graphics\nggplot2 is an implementation of Leland Wilkinson’s Grammar of Graphics with seven layers:\n\nData: the data set used for plotting\nAesthetics: use attributes of the data to influence visual characteristics\nGeometrics: visual elements used for the data such as point, bar or line\nFacets: create multiple variations of the same graph by splitting data into subsets such as paneling and multiple plots\nStatistics: statistical transformation to summarise the data such as mean and confidence intervals\nCoordinate systems: define the plane on which data is mapped on the graphic\nThemes: non-data elements of the plot such as main title, axis title, legend background\n\nWe will explore each layer in the subsequent sub-sections."
-  },
-  {
-    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#geom_bar-1",
-    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#geom_bar-1",
-    "title": "Hands-on Exercise 01: ggplot2 Methods",
-    "section": "7.1. geom_bar()",
-    "text": "7.1. geom_bar()"
-  },
-  {
-    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#geom_dotplot-1",
-    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#geom_dotplot-1",
-    "title": "Hands-on Exercise 01: ggplot2 Methods",
-    "section": "7.2. geom_dotplot()",
-    "text": "7.2. geom_dotplot()"
-  },
-  {
-    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#geom_histogram-1",
-    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#geom_histogram-1",
-    "title": "Hands-on Exercise 01: ggplot2 Methods",
-    "section": "7.3. geom_histogram()",
-    "text": "7.3. geom_histogram()"
   },
   {
     "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#modifying-a-geometric-object-using-geom",
@@ -89,48 +54,6 @@
     "title": "Hands-on Exercise 01: ggplot2 Methods",
     "section": "7.10. Modifying a geometric object using aes()",
     "text": "7.10. Modifying a geometric object using aes()\nWe can add more details into the plot by adjusting the fill colour of the histogram by adjusting the arguments in aes():\n\nggplot(data = exam_data, \n       aes(x = MATHS,\n           fill = GENDER)) +\n  geom_histogram(bins = 20,\n                 color = \"grey30\")\n\n\n\n\nNote: This approach can be used to adjust the colour, fill, and alpha of the geometric object."
-  },
-  {
-    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#geom_density-1",
-    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#geom_density-1",
-    "title": "Hands-on Exercise 01: ggplot2 Methods",
-    "section": "7.6. geom_density()",
-    "text": "7.6. geom_density()"
-  },
-  {
-    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#geom_boxplot-1",
-    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#geom_boxplot-1",
-    "title": "Hands-on Exercise 01: ggplot2 Methods",
-    "section": "7.7. geom_boxplot()",
-    "text": "7.7. geom_boxplot()"
-  },
-  {
-    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#geom_violin-1",
-    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#geom_violin-1",
-    "title": "Hands-on Exercise 01: ggplot2 Methods",
-    "section": "7.8. geom_violin()",
-    "text": "7.8. geom_violin()"
-  },
-  {
-    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#geom_point-1",
-    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#geom_point-1",
-    "title": "Hands-on Exercise 01: ggplot2 Methods",
-    "section": "7.9. geom_point()",
-    "text": "7.9. geom_point()"
-  },
-  {
-    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#combining-geom-objects",
-    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#combining-geom-objects",
-    "title": "Hands-on Exercise 01: ggplot2 Methods",
-    "section": "7.10. Combining geom objects",
-    "text": "7.10. Combining geom objects"
-  },
-  {
-    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#combining-geom-objects-1",
-    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#combining-geom-objects-1",
-    "title": "Hands-on Exercise 01: ggplot2 Methods",
-    "section": "7.10. Combining geom objects",
-    "text": "7.10. Combining geom objects"
   },
   {
     "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#using-stat_summary",
@@ -182,60 +105,11 @@
     "text": "10.2. Changing the range of the y- and x-axes\n\nOriginalcoord_cartesian()\n\n\n\nggplot(data = exam_data,\n       aes(x = MATHS,\n           y = ENGLISH)) +\n  geom_point() +\n  geom_smooth(method = lm,\n              size = 0.5)\n\n\n\n\nWe can observe that the y- and x-axes in the plot is not equal and could appear as misleading.\n\n\nWe can use coord_cartesian() to set the limits of both the x- and y-axes from 0 to 100.\n\nggplot(data = exam_data,\n       aes(x = MATHS,\n           y = ENGLISH)) +\n  geom_point() +\n  geom_smooth(method = lm,\n              size = 0.5) +\n  coord_cartesian(xlim = c(0,100),\n                  ylim = c(0,100))"
   },
   {
-    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#working-with-theme",
-    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#working-with-theme",
+    "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#footnotes",
+    "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#footnotes",
     "title": "Hands-on Exercise 01: ggplot2 Methods",
-    "section": "11.1. Working with theme",
-    "text": "11.1. Working with theme\nFor example, we can apply the theme_gray() to a bar chart:\n\nggplot(data = exam_data,\n       aes(x = RACE)) +\n  geom_bar() +\n  coord_flip() + \n  theme_gray()\n\n\n\n\nWe can apply the theme_classic() to a bar chart:\n\nggplot(data = exam_data,\n       aes(x = RACE)) +\n  geom_bar() +\n  coord_flip() + \n  theme_classic()\n\n\n\n\nWe can apply the theme_minimal() to a bar chart:\n\nggplot(data = exam_data,\n       aes(x = RACE)) +\n  geom_bar() +\n  coord_flip() + \n  theme_minimal()"
-  },
-  {
-    "objectID": "in_class_ex/in_class_ex01/in_class_ex01.html",
-    "href": "in_class_ex/in_class_ex01/in_class_ex01.html",
-    "title": "In-class Exercise 01",
-    "section": "",
-    "text": "First, we will download the School questionnaire data file from the PISA 2022 Database. As there is only the SAS and SPSS versions available, we will download the SAS version.\n\n\nNext, We will import the dataset into the R environment. In order to import a SAS file into R, we have to first load the haven package. We will do so by calling the p_load() function from the pacman package.\nIn addition to haven, we will load tidyverse where the ggplot2 package can be found. We will use haven to load the SAS file and ggplot2 to plot the statistical graphs.\n\npacman::p_load(haven, tidyverse)\n\n\n\n\nWe will now use the read_sas function from the haven package to load the dataset into R as stu_quest:\n\nstu_qqq &lt;- read_sas(data_file = \"data/cy08msp_stu_qqq.sas7bdat\")\n\n\n\n\nAs this dataset consists of global responses, we will filter out only the responses from Singapore:\n\nstu_qqq_SG &lt;- stu_qqq %&gt;%\n  filter(CNT == \"SGP\")\n\nWe will store the filtered dataset in the rds format for future use on R:\n\nwrite_rds(stu_qqq_SG, \"data/stu_qqq_SG.rds\")\n\nThe rds file can be loaded into the R environment by using the read_rds() function from the readr package found in tidyverse:\n\nstu_qqq_SG &lt;- read_rds(\"data/stu_qqq_SG.rds\")"
-  },
-  {
-    "objectID": "in_class_ex/in_class_ex01/in_class_ex01.html#loading-relevant-packages",
-    "href": "in_class_ex/in_class_ex01/in_class_ex01.html#loading-relevant-packages",
-    "title": "In-class Exercise 01",
-    "section": "",
-    "text": "Next, We will import the dataset into the R environment. In order to import a SAS file into R, we have to first load the haven package. We will do so by calling the p_load() function from the pacman package.\nIn addition to haven, we will load tidyverse where the ggplot2 package can be found. We will use haven to load the SAS file and ggplot2 to plot the statistical graphs.\n\npacman::p_load(haven, tidyverse)"
-  },
-  {
-    "objectID": "in_class_ex/in_class_ex01/in_class_ex01.html#import-data",
-    "href": "in_class_ex/in_class_ex01/in_class_ex01.html#import-data",
-    "title": "In-class Exercise 01",
-    "section": "",
-    "text": "We will now use the read_sas function from the haven package to load the dataset into R as stu_quest:\n\nstu_qqq &lt;- read_sas(data_file = \"data/cy08msp_stu_qqq.sas7bdat\")"
-  },
-  {
-    "objectID": "take_home_ex/take_home_ex01/take_home_ex01.html",
-    "href": "take_home_ex/take_home_ex01/take_home_ex01.html",
-    "title": "Is Every School Truly A Good School In Singapore?",
-    "section": "",
-    "text": "Singapore often tops the charts in global rankings, and this is definitely the case for the nation’s education system. Education is often seen as the gateway to success, and Singaporean parents, understandably, seek the best education opportunities for their children.\nIn this exercise, we delve deeper into the PISA 2022 database in the hopes of gaining insights on the following:\n\nHow are Singaporean students performing in mathematics, reading, and science?\nAre there any relationships between the students’ demographic and their performance in school?\nIs there any relationship between the schools that the students are in and their results?\nIs every school a good school that can bring out the best in every child?\n\nWe will use Exploratory Data Analysis (EDA) to address the above questions."
-  },
-  {
-    "objectID": "take_home_ex/take_home_ex01/take_home_ex01.html#loading-relevant-packages",
-    "href": "take_home_ex/take_home_ex01/take_home_ex01.html#loading-relevant-packages",
-    "title": "Is Every School Truly A Good School In Singapore?",
-    "section": "2.1. Loading Relevant Packages",
-    "text": "2.1. Loading Relevant Packages\nNext, we will import the dataset into the R environment. In order to import a SAS file into R, we have to first load the haven package. We will do so by calling the p_load() function from the pacman package.\nIn addition to haven, we will load tidyverse where the ggplot2 package can be found. We will use haven to load the SAS file and ggplot2 to plot the statistical graphs.\n\npacman::p_load(haven, tidyverse)"
-  },
-  {
-    "objectID": "take_home_ex/take_home_ex01/take_home_ex01.html#import-data",
-    "href": "take_home_ex/take_home_ex01/take_home_ex01.html#import-data",
-    "title": "Is Every School Truly A Good School In Singapore?",
-    "section": "2.2. Import Data",
-    "text": "2.2. Import Data\nWe will now use the read_sas() function from the haven package to load the dataset into R as stu_qqq:\n\nstu_qqq &lt;- read_sas(data_file = \"data/cy08msp_stu_qqq.sas7bdat\")\n\nNext, we will take a look at the dataset using the following steps:\n\nFirst, we navigate to the “Environment” panel on the top right hand corner of RStudio. We can observe that the dataset contains 613,744 responses and 1,279 columns.\nNext, click on the blank space next to stu_qqq to open a view of the dataset in a new tab.\n\nWe can see that students from different countries responded to the questionnaire and the country codes are recorded under the column “CNT”."
-  },
-  {
-    "objectID": "in_class_ex/in_class_ex01/in_class_ex01.html#prepare-data",
-    "href": "in_class_ex/in_class_ex01/in_class_ex01.html#prepare-data",
-    "title": "In-class Exercise 01",
-    "section": "",
-    "text": "As this dataset consists of global responses, we will filter out only the responses from Singapore:\n\nstu_qqq_SG &lt;- stu_qqq %&gt;%\n  filter(CNT == \"SGP\")\n\nWe will store the filtered dataset in the rds format for future use on R:\n\nwrite_rds(stu_qqq_SG, \"data/stu_qqq_SG.rds\")\n\nThe rds file can be loaded into the R environment by using the read_rds() function from the readr package found in tidyverse:\n\nstu_qqq_SG &lt;- read_rds(\"data/stu_qqq_SG.rds\")"
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nhttps://towardsdatascience.com/a-comprehensive-guide-to-the-grammar-of-graphics-for-effective-visualization-of-multi-dimensional-1f92b4ed4149↩︎"
   },
   {
     "objectID": "hands_on_ex/hands_on_ex02/hands_on_ex02.html",
@@ -306,5 +180,61 @@
     "title": "Hands-on Exercise 02: Customising ggplot2 Plots",
     "section": "5.5. Adding Themes to Composite Figure",
     "text": "5.5. Adding Themes to Composite Figure\nFinally, we can add finishing touches to the composite figure by using & with the desired theme:\n\n((maths / english) | maths_vs_eng) & theme_economist()"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Noel’s Learning Journey in Visual Analytics",
+    "section": "",
+    "text": "Welcome to Noel’s ISSS608 website!\nThis website documents my learning journey in Visual Analytics :)"
+  },
+  {
+    "objectID": "in_class_ex/in_class_ex01/in_class_ex01.html",
+    "href": "in_class_ex/in_class_ex01/in_class_ex01.html",
+    "title": "In-class Exercise 01",
+    "section": "",
+    "text": "First, we will download the School questionnaire data file from the PISA 2022 Database. As there is only the SAS and SPSS versions available, we will download the SAS version.\n\n\nNext, We will import the dataset into the R environment. In order to import a SAS file into R, we have to first load the haven package. We will do so by calling the p_load() function from the pacman package.\nIn addition to haven, we will load tidyverse where the ggplot2 package can be found. We will use haven to load the SAS file and ggplot2 to plot the statistical graphs.\n\npacman::p_load(haven, tidyverse)\n\n\n\n\nWe will now use the read_sas function from the haven package to load the dataset into R as stu_quest:\n\nstu_qqq &lt;- read_sas(data_file = \"data/cy08msp_stu_qqq.sas7bdat\")\n\n\n\n\nAs this dataset consists of global responses, we will filter out only the responses from Singapore:\n\nstu_qqq_SG &lt;- stu_qqq %&gt;%\n  filter(CNT == \"SGP\")\n\nWe will store the filtered dataset in the rds format for future use on R:\n\nwrite_rds(stu_qqq_SG, \"data/stu_qqq_SG.rds\")\n\nThe rds file can be loaded into the R environment by using the read_rds() function from the readr package found in tidyverse:\n\nstu_qqq_SG &lt;- read_rds(\"data/stu_qqq_SG.rds\")"
+  },
+  {
+    "objectID": "in_class_ex/in_class_ex01/in_class_ex01.html#loading-relevant-packages",
+    "href": "in_class_ex/in_class_ex01/in_class_ex01.html#loading-relevant-packages",
+    "title": "In-class Exercise 01",
+    "section": "",
+    "text": "Next, We will import the dataset into the R environment. In order to import a SAS file into R, we have to first load the haven package. We will do so by calling the p_load() function from the pacman package.\nIn addition to haven, we will load tidyverse where the ggplot2 package can be found. We will use haven to load the SAS file and ggplot2 to plot the statistical graphs.\n\npacman::p_load(haven, tidyverse)"
+  },
+  {
+    "objectID": "in_class_ex/in_class_ex01/in_class_ex01.html#import-data",
+    "href": "in_class_ex/in_class_ex01/in_class_ex01.html#import-data",
+    "title": "In-class Exercise 01",
+    "section": "",
+    "text": "We will now use the read_sas function from the haven package to load the dataset into R as stu_quest:\n\nstu_qqq &lt;- read_sas(data_file = \"data/cy08msp_stu_qqq.sas7bdat\")"
+  },
+  {
+    "objectID": "in_class_ex/in_class_ex01/in_class_ex01.html#prepare-data",
+    "href": "in_class_ex/in_class_ex01/in_class_ex01.html#prepare-data",
+    "title": "In-class Exercise 01",
+    "section": "",
+    "text": "As this dataset consists of global responses, we will filter out only the responses from Singapore:\n\nstu_qqq_SG &lt;- stu_qqq %&gt;%\n  filter(CNT == \"SGP\")\n\nWe will store the filtered dataset in the rds format for future use on R:\n\nwrite_rds(stu_qqq_SG, \"data/stu_qqq_SG.rds\")\n\nThe rds file can be loaded into the R environment by using the read_rds() function from the readr package found in tidyverse:\n\nstu_qqq_SG &lt;- read_rds(\"data/stu_qqq_SG.rds\")"
+  },
+  {
+    "objectID": "take_home_ex/take_home_ex01/take_home_ex01.html",
+    "href": "take_home_ex/take_home_ex01/take_home_ex01.html",
+    "title": "Is Every School Truly A Good School In Singapore?",
+    "section": "",
+    "text": "Singapore often tops the charts in global rankings, and this is definitely the case for the nation’s education system. Education is often seen as the gateway to success, and Singaporean parents, understandably, seek the best education opportunities for their children.\nIn this exercise, we delve deeper into the PISA 2022 database in the hopes of gaining insights on the following:\n\nHow are Singaporean students performing in mathematics, reading, and science?\nAre there any relationships between the students’ demographic and their performance in school?\nIs there any relationship between the schools that the students are in and their results?\nIs every school a good school that can bring out the best in every child?\n\nWe will use Exploratory Data Analysis (EDA) to address the above questions."
+  },
+  {
+    "objectID": "take_home_ex/take_home_ex01/take_home_ex01.html#loading-relevant-packages",
+    "href": "take_home_ex/take_home_ex01/take_home_ex01.html#loading-relevant-packages",
+    "title": "Is Every School Truly A Good School In Singapore?",
+    "section": "2.1. Loading Relevant Packages",
+    "text": "2.1. Loading Relevant Packages\nNext, we will import the dataset into the R environment. In order to import a SAS file into R, we have to first load the haven package. We will do so by calling the p_load() function from the pacman package.\nIn addition to haven, we will load tidyverse where the ggplot2 package can be found. We will use haven to load the SAS file and ggplot2 to plot the statistical graphs.\n\npacman::p_load(haven, tidyverse)"
+  },
+  {
+    "objectID": "take_home_ex/take_home_ex01/take_home_ex01.html#import-data",
+    "href": "take_home_ex/take_home_ex01/take_home_ex01.html#import-data",
+    "title": "Is Every School Truly A Good School In Singapore?",
+    "section": "2.2. Import Data",
+    "text": "2.2. Import Data\nWe will now use the read_sas() function from the haven package to load the dataset into R as stu_qqq:\n\nstu_qqq &lt;- read_sas(data_file = \"data/cy08msp_stu_qqq.sas7bdat\")\n\nNext, we will take a look at the dataset using the following steps:\n\nFirst, we navigate to the “Environment” panel on the top right hand corner of RStudio. We can observe that the dataset contains 613,744 responses and 1,279 columns.\nNext, click on the blank space next to stu_qqq to open a view of the dataset in a new tab.\n\nWe can see that students from different countries responded to the questionnaire and the country codes are recorded under the column “CNT”."
   }
 ]
