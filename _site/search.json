@@ -18,7 +18,7 @@
     "href": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#loading-required-library",
     "title": "Hands-on Exercise 01: ggplot2 Methods",
     "section": "2.1. Loading Required Library",
-    "text": "2.1. Loading Required Library\nFirst, we will load the tidyverse package into the R environment. We will do so using the pacman package, which can be installed using the following code:\n\ninstall.packages('pacman')\n\nWithout loading pacman into the R environment, we can call its pload function using pacman:: as shown in the code below:\n\npacman::p_load(tidyverse)"
+    "text": "2.1. Loading Required Library\nFirst, we will load the tidyverse package into the R environment. We will do so using the pacman package, which can be installed using the following code:\n\ninstall.packages('pacman')\n\nWithout loading pacman into the R environment, we can call its p_load function using pacman:: as shown in the code below:\n\npacman::p_load(tidyverse)"
   },
   {
     "objectID": "hands_on_ex/hands_on_ex01/hands_on_ex01.html#import-data",

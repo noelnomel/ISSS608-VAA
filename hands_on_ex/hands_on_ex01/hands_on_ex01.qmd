@@ -27,7 +27,7 @@ First, we will load the `tidyverse` package into the R environment. We will do s
 install.packages('pacman')
 ```
 
-Without loading `pacman` into the R environment, we can call its `pload` function using `pacman::` as shown in the code below:
+Without loading `pacman` into the R environment, we can call its `p_load` function using `pacman::` as shown in the code below:
 
 ```{r}
 pacman::p_load(tidyverse)
