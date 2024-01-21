@@ -261,6 +261,10 @@ We can observe from the graphs above that the distribution for the average Plaus
 
 This shows that half of the Singapore student sample size received Plausible Value scores for each subject that are on the higher end of the maximum possible Plausible Values.
 
+::: callout-tip
+We use different colours to represent one subject in this graph, and in the subsequent graphs. Some common colours that can be used in a `ggplot2` graph can be found [on this link](https://sape.inf.usi.ch/quick-reference/ggplot2/colour).
+:::
+
 ## 4.2. Distribution by Gender
 
 Next, we will explore the role of gender in the students' performance in each of the subjects. We will use the same method as above, where each plot is generated and saved as a variable for easier combination using `patchwork` later on.
