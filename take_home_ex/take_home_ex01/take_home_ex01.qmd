@@ -102,7 +102,7 @@ As the dataset contains too many columns, we will extract only the relevant colu
 | ESCS                | Index of economic, social, and cultural status          | To explore if there are any relationships between socioeconomic status and performance in the test   |
 | PV1MATH to PV10MATH | Plausible Values for Math                               | To derive average plausible value per student per subject for visualisation                          |
 | PV1READ to PV10READ | Plausible Values for Reading                            | To derive average plausible value per student per subject for visualisation                          |
-| PV1SCIE to PV1SCIE  | Plausible Values for Science                            | To derive average plausible value per student per subject for visualisation                          |
+| PV1SCIE to PV10SCIE | Plausible Values for Science                            | To derive average plausible value per student per subject for visualisation                          |
 
 Now that we have identified the columns needed for this analysis, we will use the following `dplyr` functions to extract the required columns. We will do some data wrangling to obtain the fields for analysis and to make the data more readable:
 
