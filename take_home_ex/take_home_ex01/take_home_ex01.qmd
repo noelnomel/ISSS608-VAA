@@ -591,7 +591,9 @@ From the scatterplots above, it is observed that there is a slight relationship 
 ```{r}
 ggplot(data = stu_sg_data,
        aes(x = GENDER)) +
-  geom_bar(color = "grey40")
+  geom_bar(color = "grey40",
+           fill = "lavender") +
+  theme_classic()
 ```
 
 It appears that there is almost equal representation of male and female students in this study.
@@ -605,7 +607,7 @@ It appears that there is almost equal representation of male and female students
 escs_hist <- ggplot(data = stu_sg_data,
        aes(x = ESCS)) +
   geom_histogram(color = "grey40",
-                 fill = "lightblue") +
+                 fill = "lavender") +
   ggtitle("Distribution of ESCS") +
   xlab("") +
   ylab("Frequency") +
@@ -615,7 +617,7 @@ escs_hist <- ggplot(data = stu_sg_data,
 escs_box <- ggplot(data = stu_sg_data,
        aes(x = ESCS,
            y = "")) +
-  geom_boxplot(fill = "lightblue") +
+  geom_boxplot(fill = "lavender") +
   geom_point(stat = "summary",
              fun.y  = "mean",
              color = "salmon",
@@ -641,7 +643,7 @@ It is observed that most students who participated in this study have higher ESC
 relatst_hist <- ggplot(data = stu_sg_data,
        aes(x = RELATST)) +
   geom_histogram(color = "grey40",
-                 fill = "lightblue") +
+                 fill = "lavender") +
   xlab("") +
   ylab("Frequency") +
   coord_cartesian(xlim = c(-11, 4)) +
@@ -649,7 +651,7 @@ relatst_hist <- ggplot(data = stu_sg_data,
 
 relatst_box <- ggplot(data = stu_sg_data,
        aes(x = RELATST, y = "")) +
-  geom_boxplot(fill = "lightblue") +
+  geom_boxplot(fill = "lavender") +
   stat_summary(geom = "point",
                fun.y = "mean",
                color = "salmon",
@@ -668,16 +670,19 @@ It is observed that the median of the distribution occurs near 0, and that there
 ## 5.4. Distribution of Sense of Belonging
 
 ```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+
 belong_hist <- ggplot(data = stu_sg_data,
        aes(x = BELONG)) +
   geom_histogram(color = "grey40",
-                 fill = "lightblue") +
+                 fill = "lavender") +
   coord_cartesian(xlim = c(-4, 4)) +
   theme_classic()
 
 belong_box <- ggplot(data = stu_sg_data,
        aes(x = BELONG, y = "")) +
-  geom_boxplot(fill = "lightblue") +
+  geom_boxplot(fill = "lavender") +
   theme_classic() +
   stat_summary(geom = "point",
                fun.y = "mean",
