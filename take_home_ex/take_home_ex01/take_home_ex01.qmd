@@ -1,5 +1,5 @@
 ---
-title: "Take-home Exercise 01"
+title: "Is Every School *Truly* A Good School In Singapore?"
 date: "13 January 2024"
 date-modified: "last-modified"
 format: html
@@ -9,3 +9,683 @@ execute:
   warning: false # do not display warning message
 editor: visual
 ---
+
+# 1. Overview
+
+Singapore often tops the charts in global rankings, and this is definitely the case for the nation's education system. Education is often seen as the gateway to success, and Singaporean parents, understandably, seek the best education opportunities for their children.
+
+In this exercise, we delve deeper into the PISA 2022 database in the hopes of gaining insights on the following:
+
+-   How are Singaporean students performing in mathematics, reading, and science?
+
+-   Are there any relationships between the students' demographic profile and their performance in these subjects?
+
+-   Is there any relationship between the learning environment that the students are in and their results?
+
+-   Is every school in Singapore a good school that can bring out the best in every child?
+
+We will use **Exploratory Data Analysis (EDA)** to address the above questions.
+
+# 2. Getting Started
+
+First, we will download the *School questionnaire data file* from the [PISA 2022 Database](https://www.oecd.org/pisa/data/2022database/). As there is only the SAS and SPSS versions available, we will download the SAS version.
+
+## 2.1. Loading Relevant Packages
+
+Before we can import the dataset into the R environment, we have to load the relevant packages to facilitate the import process. In order to import a SAS file into R, we have to first load the [`haven`](https://haven.tidyverse.org/) package. We will do so by calling the `p_load()` function from the `pacman` package.
+
+In addition to `haven`, we will load [`tidyverse`](https://www.tidyverse.org/) where the [`ggplot2`](https://ggplot2.tidyverse.org/) package can be found, and [`patchwork`](https://patchwork.data-imaginist.com/). We will use `haven` to load the SAS file, `ggplot2` to plot the statistical graphs, and `patchwork` to create composite graphs.
+
+```{r}
+pacman::p_load(haven, tidyverse, patchwork)
+```
+
+## 2.2. Import Data
+
+We will now use the [`read_sas()`](https://haven.tidyverse.org/reference/read_sas.html) function from the `haven` package to load the dataset into R as *stu_qqq*:
+
+```{r}
+#| eval: false
+stu_qqq <- read_sas(data_file = "data/cy08msp_stu_qqq.sas7bdat")
+```
+
+Next, we will take a look at the dataset using the following steps:
+
+First, we navigate to the "Environment" panel on the top right hand corner of RStudio. We can observe that the dataset contains 613,744 responses and 1,279 columns.
+
+![](images/Screenshot%202024-01-13%20155310-01.png)
+
+Next, click on the blank space next to *stu_qqq* to open a view of the dataset in a new tab.
+
+![](images/Screenshot%202024-01-13%20155458.png)
+
+We can see that students from different countries responded to the questionnaire and the country codes are recorded under the column "CNT".
+
+# 3. Prepare Data
+
+As this dataset consists of global responses, we will filter out the responses from Singapore using the country code "SGP". This can be done by using the [`filter()`](https://dplyr.tidyverse.org/reference/filter.html) function from the [`dplyr`](https://dplyr.tidyverse.org/index.html) package found in `tidyverse`. We will store the responses from Singapore in a separate table labelled *stu_qqq_SG*:
+
+```{r}
+#| eval: false
+stu_qqq_SG <- stu_qqq %>%
+  filter(CNT == "SGP")
+```
+
+![](images/Screenshot%202024-01-13%20155542.png)
+
+Navigating to the Environment panel again, we can observe that the number of records decreased to 6,606.
+
+We will store the filtered dataset in the RDS format for future use on R:
+
+```{r}
+#| eval: false
+write_rds(stu_qqq_SG, "data/stu_qqq_SG.rds")
+```
+
+::: callout-note
+RDS is a R-specific file format provided by R to store data. The advantages of using RDS is that it writes fast, reads fast, and saves the classes and formatting of the data. However, as it is a R-specific file format, it cannot be opened on other platforms.
+:::
+
+The RDS file can be loaded into the R environment by using the `read_rds()` function from the `readr` package found in `tidyverse`:
+
+```{r}
+stu_qqq_SG <- read_rds("data/stu_qqq_SG.rds")
+```
+
+As the dataset contains too many columns, we will extract only the relevant columns required for this exercise and keep the data as `stu_sg_data`. The columns we need are:
+
+| Col Name            | Label                                                   | Reason                                                                                               |
+|------------------|-----------------------|-------------------------------|
+| ST004D01T           | Gender, where 1 is Female and 2 is Male                 | To explore if there are any relationships between gender and performance in the test                 |
+| RELATST             | Measure of the quality of student-teacher relationships | As a proxy to measure if the school provided a good environment to bring out the best in every child |
+| BELONG              | Index of sense of belonging at school                   | As a proxy to measure if the school provided a good environment to bring out the best in every child |
+| ESCS                | Index of economic, social, and cultural status          | To explore if there are any relationships between socioeconomic status and performance in the test   |
+| PV1MATH to PV10MATH | Plausible Values for Math                               | To derive average plausible value per student per subject for visualisation                          |
+| PV1READ to PV10READ | Plausible Values for Reading                            | To derive average plausible value per student per subject for visualisation                          |
+| PV1SCIE to PV1SCIE  | Plausible Values for Science                            | To derive average plausible value per student per subject for visualisation                          |
+
+Now that we have identified the columns needed for this analysis, we will use the following `dplyr` functions to extract the required columns. We will do some data wrangling to obtain the fields for analysis and to make the data more readable:
+
+```{r}
+# create a separate table of all plausible values for MATHS
+math_cols <- stu_qqq_SG %>%
+  select(PV1MATH,PV2MATH,PV3MATH,PV4MATH,PV5MATH,
+         PV6MATH,PV7MATH,PV8MATH,PV9MATH,PV10MATH)
+
+# create a separate table of all plausible values for READ
+read_cols <- stu_qqq_SG %>%
+  select(PV1READ,PV2READ,PV3READ,PV4READ,PV5READ,
+         PV6READ,PV7READ,PV8READ,PV9READ,PV10READ)
+
+# create a separate table of all plausible values for SCIE
+sci_cols <- stu_qqq_SG %>%
+  select(PV1SCIE,PV2SCIE,PV3SCIE,PV4SCIE,PV5SCIE,
+         PV6SCIE,PV7SCIE,PV8SCIE,PV9SCIE,PV10SCIE)
+
+# create a new table stu_sg_data that takes data from stu_qqq_SG
+stu_sg_data <- stu_qqq_SG %>%
+  # change 1 and 2 labels to F and M for better readability
+  mutate(ST004D01T = 
+           ifelse(ST004D01T == '1', 'F', 
+                  ifelse(ST004D01T == '2', 'M', ST004D01T))) %>%
+  # rename column from question number to GENDER
+  rename("GENDER" = "ST004D01T") %>%
+  # create new columns containing average values of PVs from each subject
+  mutate(MATH_PV_AVG = rowMeans(math_cols)) %>%
+  mutate(READ_PV_AVG = rowMeans(read_cols)) %>%
+  mutate(SCI_PV_AVG = rowMeans(sci_cols)) %>%
+  #select only required columns to be added into stu_sg_data
+  select(GENDER, ESCS, RELATST, BELONG,
+         MATH_PV_AVG, READ_PV_AVG, SCI_PV_AVG)
+```
+
+# 4. Exploratory Data Analysis
+
+We will now plot the data using `ggplot2` methods to visualise trends and relationships.
+
+## 4.1. Distribution of Singapore Students' Performance
+
+Firstly, we will visualise the distribution of Singapore students' performance in each of the subjects. As the values to be plotted are continuous variables, we will visualise them using histograms. Using `patchwork`, we can add a corresponding boxplot to each histogram to provide us with further insights.
+
+First, we create each individual histogram and boxplot and store them as separate variables. This makes it easier for us to combine different plots using `patchwork` later on.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Codes to generate individual plots"
+
+math_hist <- ggplot(data = stu_sg_data,
+       aes(x = MATH_PV_AVG)) +
+  geom_histogram(color = "grey40",
+                 fill = "lightblue") +
+  geom_vline(xintercept = median(stu_sg_data$MATH_PV_AVG),
+             color = "grey50",
+             lwd = 1) +
+  coord_cartesian(ylim = c(0, 600),
+                  xlim = c(150, 850)) +
+  ylab("Frequency") +
+  xlab("") +
+  theme_classic() +
+  ggtitle("Distribution of Maths Avg PVs") +
+  theme(plot.title = element_text(size = 8)) 
+
+math_box <- ggplot(data = stu_sg_data,
+       aes(x = MATH_PV_AVG,
+           y = "")) +
+  theme_classic() +
+  geom_boxplot(color = "grey40",
+                 fill = "lightblue") +
+  coord_cartesian(xlim = c(150, 850)) +
+  ylab("") +
+  xlab("Plausible Values") +
+  theme(axis.ticks.y = element_blank(),
+        axis.line.y = element_blank()) +
+  stat_summary(geom = "point",
+               fun.y = "mean",
+               color = "red2",
+               size = 2)
+
+read_hist <- ggplot(data = stu_sg_data,
+       aes(x = READ_PV_AVG)) +
+  geom_histogram(color = "grey40",
+                 fill = "rosybrown2") +
+  geom_vline(xintercept = median(stu_sg_data$READ_PV_AVG),
+             color = "grey50",
+             lwd = 1) +
+  coord_cartesian(ylim = c(0, 600),
+                  xlim = c(150, 850)) +
+  ylab("") +
+  xlab("") +
+  theme_classic() +
+  ggtitle("Distribution of Reading Avg PVs") +
+  theme(plot.title = element_text(size = 8))
+
+read_box <- ggplot(data = stu_sg_data,
+       aes(x = READ_PV_AVG,
+           y = "")) +
+  theme_classic() +
+  geom_boxplot(color = "grey40",
+                 fill = "rosybrown2") +
+  coord_cartesian(xlim = c(150, 850)) +
+  ylab("") +
+  xlab("Plausible Values") +
+  theme(axis.ticks.y = element_blank(),
+        axis.line.y = element_blank()) +
+  stat_summary(geom = "point",
+               fun.y = "mean",
+               color = "red2",
+               size = 2)
+
+sci_hist <- ggplot(data = stu_sg_data,
+       aes(x = SCI_PV_AVG)) +
+  geom_histogram(color = "grey40",
+                 fill = "palegreen3") +
+  geom_vline(xintercept = median(stu_sg_data$SCI_PV_AVG),
+             color = "grey50",
+             lwd = 1) +
+  coord_cartesian(ylim = c(0, 600),
+                  xlim = c(150, 850)) +
+  ylab("") +
+  xlab("") +
+  theme_classic() +
+  ggtitle("Distribution of Science Avg PVs") +
+  theme(plot.title = element_text(size = 8))
+
+sci_box <- ggplot(data = stu_sg_data,
+       aes(x = SCI_PV_AVG,
+           y = "")) +
+  theme_classic() +
+  geom_boxplot(color = "grey40",
+                 fill = "palegreen3") +
+  coord_cartesian(xlim = c(150, 850)) +
+  ylab("") +
+  xlab("Plausible Values") +
+  theme(axis.ticks.y = element_blank(),
+        axis.line.y = element_blank()) +
+  stat_summary(geom = "point",
+               fun.y = "mean",
+               color = "red2",
+               size = 2)
+
+```
+
+```{r}
+((math_hist / math_box) +
+  plot_layout(nrow = 2, heights = c(3, 1))) | 
+  ((read_hist / read_box) +
+  plot_layout(nrow = 2, heights = c(3, 1))) | 
+  ((sci_hist / sci_box) +
+  plot_layout(nrow = 2, heights = c(3, 1)))
+```
+
+We can observe from the graphs above that the distribution for the average Plausible Values for Maths, Reading, and Science generally resemble a normal distribution curve. It is observed from the boxplot that the average values for each subject (represented by the red dot) is slightly lower than than the respective median values (represented by the grey line). The median value is also observed to occur slightly lower than the mode. This suggests a slight left skew in the data. This can be observed in the histogram where a slightly longer tail is seen on the left side of the distribution, where some observations of extreme lower values are seen. This observation of left skewed distribution is most obvious in the distribution of Reading.
+
+This shows that half of the Singapore student sample size received Plausible Value scores for each subject that are on the higher end of the maximum possible Plausible Values.
+
+## 4.2. Distribution by Gender
+
+Next, we will explore the role of gender in the students' performance in each of the subjects. We will use the same method as above, where each plot is generated and saved as a variable for easier combination using `patchwork` later on.
+
+In this part, we use `facet_grid()` to display the data by gender.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Codes to generate individual plots"
+
+math_box_gender <- ggplot(data = stu_sg_data,
+       aes(x = MATH_PV_AVG,
+           y = "")) +
+  facet_grid(~GENDER) +
+  theme_classic() +
+  geom_boxplot(notch = TRUE,
+               color = "grey40",
+                 fill = "lightblue") +
+  ylab("") +
+  xlab("") +
+  theme(axis.ticks.x = element_blank(),
+        axis.line.x = element_blank()) +
+  stat_summary(geom = "point",
+               fun.y = "mean",
+               color = "red2",
+               size = 2) +
+  coord_cartesian(ylim = c(150, 850)) +
+  coord_flip() +
+  ggtitle("Maths PV")
+
+read_box_gender <- ggplot(data = stu_sg_data,
+       aes(x = READ_PV_AVG,
+           y = "")) +
+  facet_grid(~GENDER) +
+  theme_classic() +
+  geom_boxplot(notch = TRUE,
+               color = "grey40",
+               fill = "rosybrown2") +
+  ylab("") +
+  xlab("") +
+  theme(axis.ticks.x = element_blank(),
+        axis.line.x = element_blank()) +
+  stat_summary(geom = "point",
+               fun.y = "mean",
+               color = "red2",
+               size = 2) +
+  coord_cartesian(ylim = c(150, 850)) +
+  coord_flip() +
+  ggtitle("Reading PV")
+
+sci_box_gender <- ggplot(data = stu_sg_data,
+       aes(x = SCI_PV_AVG,
+           y = "")) +
+  facet_grid(~GENDER) +
+  theme_classic() +
+  geom_boxplot(notch = TRUE,
+               color = "grey40",
+               fill = "palegreen3") +
+  ylab("") +
+  xlab("") +
+  theme(axis.ticks.x = element_blank(),
+        axis.line.x = element_blank()) +
+  stat_summary(geom = "point",
+               fun.y = "mean",
+               color = "red2",
+               size = 2) +
+  coord_cartesian(ylim = c(150, 850)) +
+  coord_flip() +
+  ggtitle("Science PV")
+
+```
+
+```{r}
+(math_box_gender |
+  read_box_gender | 
+   sci_box_gender) 
+```
+
+From the boxplots, it is observed that the median Plausible Values for Maths is higher among male students. The highest Plausible Value for Maths among the male students is higher than the highest Plausible Value for Maths among female students. On the other hand, the lowest Plausible Value for Maths among the male students is lower than the lowest Plausible Value for Maths among female students.
+
+Next, it is observed that the median Plausible Values for Reading is higher among female students. However, the highest Plausible Value for Reading among the male students is higher than the highest Plausible Value for Reading among female students. The lowest Plausible Value for Reading among the male students is lower than the lowest Plausible Value for Reading among female students.
+
+It is observed that the median Plausible Values for Science is slightly higher among male students. The highest Plausible Value for Science among the male students is higher than the highest Plausible Value for Science among female students. On the other hand, the lowest Plausible Value for Science among the male students is lower than the lowest Plausible Value for Science among female students.
+
+Overall, it can be observed that the variance of Plausible Values among male students across all three subjects is higher than that of female students.
+
+## 4.3. Relationship Between Socioeconomic Status and Performance
+
+According to the PISA report, the Economic, Social, and Culture status is an index derived from three indicators related to family background. The index is standardised, such that 0 is the score of an average OECD student and 1 is the standard deviation across approximately equally weighted OECD countries.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Codes to generate individual plots"
+
+escs_math <- ggplot(data = stu_sg_data, 
+       aes(x = MATH_PV_AVG,
+           y = ESCS)) +
+  geom_point(color = "lightblue",
+             alpha = 0.5) +
+  geom_smooth(size = 0.5,
+              color = "red2") +
+  coord_cartesian(xlim = c(150, 850)) +
+  theme_classic() +
+  xlab("Plausible Values") +
+  ggtitle("ESCS vs Maths")
+
+
+escs_read <- ggplot(data = stu_sg_data, 
+       aes(x = READ_PV_AVG,
+           y = ESCS)) +
+  geom_point(color = "rosybrown2", 
+             alpha = 0.5) +
+  geom_smooth(size = 0.5,
+              color = "red2") +
+  coord_cartesian(xlim = c(150, 850)) +
+  ylab("") +
+  theme(axis.ticks.y = element_blank()) +
+  theme_classic() +
+  xlab("Plausible Values") +
+  ggtitle("ESCS vs Reading")
+
+escs_sci <- ggplot(data = stu_sg_data, 
+       aes(x = SCI_PV_AVG, 
+           y = ESCS)) +
+  geom_point(color = "palegreen3",
+             alpha = 0.5) +
+  geom_smooth(size = 0.5,
+              color = "red2") +
+  coord_cartesian(xlim = c(150, 850)) +
+  ylab("") +
+  theme(axis.ticks.y = element_blank()) +
+  theme_classic() +
+  xlab("Plausible Values") +
+  ggtitle("ESCS vs Science")
+```
+
+```{r}
+escs_math | escs_read | escs_sci
+```
+
+From the scatterplots above, we can observe that generally, as the ESCS index increases, higher Plausible Values are obtained for each subject. However, we may not be able to conclude that there is a very strong linear relationship between ESCS and the Plausible Values as the points do not appear to follow closely to a upward-trending line.
+
+The observations of the trends between ESCS and Maths, and ESCS and Science are generally similar - the rate of increase in Plausible Values appear to be faster when ESCS is below 0, while it appears to decrease slightly when ESCS is above 0. On the other hand, is is observed that there was a slight decrease in the trend between ESCS and Reading when Plausible Valus is less than 400, indicating that there were students who received higher Plausible Values for Reading compared to peers of a slightly higher ESCS.
+
+## 4.4. Relationship Between Student-Teacher Relationship and Performance
+
+As the dataset did not provide more granular details on the type of school, whether public, autonomous, or independent, that the students were enrolled in, we have to find proxies to estimate the learning environment provided to each student. One such proxy we use in this exercise is the quality of student-teacher relationship as perceived by the students[^1].
+
+[^1]: https://www.apa.org/education-career/k12/relationships#:\~:text=Solely%20improving%20students'%20relationships%20with,more%20conflict%20in%20their%20relationships.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Codes to generate individual plots"
+
+relatst_math <- ggplot(data = stu_sg_data, 
+       aes(x = MATH_PV_AVG, 
+           y = RELATST)) +
+  geom_point(color = "lightblue",
+             alpha = 0.5) +
+  geom_smooth(size = 0.5,
+              color = "red2") +
+  coord_cartesian(xlim = c(150, 850)) +
+  theme_classic() +
+  xlab("Plausible Values") +
+  ylab("Student-Teacher Relationship") +
+  ggtitle("Student-Teacher Relation vs Maths") +
+  theme(plot.title = element_text(size = 8))
+
+relatst_read <- ggplot(data = stu_sg_data, 
+       aes(x = READ_PV_AVG,
+           y = RELATST)) +
+  geom_point(color = "rosybrown2", 
+             alpha = 0.5) +
+  geom_smooth(size = 0.5,
+              color = "red2") +
+  coord_cartesian(xlim = c(150, 850)) +
+  theme_classic() +
+  xlab("Plausible Values") +
+  ylab("") +
+  ggtitle("Student-Teacher Relation vs Read") +
+  theme(plot.title = element_text(size = 8))
+
+relatst_sci <- ggplot(data = stu_sg_data, 
+       aes(x = SCI_PV_AVG,
+           y = RELATST)) +
+  geom_point(color = "palegreen3",
+             alpha = 0.5) +
+  geom_smooth(size = 0.5,
+              color = "red2") +
+  coord_cartesian(xlim = c(150, 850)) +
+  theme_classic() +
+  xlab("Plausible Values") +
+  ylab("") +
+  ggtitle("Student-Teacher Relation vs Science") +
+  theme(plot.title = element_text(size = 8))
+```
+
+```{r}
+relatst_math | relatst_read | relatst_sci
+```
+
+We see that the relationship between the quality of student-teacher relationships and the Plausible Values for each subject is not very obvious. This could be due to the presence of outliers in the dataset. We will redo the visualisation without the outliers.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Codes to generate individual plots"
+
+relatst_math <- ggplot(data = subset(stu_sg_data, RELATST > -5), 
+       aes(x = MATH_PV_AVG, 
+           y = RELATST)) +
+  geom_point(color = "lightblue",
+             alpha = 0.5) +
+  geom_smooth(size = 0.5,
+              color = "red2") +
+  coord_cartesian(xlim = c(150, 850)) +
+  theme_classic() +
+  xlab("Plausible Values") +
+  ylab("Student-Teacher Relationship") +
+  ggtitle("Student-Teacher Relation vs Maths") +
+  theme(plot.title = element_text(size = 8))
+
+relatst_read <- ggplot(data = subset(stu_sg_data, RELATST > -5), 
+       aes(x = READ_PV_AVG,
+           y = RELATST)) +
+  geom_point(color = "rosybrown2", 
+             alpha = 0.5) +
+  geom_smooth(size = 0.5,
+              color = "red2") +
+  coord_cartesian(xlim = c(150, 850)) +
+  theme_classic() +
+  xlab("Plausible Values") +
+  ylab("") +
+  ggtitle("Student-Teacher Relation vs Read") +
+  theme(plot.title = element_text(size = 8))
+
+relatst_sci <- ggplot(data = subset(stu_sg_data, RELATST > -5), 
+       aes(x = SCI_PV_AVG,
+           y = RELATST)) +
+  geom_point(color = "palegreen3",
+             alpha = 0.5) +
+  geom_smooth(size = 0.5,
+              color = "red2") +
+  coord_cartesian(xlim = c(150, 850)) +
+  theme_classic() +
+  xlab("Plausible Values") +
+  ylab("") +
+  ggtitle("Student-Teacher Relation vs Science") +
+  theme(plot.title = element_text(size = 8))
+```
+
+```{r}
+relatst_math | relatst_read | relatst_sci
+```
+
+From the scatterplots above, we can observe that generally, as the perceived quality of student-teacher relationship increases, higher Plausible Values are obtained for each subject. However, we may not be able to conclude that there is a very strong linear relationship between quality of student-teacher relationship and the Plausible Values as the points do not appear to follow closely to a upward-trending line.
+
+The observations of the trends between quality of student-teacher relationship and Maths, and quality of student-teacher relationship and Science are generally similar - the rate of increase in Plausible Values appear to be faster when quality of student-teacher relationship is below 0, while it appears to decrease slightly when quality of student-teacher relationship is above 0.
+
+On the other hand, the positive relationship between quality of student-teacher relationship and Reading appears to be the weakest. It is observed that the gradient on the best fit curve is small, indicating that there is a small change to Plausible Value as the quality of student-teacher relationship increases.
+
+## 4.5. Relationship Between Sense of Belonging to School and Performance
+
+Finally, we explore the relationship between the students' sense of belonging to their schools and their academic performance[^2]. Sense of belonging is also used as a proxy to determine if the students were provided conducive learning environments that could help them excel. The use of this proxy, however, is based on the assumption that a student would feel a greater sense of belonging to the school if the environment was favourable to them building strong social connections, based on how the index was constructed by OECD.
+
+[^2]: https://www.oecd-ilibrary.org/students-sense-of-belonging-at-school-and-their-relations-with-teachers_5jfxbg2lds9w.pdf
+
+```{r}
+#| code-fold: true
+#| code-summary: "Codes to generate individual plots"
+
+belong_math <- ggplot(data = stu_sg_data, 
+       aes(x = MATH_PV_AVG,
+           y = BELONG)) +
+  geom_point(color = "lightblue",
+             alpha = 0.5) +
+  geom_smooth(size = 0.5,
+              color = "red2") +
+  coord_cartesian(xlim = c(150, 850)) +
+  theme_classic() +
+  xlab("Plausible Values") +
+  ylab("Sense of Belonging to School") +
+  ggtitle("Belonging to School vs Maths") +
+  theme(plot.title = element_text(size = 8))
+
+belong_read <- ggplot(data = stu_sg_data, 
+       aes(x = READ_PV_AVG,
+           y = BELONG)) +
+  geom_point(color = "rosybrown2",
+             alpha = 0.5) +
+  geom_smooth(size = 0.5,
+              color = "red2") +
+  coord_cartesian(xlim = c(150, 850)) +
+  theme_classic() +
+  xlab("Plausible Values") +
+  ylab("") +
+  ggtitle("Belonging to School vs Maths") +
+  theme(plot.title = element_text(size = 8))
+
+belong_sci <- ggplot(data = stu_sg_data, 
+       aes(x = SCI_PV_AVG,
+           y = BELONG)) +
+  geom_point(color = "palegreen3",
+             alpha = 0.5) +
+  geom_smooth(size = 0.5,
+              color = "red2") +
+  coord_cartesian(xlim = c(150, 850)) +
+  theme_classic() +
+  xlab("Plausible Values") +
+  ylab("") +
+  ggtitle("Belonging to School vs Maths") +
+  theme(plot.title = element_text(size = 8))
+```
+
+```{r}
+belong_math | belong_read | belong_sci
+```
+
+From the scatterplots above, it is observed that there is a slight relationship between the students' sense of belonging to their school and the Plausible Values obtained for each subject. The observations for all three subjects are somewhat similar; most of the observations are clustered between the sense of belonging index of -2 to 2. Within this range, there is a spread of students who received low to high Plausible Values. There are also students whose sense of belonging index is lower than -2 or higher than 2. Similarly, there is also a spread of students who received low to high Plausible Values for each subject.
+
+# 5. Annex
+
+## 5.1. Distribution of Gender
+
+```{r}
+ggplot(data = stu_sg_data,
+       aes(x = GENDER)) +
+  geom_bar(color = "grey40")
+```
+
+It appears that there is almost equal representation of male and female students in this study.
+
+## 5.2. Distribution of ESCS
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+escs_hist <- ggplot(data = stu_sg_data,
+       aes(x = ESCS)) +
+  geom_histogram(color = "grey40",
+                 fill = "lightblue") +
+  ggtitle("Distribution of ESCS") +
+  xlab("") +
+  ylab("Frequency") +
+  coord_cartesian(xlim = c(-4, 4)) +
+  theme_classic()
+
+escs_box <- ggplot(data = stu_sg_data,
+       aes(x = ESCS,
+           y = "")) +
+  geom_boxplot(fill = "lightblue") +
+  geom_point(stat = "summary",
+             fun.y  = "mean",
+             color = "salmon",
+             size = 2) +
+  ylab("") +
+  theme(axis.ticks.y = element_blank()) +
+  coord_cartesian(xlim = c(-4, 4)) +
+  theme_classic()
+
+
+escs_hist / escs_box +
+  plot_layout(nrow = 2, heights = c(2, 1)) 
+```
+
+It is observed that most students who participated in this study have higher ESCS compared to the OECD average.
+
+## 5.3. Distribution of Student-Teacher Relationship
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+relatst_hist <- ggplot(data = stu_sg_data,
+       aes(x = RELATST)) +
+  geom_histogram(color = "grey40",
+                 fill = "lightblue") +
+  xlab("") +
+  ylab("Frequency") +
+  coord_cartesian(xlim = c(-11, 4)) +
+  theme_classic()
+
+relatst_box <- ggplot(data = stu_sg_data,
+       aes(x = RELATST, y = "")) +
+  geom_boxplot(fill = "lightblue") +
+  stat_summary(geom = "point",
+               fun.y = "mean",
+               color = "salmon",
+               size = 2) +
+  ylab("") +
+  theme(axis.ticks.y=element_blank()) +
+  coord_cartesian(xlim = c(-11, 4)) +
+  theme_classic()
+
+relatst_hist / relatst_box +
+  plot_layout(nrow = 2, heights = c(2, 1))
+```
+
+It is observed that the median of the distribution occurs near 0, and that there is an extreme outlier in this measure.
+
+## 5.4. Distribution of Sense of Belonging
+
+```{r}
+belong_hist <- ggplot(data = stu_sg_data,
+       aes(x = BELONG)) +
+  geom_histogram(color = "grey40",
+                 fill = "lightblue") +
+  coord_cartesian(xlim = c(-4, 4)) +
+  theme_classic()
+
+belong_box <- ggplot(data = stu_sg_data,
+       aes(x = BELONG, y = "")) +
+  geom_boxplot(fill = "lightblue") +
+  theme_classic() +
+  stat_summary(geom = "point",
+               fun.y = "mean",
+               color = "salmon",
+               size = 2) +
+  ylab("") +
+  theme(axis.ticks.y = element_blank()) +
+  coord_cartesian(xlim = c(-4, 4)) +
+  theme_classic()
+
+belong_hist / belong_box +
+  plot_layout(nrow = 2, heights = c(2, 1))
+```
+
+It is observed that the median of the distribution occurs below 0.

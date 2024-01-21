@@ -247,7 +247,7 @@ ggplot(data = exam_data,
 
 ## 7.9. Modifying a geometric object using `geom()`
 
-We can customise a plot by adjusting the arguments within `geom()`, such as:
+We can customize a plot by adjusting the arguments within `geom()`, such as:
 
 ```{r}
 ggplot(data = exam_data, 

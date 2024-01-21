@@ -316,9 +316,9 @@ maths / english
 ::: callout-tip
 -   use `+` to add plots to form a patchwork (keeps the grid as square as possible)
 
--   use `|` to place plots on top of each other
+-   use `/` to place plots on top of each other
 
--   use `/` to place plots next to each other
+-   use `|` to place plots next to each other
 
 -   use `()` to create a subplot group
 :::
