@@ -589,6 +589,9 @@ From the scatterplots above, it is observed that there is a slight relationship 
 ## 5.1. Distribution of Gender
 
 ```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+
 ggplot(data = stu_sg_data,
        aes(x = GENDER)) +
   geom_bar(color = "grey40",

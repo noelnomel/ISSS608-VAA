@@ -277,7 +277,7 @@
     "href": "take_home_ex/take_home_ex01/take_home_ex01.html#distribution-of-gender",
     "title": "Is Every School Truly A Good School In Singapore?",
     "section": "5.1. Distribution of Gender",
-    "text": "5.1. Distribution of Gender\n\nggplot(data = stu_sg_data,\n       aes(x = GENDER)) +\n  geom_bar(color = \"grey40\",\n           fill = \"lavender\") +\n  theme_classic()\n\n\n\n\nIt appears that there is almost equal representation of male and female students in this study."
+    "text": "5.1. Distribution of Gender\n\n\nShow the code\nggplot(data = stu_sg_data,\n       aes(x = GENDER)) +\n  geom_bar(color = \"grey40\",\n           fill = \"lavender\") +\n  theme_classic()\n\n\n\n\n\nIt appears that there is almost equal representation of male and female students in this study."
   },
   {
     "objectID": "take_home_ex/take_home_ex01/take_home_ex01.html#distribution-of-escs",
