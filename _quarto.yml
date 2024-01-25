@@ -13,8 +13,11 @@ website:
           - text: Hands-on Exercise 2 ggplot2 Customisation
             href: hands_on_ex/hands_on_ex02/hands_on_ex02.html
             
-          - text: Hands-on Exercise 3
+          - text: Hands-on Exercise 3.1 Interactive Visualisations
             href: hands_on_ex/hands_on_ex03/hands_on_ex03.html
+            
+          - text: Hands-on Exercise 3.2 Animated Visualisations
+            href: hands_on_ex/hands_on_ex03/hands_on_ex03_2.html
             
           - text: Hands-on Exercise 4
             href: hands_on_ex/hands_on_ex04/hands_on_ex04.html
