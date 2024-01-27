@@ -315,6 +315,41 @@
     "text": "As this dataset consists of global responses, we will filter out only the responses from Singapore:\n\nstu_qqq_SG &lt;- stu_qqq %&gt;%\n  filter(CNT == \"SGP\")\n\nWe will store the filtered dataset in the rds format for future use on R:\n\nwrite_rds(stu_qqq_SG, \"data/stu_qqq_SG.rds\")\n\nThe rds file can be loaded into the R environment by using the read_rds() function from the readr package found in tidyverse:\n\nstu_qqq_SG &lt;- read_rds(\"data/stu_qqq_SG.rds\")"
   },
   {
+    "objectID": "in_class_ex/in_class_ex03/in_class_ex03.html",
+    "href": "in_class_ex/in_class_ex03/in_class_ex03.html",
+    "title": "In-class Exercise 03",
+    "section": "",
+    "text": "We were tasked to critique Figure 5 presented in the State of the Industry report prepared by the Data Visualization Society. The figure is on page 14 of the report found in this link.\n\norganisation of the legends is confusing\ntext on pie chart contradicts the legend (e.g. “Employee” is labelled on dark purple segment on pie chart instead of light purple segment)\nEmployee + Other Roles and Employee And Freelance – are they mutually exclusive?\nbar chart underneath pie chart is not clear – how to read??"
+  },
+  {
+    "objectID": "in_class_ex/in_class_ex03/in_class_ex03.html#create-additional-individual-plots",
+    "href": "in_class_ex/in_class_ex03/in_class_ex03.html#create-additional-individual-plots",
+    "title": "In-class Exercise 03",
+    "section": "Create Additional Individual Plots",
+    "text": "Create Additional Individual Plots\nWe will continue from last week’s in-class exercise completed on Tableau.\nFirst, we create a scatterplot of sales vs profit by state.\nBy default, Tableau aggregates data by default to reduce the number of data points to be rendered. We can toggle this setting under Analysis.\n\n\nWe can toggle the Level of Detail to be displayed on Tableau. For example, we can drag State into the Detail box to display the scatterplot by State\n\nThe data points are clustered together. We can use some in-built calculation function on Tableau to transform the raw data points into derived values such as percentile.\nThe calculation functions can be accessed by clicking on the dropdown arrow next to the variable, and selecting Quick Table Calculation"
+  },
+  {
+    "objectID": "in_class_ex/in_class_ex03/in_class_ex03.html#scatterplot-with-marginal-boxplot",
+    "href": "in_class_ex/in_class_ex03/in_class_ex03.html#scatterplot-with-marginal-boxplot",
+    "title": "In-class Exercise 03",
+    "section": "scatterplot with marginal boxplot",
+    "text": "scatterplot with marginal boxplot\nmake individual plot\nmake dashboard\nmake coordinated linked view - all plots must have a common link (ID in this case)"
+  },
+  {
+    "objectID": "in_class_ex/in_class_ex03/in_class_ex03.html#create-dashboard",
+    "href": "in_class_ex/in_class_ex03/in_class_ex03.html#create-dashboard",
+    "title": "In-class Exercise 03",
+    "section": "Create Dashboard",
+    "text": "Create Dashboard\nA dashboard displays a smaller view of each selected sheet on one single page when published to Tableau Public."
+  },
+  {
+    "objectID": "in_class_ex/in_class_ex03/in_class_ex03.html#create-story",
+    "href": "in_class_ex/in_class_ex03/in_class_ex03.html#create-story",
+    "title": "In-class Exercise 03",
+    "section": "Create Story",
+    "text": "Create Story\nA Story allows us to present each Tableau sheet on a single page when published to Tableau Public."
+  },
+  {
     "objectID": "take_home_ex/take_home_ex01/take_home_ex01.html",
     "href": "take_home_ex/take_home_ex01/take_home_ex01.html",
     "title": "Is Every School Truly A Good School In Singapore?",
@@ -446,41 +481,6 @@
     "title": "Take-home Exercise 02 - DataVis Makeover",
     "section": "4.1. Distribution of Performance on Each subject",
     "text": "4.1. Distribution of Performance on Each subject\n\nOriginalProposed ChangeFinishing Touches\n\n\n\n\n\n\n\n\n\nWhat’s great\n\n\n\n\nUsing a histogram to analyse the distribution of scores for each subject is accurate.\nEach plot is created in a very structured and clear manner.\n\n\n\n\n\n\n\n\n\nWhat can be improved\n\n\n\n\nStandardise the x- and y-axes using coord_cartesian() for better comparison of the height and width of each distribution.\nThe additional vertical lines denoting first and third quartile and median appear to be distracting on the plot and does not provide much analytical insight. Naturally the frequency distribution would show where most of the data points lie.\nLastly, the arrangement of the plots do not allow a clear comparison of each subject’s score distribution.\n\n\n\n\n\nIn this proposed plot, the following changes are made:\n\nWe use the coord_cartesian() function to set the same x- and y-axes limits such that all three graphs are plotted to the same scale. This ensures that and visual comparisons made regarding the distribution and height and spread of the plot are accurate.\nInstead of displaying the vertical lines for first and third quartile, the proposed plot includes vertical lines for mean and median. The reason for choosing mean and median to display on the plot is that the relative position of mean to median (and vice versa) gives us an insight into the skewness of the data. In this plot, the mean and median values are not denoted as we can visually compare the positions of the mean and median across the three graphs due to the standardised x- and y-axes limits.\nLastly, the layout for the three graphs is changed for easier comparison. Each graph representing one subject is given its own colour fill to draw a better distinction between each graph.\n\n\n\nWhere magic happens\nmath &lt;- ggplot(data = stu_sg_data,\n               aes(x = MATH_PV_AVG)) +\n  geom_histogram(bins=15,\n                 color = \"grey40\",\n                 fill=\"mistyrose2\",\n                 linewidth = 0.5) +\n  geom_vline(xintercept = median(stu_sg_data$MATH_PV_AVG),\n             color = \"darkred\",\n             lwd = 1) +\n  annotate(\"text\",\n           x = median(stu_sg_data$MATH_PV_AVG),  \n           y = 1350,  \n           label = \"Median\",\n           color = \"darkred\",\n           size = 2.5,\n           vjust = 1.,  \n           hjust = -0.1) +\n  geom_vline(xintercept = mean(stu_sg_data$MATH_PV_AVG),\n             color = \"darkgreen\",\n             lwd = 1) +\n  annotate(\"text\",\n           x = mean(stu_sg_data$MATH_PV_AVG),  \n           y = 1350,  \n           label = \"Mean\",\n           color = \"darkgreen\",\n           size = 2.5,\n           vjust = 1.,  \n           hjust = 1.1) +\n  coord_cartesian(ylim = c(0, 1400),\n                  xlim = c(100, 900))\n\nread &lt;- ggplot(data = stu_sg_data,\n               aes(x = READ_PV_AVG)) +\n  geom_histogram(bins=15,\n                 color = \"grey40\",\n                 fill=\"azure2\",\n                 linewidth = 0.5) +\n  geom_vline(xintercept = median(stu_sg_data$READ_PV_AVG),\n             color = \"darkred\",\n             lwd = 1) +\n  annotate(\"text\",\n           x = median(stu_sg_data$READ_PV_AVG),  \n           y = 1450,  \n           label = \"Median\",\n           color = \"darkred\", \n           size = 2.5,\n           vjust = 1.,  \n           hjust = -0.1) +\n  geom_vline(xintercept = mean(stu_sg_data$READ_PV_AVG),\n             color = \"darkgreen\",\n             lwd = 1) +\n  annotate(\"text\",\n           x = mean(stu_sg_data$READ_PV_AVG),  \n           y = 1450,  \n           label = \"Mean\",\n           color = \"darkgreen\",\n           size = 2.5,\n           vjust = 1.,  \n           hjust = 1.1) +\n  coord_cartesian(ylim = c(0, 1400),\n                  xlim = c(100, 900))\n\nsci &lt;- ggplot(data = stu_sg_data,\n               aes(x = SCI_PV_AVG)) +\n  geom_histogram(bins=15,\n                 color = \"grey40\",\n                 fill=\"lightyellow1\",\n                 linewidth = 0.5) +\n  geom_vline(xintercept = median(stu_sg_data$SCI_PV_AVG),\n             color = \"darkred\",\n             lwd = 1) +\n  annotate(\"text\",\n           x = median(stu_sg_data$SCI_PV_AVG),  \n           y = 1400,  \n           label = \"Median\",\n           color = \"darkred\",\n           size = 2.5,\n           vjust = 1.,  \n           hjust = -0.1) +\n  geom_vline(xintercept = mean(stu_sg_data$SCI_PV_AVG),\n             color = \"darkgreen\",\n             lwd = 1) +\n  annotate(\"text\",\n           x = mean(stu_sg_data$SCI_PV_AVG),  \n           y = 1400,  \n           label = \"Mean\",\n           color = \"darkgreen\",\n           size = 2.5,\n           vjust = 1.,  \n           hjust = 1.1) +\n  coord_cartesian(ylim = c(0, 1400),\n                  xlim = c(100, 900)) \n\nmath / read / sci\n\n\n\n\n\n\n\nWe make further improvements to the proposed plot by improving the aesthetics:\n\nThe x- and y-axes labels are updated to reflect what the respective values represent.\nThe theme is set to theme_classic(). This is my personal preference as I find the theme to be clean and tidy.\nA title is added to each plot to reflect the respective subject, and an overall graph title is added.\n\n\n\nWhere magic happens\nmath &lt;- ggplot(data = stu_sg_data,\n               aes(x = MATH_PV_AVG)) +\n  geom_histogram(bins=15,\n                 color = \"grey40\",\n                 fill=\"mistyrose2\",\n                 linewidth = 0.5) +\n  geom_vline(xintercept = median(stu_sg_data$MATH_PV_AVG),\n             color = \"darkred\",\n             lwd = 1) +\n  annotate(\"text\",\n           x = median(stu_sg_data$MATH_PV_AVG),  \n           y = 1350,  \n           label = \"Median\",\n           color = \"darkred\",\n           size = 2.5,\n           vjust = 1.,  \n           hjust = -0.1) +\n  geom_vline(xintercept = mean(stu_sg_data$MATH_PV_AVG),\n             color = \"darkgreen\",\n             lwd = 1) +\n  annotate(\"text\",\n           x = mean(stu_sg_data$MATH_PV_AVG),  \n           y = 1350,  \n           label = \"Mean\",\n           color = \"darkgreen\",\n           size = 2.5,\n           vjust = 1.,  \n           hjust = 1.1) +\n  coord_cartesian(ylim = c(0, 1400),\n                  xlim = c(100, 900)) + \n  ylab(\"Frequency\") +\n  xlab(\"Average Plausive Value\") +\n  theme_classic(base_size=8) +\n  ggtitle(\"Maths\")\n\nread &lt;- ggplot(data = stu_sg_data,\n               aes(x = READ_PV_AVG)) +\n  geom_histogram(bins=15,\n                 color = \"grey40\",\n                 fill=\"azure2\",\n                 linewidth = 0.5) +\n  geom_vline(xintercept = median(stu_sg_data$READ_PV_AVG),\n             color = \"darkred\",\n             lwd = 1) +\n  annotate(\"text\",\n           x = median(stu_sg_data$READ_PV_AVG),  \n           y = 1450,  \n           label = \"Median\",\n           color = \"darkred\", \n           size = 2.5,\n           vjust = 1.,  \n           hjust = -0.1) +\n  geom_vline(xintercept = mean(stu_sg_data$READ_PV_AVG),\n             color = \"darkgreen\",\n             lwd = 1) +\n  annotate(\"text\",\n           x = mean(stu_sg_data$READ_PV_AVG),  \n           y = 1450,  \n           label = \"Mean\",\n           color = \"darkgreen\",\n           size = 2.5,\n           vjust = 1.,  \n           hjust = 1.1) +\n  coord_cartesian(ylim = c(0, 1400),\n                  xlim = c(100, 900)) + \n  ylab(\"Frequency\") +\n  xlab(\"Average Plausive Value\") +\n  theme_classic(base_size=8) +\n  ggtitle(\"Reading\")\n\nsci &lt;- ggplot(data = stu_sg_data,\n               aes(x = SCI_PV_AVG)) +\n  geom_histogram(bins=15,\n                 color = \"grey40\",\n                 fill=\"lightyellow1\",\n                 linewidth = 0.5) +\n  geom_vline(xintercept = median(stu_sg_data$SCI_PV_AVG),\n             color = \"darkred\",\n             lwd = 1) +\n  annotate(\"text\",\n           x = median(stu_sg_data$SCI_PV_AVG),  \n           y = 1400,  \n           label = \"Median\",\n           color = \"darkred\",\n           size = 2.5,\n           vjust = 1.,  \n           hjust = -0.1) +\n  geom_vline(xintercept = mean(stu_sg_data$SCI_PV_AVG),\n             color = \"darkgreen\",\n             lwd = 1) +\n  annotate(\"text\",\n           x = mean(stu_sg_data$SCI_PV_AVG),  \n           y = 1400,  \n           label = \"Mean\",\n           color = \"darkgreen\",\n           size = 2.5,\n           vjust = 1.,  \n           hjust = 1.1) +\n  coord_cartesian(ylim = c(0, 1400),\n                  xlim = c(100, 900)) + \n  ylab(\"Frequency\") +\n  xlab(\"Average Plausive Value\") +\n  theme_classic(base_size=8) +\n  ggtitle(\"Science\")\n\n(math / read / sci) + plot_annotation(\n  title = 'Distribution of Performance by Subject')"
-  },
-  {
-    "objectID": "in_class_ex/in_class_ex03/in_class_ex03.html",
-    "href": "in_class_ex/in_class_ex03/in_class_ex03.html",
-    "title": "In-class Exercise 03",
-    "section": "",
-    "text": "We were tasked to critique Figure 5 presented in the State of the Industry report prepared by the Data Visualization Society. The figure is on page 14 of the report found in this link.\n\norganisation of the legends is confusing\ntext on pie chart contradicts the legend (e.g. “Employee” is labelled on dark purple segment on pie chart instead of light purple segment)\nEmployee + Other Roles and Employee And Freelance – are they mutually exclusive?\nbar chart underneath pie chart is not clear – how to read??"
-  },
-  {
-    "objectID": "in_class_ex/in_class_ex03/in_class_ex03.html#create-additional-individual-plots",
-    "href": "in_class_ex/in_class_ex03/in_class_ex03.html#create-additional-individual-plots",
-    "title": "In-class Exercise 03",
-    "section": "Create Additional Individual Plots",
-    "text": "Create Additional Individual Plots\nWe will continue from last week’s in-class exercise completed on Tableau.\nFirst, we create a scatterplot of sales vs profit by state.\nBy default, Tableau aggregates data by default to reduce the number of data points to be rendered. We can toggle this setting under Analysis.\n\n\nWe can toggle the Level of Detail to be displayed on Tableau. For example, we can drag State into the Detail box to display the scatterplot by State\n\nThe data points are clustered together. We can use some in-built calculation function on Tableau to transform the raw data points into derived values such as percentile.\nThe calculation functions can be accessed by clicking on the dropdown arrow next to the variable, and selecting Quick Table Calculation"
-  },
-  {
-    "objectID": "in_class_ex/in_class_ex03/in_class_ex03.html#scatterplot-with-marginal-boxplot",
-    "href": "in_class_ex/in_class_ex03/in_class_ex03.html#scatterplot-with-marginal-boxplot",
-    "title": "In-class Exercise 03",
-    "section": "scatterplot with marginal boxplot",
-    "text": "scatterplot with marginal boxplot\nmake individual plot\nmake dashboard\nmake coordinated linked view - all plots must have a common link (ID in this case)"
-  },
-  {
-    "objectID": "in_class_ex/in_class_ex03/in_class_ex03.html#create-dashboard",
-    "href": "in_class_ex/in_class_ex03/in_class_ex03.html#create-dashboard",
-    "title": "In-class Exercise 03",
-    "section": "Create Dashboard",
-    "text": "Create Dashboard\nA dashboard displays a smaller view of each selected sheet on one single page when published to Tableau Public."
-  },
-  {
-    "objectID": "in_class_ex/in_class_ex03/in_class_ex03.html#create-story",
-    "href": "in_class_ex/in_class_ex03/in_class_ex03.html#create-story",
-    "title": "In-class Exercise 03",
-    "section": "Create Story",
-    "text": "Create Story\nA Story allows us to present each Tableau sheet on a single page when published to Tableau Public."
   },
   {
     "objectID": "take_home_ex/take_home_ex02/take_home_ex02.html#school-type-and-performance-by-subject",
