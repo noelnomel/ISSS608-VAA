@@ -1,6 +1,6 @@
 ---
-title: "Take-home Exercise 02"
-date: "13 January 2024"
+title: "Take-home Exercise 02 - DataVis Makeover"
+date: "22 January 2024"
 date-modified: "last-modified"
 format: html
 execute: 
@@ -9,3 +9,623 @@ execute:
   warning: false # do not display warning message
 editor: visual
 ---
+
+# 1. Overview
+
+In this exercise, we apply the data visualisation design principles and best practices learnt from this course to improve on the visualisations prepared by a classmate. This is a follow-up exercise on Take-home Exercise 1.
+
+::: {.callout-tip title="Previously on ISSS608..."}
+Last week, students attending ISSS608 used Exploratory Data Analysis (EDA) to gain insights on Singapore students' performance in the 2022 Performance for International Student Assessment (2022). Relationships between factors such as socioeconomic status, gender, and school, and the students' performance were explored.
+:::
+
+# 2. Getting Started
+
+## 2.1. Loading Relevant Packages
+
+Before starting work on this exercise, we first have to review each classmate's submission to identify areas for improvement. We will import the packages relevant to this makeover exercise using `p_load()` from the `pacman` package.
+
+```{r}
+pacman::p_load(tidyverse, ggplot, 
+               patchwork, ggthemes)
+```
+
+## 2.2. Import Data
+
+Next, we will import the data set into the R environment. We will be using the same data set that was prepared in Take-home Exercise 1. In that exercise, we saved the filtered data in the RDS format. Hence, we will import the same file using the `read_rds()` function from the `readr` package found in `tidyverse`:
+
+```{r}
+stu_qqq_SG <- read_rds("data/stu_qqq_SG.rds")
+```
+
+# 3. Prepare Data
+
+## 3.1. Data Wrangling
+
+As the dataset contains too many columns, we will extract only the relevant columns required for this exercise and keep the data as `stu_sg_data`. The columns we need are:
+
+| Col Name            | Label                                          | Reason                                                                                             |
+|------------------|------------------|------------------------------------|
+| STRATUM             | School Type                                    | To explore relationships between the student's chosen school and their academic performance        |
+| ST004D01T           | Gender, where 1 is Female and 2 is Male        | To explore if there are any relationships between gender and performance in the test               |
+| ESCS                | Index of economic, social, and cultural status | To explore if there are any relationships between socioeconomic status and performance in the test |
+| PV1MATH to PV10MATH | Plausible Values for Math                      | To derive average plausible value per student per subject for visualisation                        |
+| PV1READ to PV10READ | Plausible Values for Reading                   | To derive average plausible value per student per subject for visualisation                        |
+| PV1SCIE to PV10SCIE | Plausible Values for Science                   | To derive average plausible value per student per subject for visualisation                        |
+
+Now that we have identified the columns needed for this analysis, we will use the following `dplyr` functions to extract the required columns. We will do some data wrangling to obtain the fields for analysis and to make the data more readable:
+
+```{r}
+# create a separate table of all plausible values for MATHS
+math_cols <- stu_qqq_SG %>%
+  select(PV1MATH,PV2MATH,PV3MATH,PV4MATH,PV5MATH,
+         PV6MATH,PV7MATH,PV8MATH,PV9MATH,PV10MATH)
+
+# create a separate table of all plausible values for READ
+read_cols <- stu_qqq_SG %>%
+  select(PV1READ,PV2READ,PV3READ,PV4READ,PV5READ,
+         PV6READ,PV7READ,PV8READ,PV9READ,PV10READ)
+
+# create a separate table of all plausible values for SCIE
+sci_cols <- stu_qqq_SG %>%
+  select(PV1SCIE,PV2SCIE,PV3SCIE,PV4SCIE,PV5SCIE,
+         PV6SCIE,PV7SCIE,PV8SCIE,PV9SCIE,PV10SCIE)
+
+# create a character vector to store mappings for each school type
+school_map <- c("SGP01" = "Public/Secondary",
+                "SGP02" = "Public/Post-secondary",
+                "SGP03" = "Private/Secondary",
+                "SGP97" = "Undisclosed")
+
+# create a new table stu_sg_data that takes data from stu_qqq_SG
+stu_sg_data <- stu_qqq_SG %>%
+  # change 1 and 2 labels to F and M for better readability
+  mutate(ST004D01T = 
+           ifelse(ST004D01T == '1', 'F', 
+                  ifelse(ST004D01T == '2', 'M', ST004D01T)),
+  # create SCHOOL column to label school type
+         SCHOOL = school_map[STRATUM],
+  # create new columns containing average values of PVs from each subject
+         MATH_PV_AVG = rowMeans(math_cols),
+         READ_PV_AVG = rowMeans(read_cols),
+         SCI_PV_AVG = rowMeans(sci_cols)) %>%
+  # rename ST004D01T column name from question number to GENDER
+  rename("GENDER" = "ST004D01T") %>%
+  # create new columns containing average values of PVs from each subject
+  select(SCHOOL, GENDER, ESCS,
+         MATH_PV_AVG, READ_PV_AVG, SCI_PV_AVG)
+```
+
+In the original submission, the classmate binned the ESCS index by assigning a percentage score to each index. An alternative method is to use the summary statistics to determine the breaks in each bin. We can view the summary statistics using the `summary()` function.
+
+```{r}
+summary(stu_qqq_SG$ESCS)
+```
+
+Using the results of the summary statistics above, we can make further changes to the analytical data:
+
+```{r}
+stu_sg_data <- stu_sg_data %>%
+  mutate(ESCS_binned = 
+           case_when(
+           ESCS >= -3.5488 & ESCS < -0.2327 ~ "Low",
+           ESCS >= -0.2327 & ESCS < 0.4817 ~ "Lower-Middle",
+           ESCS >= 0.4817 & ESCS < 0.9036 ~ "Upper-Middle",
+           ESCS >= 0.9036 & ESCS <= 3.2780 ~ "Upper")) %>%
+  select(SCHOOL, GENDER, ESCS_binned,
+         MATH_PV_AVG, READ_PV_AVG, SCI_PV_AVG)
+```
+
+## 3.2. Check for Missing Values
+
+Now that we have the cleaned data set, we will check for missing values using the following code:
+
+```{r}
+colSums(is.na(stu_sg_data))
+```
+
+It is observed that 47 records from ESCS_binned is missing, which accounts for 0.7% of the total data points available.
+
+# 4. Exploratory Data Analysis
+
+## 4.1. Distribution of Performance on Each subject
+
+::: panel-tabset
+#### Original
+
+![](images/vis1.png)
+
+::: {.callout-tip title="What's great"}
+-   Using a histogram to analyse the distribution of scores for each subject is accurate.
+-   Each plot is created in a very structured and clear manner.
+:::
+
+::: {.callout-warning title="What can be improved"}
+-   Standardise the x- and y-axes using `coord_cartesian()` for better comparison of the height and width of each distribution.
+-   The additional vertical lines denoting first and third quartile and median appear to be distracting on the plot and does not provide much analytical insight. Naturally the frequency distribution would show where most of the data points lie.
+-   Lastly, the arrangement of the plots do not allow a clear comparison of each subject's score distribution.
+:::
+
+#### Proposed Change
+
+In this proposed plot, the following changes are made:
+
+1.  We use the `coord_cartesian()` function to set the same x- and y-axes limits such that all three graphs are plotted to the same scale. This ensures that and visual comparisons made regarding the distribution and height and spread of the plot are accurate.
+
+2.  Instead of displaying the vertical lines for first and third quartile, the proposed plot includes vertical lines for mean and median. The reason for choosing mean and median to display on the plot is that the relative position of mean to median (and vice versa) gives us an insight into the skewness of the data. In this plot, the mean and median values are not denoted as we can visually compare the positions of the mean and median across the three graphs due to the standardised x- and y-axes limits.
+
+3.  Lastly, the layout for the three graphs is changed for easier comparison. Each graph representing one subject is given its own colour fill to draw a better distinction between each graph.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Where magic happens"
+
+math <- ggplot(data = stu_sg_data,
+               aes(x = MATH_PV_AVG)) +
+  geom_histogram(bins=15,
+                 color = "grey40",
+                 fill="mistyrose2",
+                 linewidth = 0.5) +
+  geom_vline(xintercept = median(stu_sg_data$MATH_PV_AVG),
+             color = "darkred",
+             lwd = 1) +
+  annotate("text",
+           x = median(stu_sg_data$MATH_PV_AVG),  
+           y = 1350,  
+           label = "Median",
+           color = "darkred",
+           size = 2.5,
+           vjust = 1.,  
+           hjust = -0.1) +
+  geom_vline(xintercept = mean(stu_sg_data$MATH_PV_AVG),
+             color = "darkgreen",
+             lwd = 1) +
+  annotate("text",
+           x = mean(stu_sg_data$MATH_PV_AVG),  
+           y = 1350,  
+           label = "Mean",
+           color = "darkgreen",
+           size = 2.5,
+           vjust = 1.,  
+           hjust = 1.1) +
+  coord_cartesian(ylim = c(0, 1400),
+                  xlim = c(100, 900))
+
+read <- ggplot(data = stu_sg_data,
+               aes(x = READ_PV_AVG)) +
+  geom_histogram(bins=15,
+                 color = "grey40",
+                 fill="azure2",
+                 linewidth = 0.5) +
+  geom_vline(xintercept = median(stu_sg_data$READ_PV_AVG),
+             color = "darkred",
+             lwd = 1) +
+  annotate("text",
+           x = median(stu_sg_data$READ_PV_AVG),  
+           y = 1450,  
+           label = "Median",
+           color = "darkred", 
+           size = 2.5,
+           vjust = 1.,  
+           hjust = -0.1) +
+  geom_vline(xintercept = mean(stu_sg_data$READ_PV_AVG),
+             color = "darkgreen",
+             lwd = 1) +
+  annotate("text",
+           x = mean(stu_sg_data$READ_PV_AVG),  
+           y = 1450,  
+           label = "Mean",
+           color = "darkgreen",
+           size = 2.5,
+           vjust = 1.,  
+           hjust = 1.1) +
+  coord_cartesian(ylim = c(0, 1400),
+                  xlim = c(100, 900))
+
+sci <- ggplot(data = stu_sg_data,
+               aes(x = SCI_PV_AVG)) +
+  geom_histogram(bins=15,
+                 color = "grey40",
+                 fill="lightyellow1",
+                 linewidth = 0.5) +
+  geom_vline(xintercept = median(stu_sg_data$SCI_PV_AVG),
+             color = "darkred",
+             lwd = 1) +
+  annotate("text",
+           x = median(stu_sg_data$SCI_PV_AVG),  
+           y = 1400,  
+           label = "Median",
+           color = "darkred",
+           size = 2.5,
+           vjust = 1.,  
+           hjust = -0.1) +
+  geom_vline(xintercept = mean(stu_sg_data$SCI_PV_AVG),
+             color = "darkgreen",
+             lwd = 1) +
+  annotate("text",
+           x = mean(stu_sg_data$SCI_PV_AVG),  
+           y = 1400,  
+           label = "Mean",
+           color = "darkgreen",
+           size = 2.5,
+           vjust = 1.,  
+           hjust = 1.1) +
+  coord_cartesian(ylim = c(0, 1400),
+                  xlim = c(100, 900)) 
+
+math / read / sci
+```
+
+#### Finishing Touches
+
+We make further improvements to the proposed plot by improving the aesthetics:
+
+1.  The x- and y-axes labels are updated to reflect what the respective values represent.
+
+2.  The theme is set to `theme_classic()`. This is my personal preference as I find the theme to be clean and tidy.
+
+3.  A title is added to each plot to reflect the respective subject, and an overall graph title is added.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Where magic happens"
+
+math <- ggplot(data = stu_sg_data,
+               aes(x = MATH_PV_AVG)) +
+  geom_histogram(bins=15,
+                 color = "grey40",
+                 fill="mistyrose2",
+                 linewidth = 0.5) +
+  geom_vline(xintercept = median(stu_sg_data$MATH_PV_AVG),
+             color = "darkred",
+             lwd = 1) +
+  annotate("text",
+           x = median(stu_sg_data$MATH_PV_AVG),  
+           y = 1350,  
+           label = "Median",
+           color = "darkred",
+           size = 2.5,
+           vjust = 1.,  
+           hjust = -0.1) +
+  geom_vline(xintercept = mean(stu_sg_data$MATH_PV_AVG),
+             color = "darkgreen",
+             lwd = 1) +
+  annotate("text",
+           x = mean(stu_sg_data$MATH_PV_AVG),  
+           y = 1350,  
+           label = "Mean",
+           color = "darkgreen",
+           size = 2.5,
+           vjust = 1.,  
+           hjust = 1.1) +
+  coord_cartesian(ylim = c(0, 1400),
+                  xlim = c(100, 900)) + 
+  ylab("Frequency") +
+  xlab("Average Plausive Value") +
+  theme_classic(base_size=8) +
+  ggtitle("Maths")
+
+read <- ggplot(data = stu_sg_data,
+               aes(x = READ_PV_AVG)) +
+  geom_histogram(bins=15,
+                 color = "grey40",
+                 fill="azure2",
+                 linewidth = 0.5) +
+  geom_vline(xintercept = median(stu_sg_data$READ_PV_AVG),
+             color = "darkred",
+             lwd = 1) +
+  annotate("text",
+           x = median(stu_sg_data$READ_PV_AVG),  
+           y = 1450,  
+           label = "Median",
+           color = "darkred", 
+           size = 2.5,
+           vjust = 1.,  
+           hjust = -0.1) +
+  geom_vline(xintercept = mean(stu_sg_data$READ_PV_AVG),
+             color = "darkgreen",
+             lwd = 1) +
+  annotate("text",
+           x = mean(stu_sg_data$READ_PV_AVG),  
+           y = 1450,  
+           label = "Mean",
+           color = "darkgreen",
+           size = 2.5,
+           vjust = 1.,  
+           hjust = 1.1) +
+  coord_cartesian(ylim = c(0, 1400),
+                  xlim = c(100, 900)) + 
+  ylab("Frequency") +
+  xlab("Average Plausive Value") +
+  theme_classic(base_size=8) +
+  ggtitle("Reading")
+
+sci <- ggplot(data = stu_sg_data,
+               aes(x = SCI_PV_AVG)) +
+  geom_histogram(bins=15,
+                 color = "grey40",
+                 fill="lightyellow1",
+                 linewidth = 0.5) +
+  geom_vline(xintercept = median(stu_sg_data$SCI_PV_AVG),
+             color = "darkred",
+             lwd = 1) +
+  annotate("text",
+           x = median(stu_sg_data$SCI_PV_AVG),  
+           y = 1400,  
+           label = "Median",
+           color = "darkred",
+           size = 2.5,
+           vjust = 1.,  
+           hjust = -0.1) +
+  geom_vline(xintercept = mean(stu_sg_data$SCI_PV_AVG),
+             color = "darkgreen",
+             lwd = 1) +
+  annotate("text",
+           x = mean(stu_sg_data$SCI_PV_AVG),  
+           y = 1400,  
+           label = "Mean",
+           color = "darkgreen",
+           size = 2.5,
+           vjust = 1.,  
+           hjust = 1.1) +
+  coord_cartesian(ylim = c(0, 1400),
+                  xlim = c(100, 900)) + 
+  ylab("Frequency") +
+  xlab("Average Plausive Value") +
+  theme_classic(base_size=8) +
+  ggtitle("Science")
+
+(math / read / sci) + plot_annotation(
+  title = 'Distribution of Performance by Subject')
+```
+:::
+
+## 4.2. School Type and Performance by Subject
+
+::: panel-tabset
+#### Original
+
+![](images/vis2.png)
+
+::: {.callout-tip title="What's great"}
+-   Using a boxplot to analyse the distribution of scores for each subject helps to display a clear comparison in performance by school type.
+-   Use of the notch in the boxplot makes visualising the median between box plots easier.
+-   The side-by-side arrangement of the plots make it easy for comparisons to be made.
+:::
+
+::: {.callout-warning title="What can be improved"}
+-   Standardise the x- and y-axes using `coord_cartesian()` for better comparison of the height and width of each distribution.
+-   The y-axis labels do not show that the values correspond to Average Plausible Values, instead it only indicates the subject.
+:::
+
+#### Proposed Change
+
+In this proposed plot, the following changes are made:
+
+1.  We use the `coord_cartesian()` function to set the same x- and y-axes limits such that all three graphs are plotted to the same scale. This ensures that and visual comparisons made regarding the distribution and height and spread of the plot are accurate.
+
+2.  The y-axis labels are also updated to reflect "Average Plausible Value", which is what the values in the y-axis represent.
+
+3.  To main consistency with the previous plot, we use the same fill colour to distinguish each subject.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Where magic happens"
+
+math_sch <- ggplot(data = stu_sg_data,
+               aes(x = SCHOOL,
+                   y = MATH_PV_AVG)) +
+  geom_boxplot(notch = TRUE, 
+               color = "grey40",
+               fill="mistyrose2") +
+  ylab("Average Plausible Value") +
+  coord_cartesian(ylim = c(150, 850))
+
+read_sch <- ggplot(data = stu_sg_data,
+               aes(x = SCHOOL,
+                   y = READ_PV_AVG)) +
+  geom_boxplot(notch = TRUE,
+               color = "grey40",
+               fill="azure2") +
+  ylab("Average Plausible Value") +
+  coord_cartesian(ylim = c(150, 850))
+
+sci_sch <- ggplot(data = stu_sg_data,
+               aes(x = SCHOOL,
+                   y = SCI_PV_AVG)) +
+  geom_boxplot(notch = TRUE,
+               color = "grey40",
+               fill="lightyellow1") +
+  ylab("Average Plausible Value") +
+  coord_cartesian(ylim = c(150, 850)) 
+
+math_sch | read_sch | sci_sch
+```
+
+#### Finishing Touches
+
+We make further improvements to the proposed plot by improving the aesthetics:
+
+1.  To maintain consistency with the previous plot, the theme is set to `theme_classic()`.
+
+2.  A title is added to each plot to reflect the respective subject, and an overall graph title is added.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Where magic happens"
+
+math_sch <- ggplot(data = stu_sg_data,
+               aes(x = SCHOOL,
+                   y = MATH_PV_AVG)) +
+  geom_boxplot(notch = TRUE, 
+               color = "grey40",
+               fill="mistyrose2",
+               median.col = "darkred") +
+  ylab("Average Plausible Value") +
+  coord_cartesian(ylim = c(150, 850))  + 
+  ggtitle("Maths") +
+  theme_classic(base_size = 8)
+
+read_sch <- ggplot(data = stu_sg_data,
+               aes(x = SCHOOL,
+                   y = READ_PV_AVG)) +
+  geom_boxplot(notch = TRUE,
+               color = "grey40",
+               fill="azure2") +
+  ylab("Average Plausible Value") +
+  coord_cartesian(ylim = c(150, 850)) + 
+  ggtitle("Reading") +
+  theme_classic(base_size = 8)
+
+sci_sch <- ggplot(data = stu_sg_data,
+               aes(x = SCHOOL,
+                   y = SCI_PV_AVG)) +
+  geom_boxplot(notch = TRUE,
+               color = "grey40",
+               fill="lightyellow1") +
+  ylab("Average Plausible Value") +
+  coord_cartesian(ylim = c(150, 850)) + 
+  ggtitle("Science") +
+  theme_classic(base_size = 8)
+
+(math_sch | read_sch | sci_sch) + plot_annotation(
+  title = 'Relationship Between School and Performance in Each Subject')
+
+```
+:::
+
+## 4.3. Socioeconomic Status and Performance
+
+::: panel-tabset
+#### Original
+
+![](images/vis3.png)
+
+::: {.callout-tip title="What's great"}
+-   Using a boxplot to analyse the distribution of scores for each subject helps to display a clear comparison in performance by socioeconomic status type.
+-   Use of the notch in the boxplot makes visualising the median between box plots easier.
+-   The side-by-side arrangement of the plots make it easy for comparisons to be made.
+:::
+
+::: {.callout-warning title="What can be improved"}
+-   Standardise the x- and y-axes using `coord_cartesian()` for better comparison of the height and width of each distribution.
+-   The y-axis labels do not show that the values correspond to Average Plausible Values, instead it only indicates the subject.
+-   Socioeconomic status bins should be arranged in ascending order (Low, Lower-Middle, Upper-Middle, High) for better viewing experience.
+:::
+
+#### Proposed Change
+
+In this proposed plot, the following changes are made:
+
+1.  We use the `coord_cartesian()` function to set the same x- and y-axes limits such that all three graphs are plotted to the same scale. This ensures that and visual comparisons made regarding the distribution and height and spread of the plot are accurate.
+
+2.  The x- and y-axes labels are also updated to improve readability of the graph.
+
+3.  To main consistency with the previous plot, we use the same fill colour to distinguish each subject.
+
+4.  The `ESCS_binned` column is amended to reflect the correct ascending order of the categories.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Where magic happens"
+
+# create new column defining grouping sequence
+stu_sg_data$ESCS_binned <- factor(stu_sg_data$ESCS_binned,
+                            levels = c("Low", "Lower-Middle", "Upper-Middle", "Upper"))
+
+math_escs <- ggplot(data = na.omit(stu_sg_data),
+               aes(x = ESCS_binned,
+                   y = MATH_PV_AVG)) +
+  geom_boxplot(notch = TRUE, 
+               color = "grey40",
+               fill="mistyrose2") +
+  xlab("Socioeconomic Status") +
+  ylab("Average Plausible Value") +
+  coord_cartesian(ylim = c(150, 850))
+
+read_escs <- ggplot(data = na.omit(stu_sg_data),
+               aes(x = ESCS_binned,
+                   y = READ_PV_AVG)) +
+  geom_boxplot(notch = TRUE,
+               color = "grey40",
+               fill="azure2") +
+  xlab("Socioeconomic Status") +
+  ylab("Average Plausible Value") +
+  coord_cartesian(ylim = c(150, 850))
+
+sci_escs <- ggplot(data = na.omit(stu_sg_data),
+               aes(x = ESCS_binned,
+                   y = SCI_PV_AVG)) +
+  geom_boxplot(notch = TRUE,
+               color = "grey40",
+               fill="lightyellow1") +
+  xlab("Socioeconomic Status") +
+  ylab("Average Plausible Value") +
+  coord_cartesian(ylim = c(150, 850)) 
+
+math_escs | read_escs | sci_escs
+```
+
+#### Finishing Touches
+
+We make further improvements to the proposed plot by improving the aesthetics:
+
+1.  To maintain consistency with the previous plot, the theme is set to `theme_classic()`.
+
+2.  A title is added to each plot to reflect the respective subject, and an overall graph title is added.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Where magic happens"
+
+math_escs <- ggplot(data = na.omit(stu_sg_data),
+               aes(x = ESCS_binned,
+                   y = MATH_PV_AVG)) +
+  geom_boxplot(notch = TRUE, 
+               color = "grey40",
+               fill="mistyrose2") +
+  xlab("Socioeconomic Status") +
+  ylab("Average Plausible Value") +
+  coord_cartesian(ylim = c(150, 850)) + 
+  ggtitle("Maths") +
+  theme_classic(base_size = 8) + 
+  theme(axis.text.x = element_text(size = 5))
+
+read_escs <- ggplot(data = na.omit(stu_sg_data),
+               aes(x = ESCS_binned,
+                   y = READ_PV_AVG)) +
+  geom_boxplot(notch = TRUE,
+               color = "grey40",
+               fill="azure2") +
+  xlab("Socioeconomic Status") +
+  ylab("Average Plausible Value") +
+  coord_cartesian(ylim = c(150, 850)) + 
+  ggtitle("Read") +
+  theme_classic(base_size = 8) + 
+  theme(axis.text.x = element_text(size = 5))
+
+sci_escs <- ggplot(data = na.omit(stu_sg_data),
+               aes(x = ESCS_binned,
+                   y = SCI_PV_AVG)) +
+  geom_boxplot(notch = TRUE,
+               color = "grey40",
+               fill="lightyellow1") +
+  xlab("Socioeconomic Status") +
+  ylab("Average Plausible Value") +
+  coord_cartesian(ylim = c(150, 850)) + 
+  ggtitle("Science") +
+  theme_classic(base_size = 8) + 
+  theme(axis.text.x = element_text(size = 5))
+
+(math_escs | read_escs | sci_escs) + plot_annotation(
+  title = 'Relationship Between Socioeconomic Status and Performance in Each Subject')
+
+```
+:::
+
+# 5. Finishing Thoughts
+
+-   Even though many customisation options are available on R and the `ggplot` package, it takes a keen eye to uncover areas that require touch-ups before the relevant functions can be applied.
+
+-   When going through my classmates' visualisations, I often wondered about their intentions behind certain additions or customisations made to the graph. This leads me to think about how every well-intended visualisation is open to the reader's interpretation, and therefore how important it is to design visuals that are (as much as possible) universally understood. After all, a picture paints a thousand words but should not require a thousand words of explanation.
+
+-   It was really interesting to see how different classmates had different takes to the assignment even though we all used the same data set! :)
