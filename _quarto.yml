@@ -22,17 +22,29 @@ website:
           - text: Hands-on Exercise 4.1 Visualising Distributions
             href: hands_on_ex/hands_on_ex04/hands_on_ex04.html
 
-          - text: Hands-on Exercise 4.2 
+          - text: Hands-on Exercise 4.2 Visual Statistical Analysis
             href: hands_on_ex/hands_on_ex04/hands_on_ex04_2.html
 
-          - text: Hands-on Exercise 4.3 
-            #href: 
+          - text: Hands-on Exercise 4.3 Visualising Uncertainty
+            href: hands_on_ex/hands_on_ex04/hands_on_ex04_3.html
             
-          - text: Hands-on Exercise 4.4 
-            #href: 
+          - text: Hands-on Exercise 4.4 Funnel Plots
+            href: hands_on_ex/hands_on_ex04/hands_on_ex04_4.html
             
-          - text: Hands-on Exercise 5
-            href: hands_on_ex/hands_on_ex05/hands_on_ex05.html           
+          - text: Hands-on Exercise 5.1
+            href: hands_on_ex/hands_on_ex05/hands_on_ex05.html
+            
+          - text: Hands-on Exercise 5.2
+            #href: hands_on_ex/hands_on_ex05/hands_on_ex05.html
+                        
+          - text: Hands-on Exercise 5.3
+            #href: hands_on_ex/hands_on_ex05/hands_on_ex05.html
+                        
+          - text: Hands-on Exercise 5.4
+            #href: hands_on_ex/hands_on_ex05/hands_on_ex05.html
+                        
+          - text: Hands-on Exercise 5.5
+            #href: hands_on_ex/hands_on_ex05/hands_on_ex05.html
             
           - text: Hands-on Exercise 6
             href: hands_on_ex/hands_on_ex06/hands_on_ex06.html  

@@ -614,5 +614,47 @@
     "title": "Hands-on Exercise 4 - Visual Statistical Analysis",
     "section": "3.3. Visualising Regression Parameters`",
     "text": "3.3. Visualising Regression Parameters`\n\nplot()ggcoefstats()\n\n\nWe use the plot() function from the see package to visualise the parameters of the regression model.\n\nplot(parameters((model1)))\n\n\n\n\n\n\nWe use the ggcoefstats() function from the ggstatsplot package to visualise the parameters of the regression model.\n\nggcoefstats(model1, \n            output = \"plot\")"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex04/hands_on_ex04_3.html",
+    "href": "hands_on_ex/hands_on_ex04/hands_on_ex04_3.html",
+    "title": "Hands-on Exercise 4 - Visual Statistical Analysis",
+    "section": "",
+    "text": "In the third part of the fourth lesson, we learn to visualise uncertainty."
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex04/hands_on_ex04_3.html#installing-and-loading-packages",
+    "href": "hands_on_ex/hands_on_ex04/hands_on_ex04_3.html#installing-and-loading-packages",
+    "title": "Hands-on Exercise 4 - Visual Statistical Analysis",
+    "section": "2.1. Installing and Loading Packages",
+    "text": "2.1. Installing and Loading Packages\nWe will use ggstatsplotin addition totidyverse for this exercise:\nWe will load the packages to be used into the R environment using the p_load() function from the pacman package:\n\ndevtools::install_github(\"wilkelab/ungeviz\")\n\n\npacman::p_load(ungeviz, plotly, crosstalk,\n               DT, ggdist, ggridges,\n               colorspace, gganimate, tidyverse)"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex04/hands_on_ex04_3.html#import-data",
+    "href": "hands_on_ex/hands_on_ex04/hands_on_ex04_3.html#import-data",
+    "title": "Hands-on Exercise 4 - Visual Statistical Analysis",
+    "section": "2.2. Import Data",
+    "text": "2.2. Import Data\nNext, we will read the data provided by the Course Instructor into the R environment. We will use the read_csv() function from the readr package found in tidyverse.\n\nexam_data &lt;- read_csv(\"data/Exam_data.csv\")\nglimpse(exam_data)\n\nRows: 322\nColumns: 7\n$ ID      &lt;chr&gt; \"Student321\", \"Student305\", \"Student289\", \"Student227\", \"Stude…\n$ CLASS   &lt;chr&gt; \"3I\", \"3I\", \"3H\", \"3F\", \"3I\", \"3I\", \"3I\", \"3I\", \"3I\", \"3H\", \"3…\n$ GENDER  &lt;chr&gt; \"Male\", \"Female\", \"Male\", \"Male\", \"Male\", \"Female\", \"Male\", \"M…\n$ RACE    &lt;chr&gt; \"Malay\", \"Malay\", \"Chinese\", \"Chinese\", \"Malay\", \"Malay\", \"Chi…\n$ ENGLISH &lt;dbl&gt; 21, 24, 26, 27, 27, 31, 31, 31, 33, 34, 34, 36, 36, 36, 37, 38…\n$ MATHS   &lt;dbl&gt; 9, 22, 16, 77, 11, 16, 21, 18, 19, 49, 39, 35, 23, 36, 49, 30,…\n$ SCIENCE &lt;dbl&gt; 15, 16, 16, 31, 25, 16, 25, 27, 15, 37, 42, 22, 32, 36, 35, 45…\n\n\nUsing glimpse to view the data, it is observed that the data contains the examination grades of a batch of primary 3 students for the subjects English, Maths, and Science."
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex04/hands_on_ex04_3.html#plotting-standard-error-bars-of-point-estimates",
+    "href": "hands_on_ex/hands_on_ex04/hands_on_ex04_3.html#plotting-standard-error-bars-of-point-estimates",
+    "title": "Hands-on Exercise 4 - Visual Statistical Analysis",
+    "section": "3.1. Plotting Standard Error Bars of Point Estimates",
+    "text": "3.1. Plotting Standard Error Bars of Point Estimates\nNext, we plot the standard error bars of mean maths score by race using the code below:\n\n\nCodes here\nggplot(data = sum_stat) +\n  geom_errorbar(aes(x = RACE,\n                    ymin = mean-se,\n                    ymax = mean+se),\n                width = 0.2,\n                color = \"black\",\n                alpha = 0.9,\n                size = 0.5) +\n  geom_point(aes(x = RACE,\n                 y = mean),\n             stat = \"identity\",\n             color = \"red\",\n             size = 1.5,\n             alpha = 1) +\n  ggtitle(\"Standard Error Of Mean Maths Score By Race\")"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex04/hands_on_ex04_3.html#plotting-confidence-interval-of-point-estimates",
+    "href": "hands_on_ex/hands_on_ex04/hands_on_ex04_3.html#plotting-confidence-interval-of-point-estimates",
+    "title": "Hands-on Exercise 4 - Visual Statistical Analysis",
+    "section": "3.2. Plotting Confidence Interval of Point Estimates",
+    "text": "3.2. Plotting Confidence Interval of Point Estimates\nNext, we plot the confidence interval of mean maths score by race.\n\n\nCodes here\nggplot(data = sum_stat) +\n  geom_errorbar(aes(x = reorder(RACE, -mean),\n                    ymin = mean-1.96*se,\n                    ymax = mean+1.96*se),\n                width = 0.2,\n                color = \"black\",\n                alpha = 0.9,\n                size = 0.5) +\n  geom_point(aes(x = RACE,\n                 y = mean),\n             stat = \"identity\",\n             color = \"red\",\n             size = 1.5,\n             alpha = 1) +\n  labs(x = \"Maths Score\",\n       title = \"95% Confidence Interval Of Mean Maths Score By Race\")"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex04/hands_on_ex04_3.html#visualising-uncertainty-of-point-estimates-using-interactive-error-bars",
+    "href": "hands_on_ex/hands_on_ex04/hands_on_ex04_3.html#visualising-uncertainty-of-point-estimates-using-interactive-error-bars",
+    "title": "Hands-on Exercise 4 - Visual Statistical Analysis",
+    "section": "3.3. Visualising Uncertainty of Point Estimates Using Interactive Error Bars",
+    "text": "3.3. Visualising Uncertainty of Point Estimates Using Interactive Error Bars\nNext, we plot an interactive graph for the 99% confidence interval of mean maths score by race.\n\n\nCodes here\nshared_df = SharedData$new(sum_stat)\n\nbscols(widths = c(4,8),\n       ggplotly((ggplot(data = shared_df) +\n                   geom_errorbar(aes(x=reorder(RACE, -mean),\n                                     ymin=mean-2.58*se, \n                                     ymax=mean+2.58*se), \n                                 width=0.2, \n                                 colour=\"black\", \n                                 alpha=0.9, \n                                 size=0.5) +\n                    geom_point(aes(x=RACE, \n                                   y=mean, \n                                   text = paste(\"Race:\", `RACE`, \n                                                \"&lt;br&gt;N:\", `n`,\n                                                \"&lt;br&gt;Avg. Scores:\", round(mean, digits = 2),\n                                                \"&lt;br&gt;95% CI:[\", \n                                                round((mean-2.58*se), digits = 2), \",\",\n                                                round((mean+2.58*se), digits = 2),\"]\")),\n                               stat=\"identity\", \n                               color=\"red\", \n                               size = 1.5, \n                               alpha=1) + \n                   xlab(\"Race\") + \n                   ylab(\"Average Scores\") + \n                   theme_classic() + \n                   theme(axis.text.x = element_text(\n                     angle = 45, vjust = 0.5, hjust=1)) +\n                   ggtitle(\"99% Confidence interval of average /&lt;br&gt;maths scores by race\")), \n                tooltip = \"text\"), \n       DT::datatable(shared_df, \n                     rownames = FALSE, \n                     class=\"compact\", \n                     width=\"100%\", \n                     options = list(pageLength = 10,\n                                    scrollX=T), \n                     colnames = c(\"No. of pupils\", \n                                  \"Avg Scores\",\n                                  \"Std Dev\",\n                                  \"Std Error\")) %&gt;%\n         formatRound(columns=c('mean', 'sd', 'se'),\n                     digits=2))"
   }
 ]
