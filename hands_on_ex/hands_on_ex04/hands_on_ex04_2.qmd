@@ -1,0 +1,243 @@
+---
+title: "Hands-on Exercise 4 - Visual Statistical Analysis"
+date: "29 January 2024"
+date-modified: "last-modified"
+format: html
+execute: 
+  echo: true # all code chunks will appear
+  eval: true # all code chunks will run live
+  warning: false # do not display warning message
+editor: "visual"
+---
+
+# 1. Overview
+
+In the second part of the fourth lesson, we learn to use the `ggstatsplot` package to create visual graphics with statistical information. We will first explore some techniques with the Exam dataset before applying them to the Toyota Corolla case study.
+
+# 2. Exploring Exam Dataset
+
+## 2.1. Getting Starting
+
+### 2.1.1. Installing and Loading Packages
+
+We will use `ggstatsplot`in addition to`tidyverse` for this exercise:
+
+The packages to be used can be installed and loaded into the R environment using the `p_load()` function from the `pacman` package:
+
+```{r}
+pacman::p_load(tidyverse, ggstatsplot)
+```
+
+### 2.1.2. Import Data
+
+Next, we will read the data provided by the Course Instructor into the R environment. We will use the `read_csv()` function from the `readr` package found in `tidyverse`.
+
+```{r}
+exam_data <- read_csv("data/Exam_data.csv")
+glimpse(exam_data)
+```
+
+Using `glimpse` to view the data, it is observed that the data contains the examination grades of a batch of primary 3 students for the subjects English, Maths, and Science.
+
+## 2.2. One-Sample Test Using `gghistostats()`
+
+In this example, we use `gghistostats()` to build a visual of a one-sample test on English score:
+
+```{r}
+set.seed(1234)
+
+gghistostats(data = exam_data,
+             x = ENGLISH, 
+             type = "bayes",
+             test.value = 60,
+             xlab = "English Score")
+```
+
+::: callout-note
+-   A Bayes factor is the ratio of the likelihood of one hypothesis to the likelihood to another. It can be interpreted as a measure of the strength of evidence in favour of one theory among two competing theories.
+:::
+
+## 2.3. Two-Sample Mean Test Using `ggbetweenstats()`
+
+In this example, we use `ggbetweenstats()` to build a visual of a two-sample mean test of Maths score by gender:
+
+```{r}
+ggbetweenstats(data = exam_data,
+               x = GENDER, 
+               y = MATHS,
+               type = "np",
+               messages = FALSE)
+```
+
+## 2.4. One-Way ANOVA Test Using `ggbetweenstats()`
+
+In this example, we use `ggbetweenstats()` to build a visual of a one-way ANOVA test of English score by race:
+
+```{r}
+ggbetweenstats(data = exam_data,
+               x = RACE, 
+               y = ENGLISH,
+               type = "p",
+               mean.ci = TRUE,
+               pairwise_comparisons = TRUE,
+               pairwise.display = "s",
+               p.adjust.method = "fdr",
+               messages = FALSE)
+```
+
+::: callout-tip
+-   "ns" = only **n**on-**s**ignificant
+
+-   "s" = only **s**ignificant
+
+-   "all" = everything
+:::
+
+## 2.5. Significant Test of Correlation Using `ggscatterstats()`
+
+In this example, we use `ggscatterstats()` to build a visual of a significant test of correlation between Maths and English scores:
+
+```{r}
+ggscatterstats(data = exam_data,
+               x = MATHS, 
+               y = ENGLISH,
+               marginal = FALSE)
+```
+
+## 2.6. Significant Test of Association (Dependence) Using `ggbarstats()`
+
+In this example, we use `ggbarstats()` to build a visual of a significant test of association after binning maths scores into a 4-class variable:
+
+```{r}
+exam1 <- exam_data %>%
+  mutate(MATHS_bins = cut(MATHS,
+                          breaks = c(0,60,75,85,100)))
+
+ggbarstats(data = exam1,
+               x = MATHS_bins, 
+               y = GENDER)
+```
+
+# 3. Toyota Corolla Case Study
+
+Using this case study, we will learn to visualise model diagnostic and model parameters by using the `parameters` package. The purpose of this study is to build a model to discover factors that affect prices of used-cars.
+
+## 3.1. Getting Starting
+
+### 3.1.1. Installing and Loading Packages
+
+We will load additional packages to be used into the R environment using the `p_load()` function from the `pacman` package:
+
+```{r}
+pacman::p_load(readxl, performance, parameters, see)
+```
+
+### 3.1.2. Import Data
+
+Next, we will read the data provided by the Course Instructor into the R environment. We will use the `read_xls()` function from the `readxl` package.
+
+```{r}
+car_resale <- read_xls("data/ToyotaCorolla.xls", 
+                       "data")
+glimpse(car_resale)
+```
+
+Using `glimpse` to view the data, it is observed that the data contains the details, vehicle parts and price of Toyota Corolla cars. 
+
+## 3.2. Multiple Regression Model using `lm()`
+
+We calibrate a multiple linear regression model by using the `lm()` function from the Base Stats provided on R.
+
+```{r}
+model <- lm(Price ~ Age_08_04 + Mfg_Year + KM + Weight + Guarantee_Period, 
+            data = car_resale)
+
+model
+```
+
+### 3.2.1. Model Diagnostic: Check for Multicollinearity
+
+We use the `check_collinearity()` function from the `performance` package to check for multicollinearity.
+
+```{r}
+check_collinearity(model)
+```
+
+```{r}
+check_col <- check_collinearity(model)
+plot(check_col)
+```
+
+### 3.2.2. Model Diagnostic: Check for Normality Assumption
+
+We use the `check_normality()` function from the `performance` package to check for normality.
+
+```{r}
+model1 <- lm(Price ~ Age_08_04 + KM + Weight + Guarantee_Period, 
+             data = car_resale)
+
+check_n <- check_normality(model1)
+
+plot(check_n)
+```
+
+### 3.2.3. Model Diagnostic: Check Model for Homogeneity of Variances
+
+We use the `check_heteroscedasticity()` function from the `performance` package to check for homogeneity of variances.
+
+```{r}
+check_h <- check_heteroscedasticity(model1)
+
+plot(check_h)
+```
+
+### 3.2.4. Model Diagnostic: Complete Check
+
+We use the `check_model()` function from the `performance` package to conduct a complete check.
+
+```{r}
+check_model(model1)
+```
+
+## 3.3. Visualising Regression Parameters`
+
+::: panel-tabset
+#### `plot()`
+
+We use the `plot()` function from the `see` package to visualise the parameters of the regression model.
+
+```{r}
+plot(parameters((model1)))
+```
+
+#### `ggcoefstats()`
+
+We use the `ggcoefstats()` function from the `ggstatsplot` package to visualise the parameters of the regression model.
+
+```{r}
+ggcoefstats(model1, 
+            output = "plot")
+```
+
+:::
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
