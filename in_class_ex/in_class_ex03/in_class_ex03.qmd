@@ -1,6 +1,6 @@
 ---
 title: "In-class Exercise 03"
-date: "13 January 2024"
+date: "22 January 2024"
 date-modified: "last-modified"
 format: html
 execute: 
@@ -9,3 +9,54 @@ execute:
   warning: false # do not display warning message
 editor: visual
 ---
+
+# Data Visualisation Makeover
+
+We were tasked to critique Figure 5 presented in the State of the Industry report prepared by the Data Visualization Society. The figure is on page 14 of the report found in this [link](https://drive.google.com/file/d/17tETrT7AFar3YUuooWwqgGdIYhmFpaOm/view?pli=1).
+
+-   organisation of the legends is confusing
+-   text on pie chart contradicts the legend (e.g. "Employee" is labelled on dark purple segment on pie chart instead of light purple segment)
+-   Employee + Other Roles and Employee And Freelance -- are they mutually exclusive?
+-   bar chart underneath pie chart is not clear -- how to read??
+
+# Tableau Exercise - Superstore
+
+## Create Additional Individual Plots
+
+We will continue from last week's in-class exercise completed on Tableau.
+
+First, we create a scatterplot of sales vs profit by state.
+
+By default, Tableau aggregates data by default to reduce the number of data points to be rendered. We can toggle this setting under Analysis.
+
+![](images/Screenshot%202024-01-27%20132403.png)
+
+![](images/Screenshot%202024-01-27%20132817.png)
+
+We can toggle the Level of Detail to be displayed on Tableau. For example, we can drag State into the Detail box to display the scatterplot by State
+
+![](images/Screenshot%202024-01-27%20132601-01.png)
+
+The data points are clustered together. We can use some in-built calculation function on Tableau to transform the raw data points into derived values such as percentile.
+
+The calculation functions can be accessed by clicking on the dropdown arrow next to the variable, and selecting Quick Table Calculation
+
+![](images/Screenshot%202024-01-27%20133021.png)
+
+# Tableau Exercise - Exam Data
+
+## scatterplot with marginal boxplot
+
+make individual plot
+
+make dashboard
+
+make coordinated linked view - all plots must have a common link (ID in this case)
+
+## Create Dashboard
+
+A dashboard displays a smaller view of each selected sheet on one single page when published to Tableau Public.
+
+## Create Story
+
+A Story allows us to present each Tableau sheet on a single page when published to Tableau Public.

@@ -49,8 +49,14 @@ website:
           - text: Hands-on Exercise 6
             href: hands_on_ex/hands_on_ex06/hands_on_ex06.html  
             
-          - text: Hands-on Exercise 7
+          - text: Hands-on Exercise 7.1
             href: hands_on_ex/hands_on_ex07/hands_on_ex07.html
+                        
+          - text: Hands-on Exercise 7.2
+            #href: hands_on_ex/hands_on_ex07/hands_on_ex07.html
+                        
+          - text: Hands-on Exercise 7.3
+            #href: hands_on_ex/hands_on_ex07/hands_on_ex07.html
             
           - text: Hands-on Exercise 8
             href: hands_on_ex/hands_on_ex08/hands_on_ex08.html
