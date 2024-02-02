@@ -495,5 +495,54 @@
     "title": "Take-home Exercise 02 - DataVis Makeover",
     "section": "4.3. Socioeconomic Status and Performance",
     "text": "4.3. Socioeconomic Status and Performance\n\nOriginalProposed ChangeFinishing Touches\n\n\n\n\n\n\n\n\n\nWhat’s great\n\n\n\n\nUsing a boxplot to analyse the distribution of scores for each subject helps to display a clear comparison in performance by socioeconomic status type.\nUse of the notch in the boxplot makes visualising the median between box plots easier.\nThe side-by-side arrangement of the plots make it easy for comparisons to be made.\n\n\n\n\n\n\n\n\n\nWhat can be improved\n\n\n\n\nStandardise the x- and y-axes using coord_cartesian() for better comparison of the height and width of each distribution.\nThe y-axis labels do not show that the values correspond to Average Plausible Values, instead it only indicates the subject.\nSocioeconomic status bins should be arranged in ascending order (Low, Lower-Middle, Upper-Middle, High) for better viewing experience.\n\n\n\n\n\nIn this proposed plot, the following changes are made:\n\nWe use the coord_cartesian() function to set the same x- and y-axes limits such that all three graphs are plotted to the same scale. This ensures that and visual comparisons made regarding the distribution and height and spread of the plot are accurate.\nThe x- and y-axes labels are also updated to improve readability of the graph.\nTo main consistency with the previous plot, we use the same fill colour to distinguish each subject.\nThe ESCS_binned column is amended to reflect the correct ascending order of the categories.\n\n\n\nWhere magic happens\n# create new column defining grouping sequence\nstu_sg_data$ESCS_binned &lt;- factor(stu_sg_data$ESCS_binned,\n                            levels = c(\"Low\", \"Lower-Middle\", \"Upper-Middle\", \"Upper\"))\n\nmath_escs &lt;- ggplot(data = na.omit(stu_sg_data),\n               aes(x = ESCS_binned,\n                   y = MATH_PV_AVG)) +\n  geom_boxplot(notch = TRUE, \n               color = \"grey40\",\n               fill=\"mistyrose2\") +\n  xlab(\"Socioeconomic Status\") +\n  ylab(\"Average Plausible Value\") +\n  coord_cartesian(ylim = c(150, 850))\n\nread_escs &lt;- ggplot(data = na.omit(stu_sg_data),\n               aes(x = ESCS_binned,\n                   y = READ_PV_AVG)) +\n  geom_boxplot(notch = TRUE,\n               color = \"grey40\",\n               fill=\"azure2\") +\n  xlab(\"Socioeconomic Status\") +\n  ylab(\"Average Plausible Value\") +\n  coord_cartesian(ylim = c(150, 850))\n\nsci_escs &lt;- ggplot(data = na.omit(stu_sg_data),\n               aes(x = ESCS_binned,\n                   y = SCI_PV_AVG)) +\n  geom_boxplot(notch = TRUE,\n               color = \"grey40\",\n               fill=\"lightyellow1\") +\n  xlab(\"Socioeconomic Status\") +\n  ylab(\"Average Plausible Value\") +\n  coord_cartesian(ylim = c(150, 850)) \n\nmath_escs | read_escs | sci_escs\n\n\n\n\n\n\n\nWe make further improvements to the proposed plot by improving the aesthetics:\n\nTo maintain consistency with the previous plot, the theme is set to theme_classic().\nA title is added to each plot to reflect the respective subject, and an overall graph title is added.\n\n\n\nWhere magic happens\nmath_escs &lt;- ggplot(data = na.omit(stu_sg_data),\n               aes(x = ESCS_binned,\n                   y = MATH_PV_AVG)) +\n  geom_boxplot(notch = TRUE, \n               color = \"grey40\",\n               fill=\"mistyrose2\") +\n  xlab(\"Socioeconomic Status\") +\n  ylab(\"Average Plausible Value\") +\n  coord_cartesian(ylim = c(150, 850)) + \n  ggtitle(\"Maths\") +\n  theme_classic(base_size = 8) + \n  theme(axis.text.x = element_text(size = 5))\n\nread_escs &lt;- ggplot(data = na.omit(stu_sg_data),\n               aes(x = ESCS_binned,\n                   y = READ_PV_AVG)) +\n  geom_boxplot(notch = TRUE,\n               color = \"grey40\",\n               fill=\"azure2\") +\n  xlab(\"Socioeconomic Status\") +\n  ylab(\"Average Plausible Value\") +\n  coord_cartesian(ylim = c(150, 850)) + \n  ggtitle(\"Read\") +\n  theme_classic(base_size = 8) + \n  theme(axis.text.x = element_text(size = 5))\n\nsci_escs &lt;- ggplot(data = na.omit(stu_sg_data),\n               aes(x = ESCS_binned,\n                   y = SCI_PV_AVG)) +\n  geom_boxplot(notch = TRUE,\n               color = \"grey40\",\n               fill=\"lightyellow1\") +\n  xlab(\"Socioeconomic Status\") +\n  ylab(\"Average Plausible Value\") +\n  coord_cartesian(ylim = c(150, 850)) + \n  ggtitle(\"Science\") +\n  theme_classic(base_size = 8) + \n  theme(axis.text.x = element_text(size = 5))\n\n(math_escs | read_escs | sci_escs) + plot_annotation(\n  title = 'Relationship Between Socioeconomic Status and Performance in Each Subject')"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex04/hands_on_ex04.html",
+    "href": "hands_on_ex/hands_on_ex04/hands_on_ex04.html",
+    "title": "Hands-on Exercise 04 - Visualising Distributions",
+    "section": "",
+    "text": "In the first part of the fourth lesson, we learn to visualise distributions using ridgeline and raincloud plots by using ggplot2 and its extensions."
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex04/hands_on_ex04.html#installing-and-loading-packages",
+    "href": "hands_on_ex/hands_on_ex04/hands_on_ex04.html#installing-and-loading-packages",
+    "title": "Hands-on Exercise 04 - Visualising Distributions",
+    "section": "2.1. Installing and Loading Packages",
+    "text": "2.1. Installing and Loading Packages\nWe will use the following R packages in addition to tidyverse and ggthemes for this exercise:\n\nggdist: ggplot2 extension designed for visualising distributions and uncertainty\nggridges: to create partially overlapping line plots to visualise changes in distribution over time or space\ncolorspace: toolbox for manipulating colours and palettes\n\nThe packages to be used can be installed and loaded into the R environment using the p_load() function from the pacman package:\n\npacman::p_load(tidyverse, ggthemes, \n               ggdist, ggridges, colorspace)"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex04/hands_on_ex04.html#import-data",
+    "href": "hands_on_ex/hands_on_ex04/hands_on_ex04.html#import-data",
+    "title": "Hands-on Exercise 04 - Visualising Distributions",
+    "section": "2.2. Import Data",
+    "text": "2.2. Import Data\nNext, we will read the data provided by the Course Instructor into the R environment. We will use the read_csv() function from the readr package found in tidyverse.\n\nexam_data &lt;- read_csv(\"data/Exam_data.csv\")\nglimpse(exam_data)\n\nRows: 322\nColumns: 7\n$ ID      &lt;chr&gt; \"Student321\", \"Student305\", \"Student289\", \"Student227\", \"Stude…\n$ CLASS   &lt;chr&gt; \"3I\", \"3I\", \"3H\", \"3F\", \"3I\", \"3I\", \"3I\", \"3I\", \"3I\", \"3H\", \"3…\n$ GENDER  &lt;chr&gt; \"Male\", \"Female\", \"Male\", \"Male\", \"Male\", \"Female\", \"Male\", \"M…\n$ RACE    &lt;chr&gt; \"Malay\", \"Malay\", \"Chinese\", \"Chinese\", \"Malay\", \"Malay\", \"Chi…\n$ ENGLISH &lt;dbl&gt; 21, 24, 26, 27, 27, 31, 31, 31, 33, 34, 34, 36, 36, 36, 37, 38…\n$ MATHS   &lt;dbl&gt; 9, 22, 16, 77, 11, 16, 21, 18, 19, 49, 39, 35, 23, 36, 49, 30,…\n$ SCIENCE &lt;dbl&gt; 15, 16, 16, 31, 25, 16, 25, 27, 15, 37, 42, 22, 32, 36, 35, 45…\n\n\nUsing glimpse to view the data, it is observed that the data contains the examination grades of a batch of primary 3 students for the subjects English, Maths, and Science."
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex04/hands_on_ex04.html#plotting-a-half-eye-graph",
+    "href": "hands_on_ex/hands_on_ex04/hands_on_ex04.html#plotting-a-half-eye-graph",
+    "title": "Hands-on Exercise 04 - Visualising Distributions",
+    "section": "4.1. Plotting a Half Eye Graph",
+    "text": "4.1. Plotting a Half Eye Graph\nThe first step to creating a raincloud plot is to create a half eye plot. This can be done using the stat_halfeye() function from the ggdist package. In this example, we plot English grades against Race.\n\nggplot(data = exam_data,\n       aes(x = RACE,\n           y = ENGLISH)) +\n  stat_halfeye(adjust = 0.5,\n               justification = -0.2,\n               .width = 0,\n               point_color = NA) +\n  ggtitle(\"Half Eye Plot Is The First Step\")"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex04/hands_on_ex04.html#adding-a-boxplot",
+    "href": "hands_on_ex/hands_on_ex04/hands_on_ex04.html#adding-a-boxplot",
+    "title": "Hands-on Exercise 04 - Visualising Distributions",
+    "section": "4.2. Adding a Boxplot",
+    "text": "4.2. Adding a Boxplot\nNext, we add a boxplot to the half eye plot using geom_boxplot().\n\nggplot(data = exam_data,\n       aes(x = RACE,\n           y = ENGLISH)) +\n  stat_halfeye(adjust = 0.5,\n               justification = -0.2,\n               .width = 0,\n               point_color = NA) +\n  geom_boxplot(width = 0.1,\n               outlier.shape = NA) +\n  ggtitle(\"Next We Add A Boxplot\")"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex04/hands_on_ex04.html#adding-a-half-dotplot",
+    "href": "hands_on_ex/hands_on_ex04/hands_on_ex04.html#adding-a-half-dotplot",
+    "title": "Hands-on Exercise 04 - Visualising Distributions",
+    "section": "4.3. Adding a Half-Dotplot",
+    "text": "4.3. Adding a Half-Dotplot\nThe third step requires use to add in the “raindrops” in the form of a dotplot. This can be done using the stat_dots() function of the ggdist package. This creates a half-dotplot:\n\nggplot(data = exam_data,\n       aes(x = RACE,\n           y = ENGLISH)) +\n  stat_halfeye(adjust = 0.5,\n               justification = -0.2,\n               .width = 0,\n               point_color = NA) +\n  geom_boxplot(width = 0.1,\n               outlier.shape = NA) +\n  stat_dots(side = \"left\",\n            justification = 1.2,\n            binwidth = 0.5,\n            dotsize = 2) +\n  ggtitle(\"Thirdly, We Add A Dotplot\")"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex04/hands_on_ex04.html#let-it-rain-insights",
+    "href": "hands_on_ex/hands_on_ex04/hands_on_ex04.html#let-it-rain-insights",
+    "title": "Hands-on Exercise 04 - Visualising Distributions",
+    "section": "4.4. Let It Rain (Insights)",
+    "text": "4.4. Let It Rain (Insights)\nLastly, we use the coord_flip() function to rotate the chart to complete the raincloud appearance.\n\nggplot(data = exam_data,\n       aes(x = RACE,\n           y = ENGLISH)) +\n  stat_halfeye(adjust = 0.5,\n               justification = -0.2,\n               .width = 0,\n               point_color = NA) +\n  geom_boxplot(width = 0.1,\n               outlier.shape = NA) +\n  stat_dots(side = \"left\",\n            justification = 1.2,\n            binwidth = 0.5,\n            dotsize = 2) +\n  coord_flip() +\n  theme_classic() +\n  ggtitle(\"Raincloud Plot\")"
   }
 ]

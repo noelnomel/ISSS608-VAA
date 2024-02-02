@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-01-13">
+<meta name="dcterms.date" content="2024-01-22">
 
 <title>Noel’s Learning Journey in Visual Analytics - In-class Exercise 03</title>
 <style>
@@ -214,7 +214,23 @@ ul.task-list li input[type="checkbox"] {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#data-visualisation-makeover" id="toc-data-visualisation-makeover" class="nav-link active" data-scroll-target="#data-visualisation-makeover">Data Visualisation Makeover</a></li>
+  <li><a href="#tableau-exercise---superstore" id="toc-tableau-exercise---superstore" class="nav-link" data-scroll-target="#tableau-exercise---superstore">Tableau Exercise - Superstore</a>
+  <ul class="collapse">
+  <li><a href="#create-additional-individual-plots" id="toc-create-additional-individual-plots" class="nav-link" data-scroll-target="#create-additional-individual-plots">Create Additional Individual Plots</a></li>
+  </ul></li>
+  <li><a href="#tableau-exercise---exam-data" id="toc-tableau-exercise---exam-data" class="nav-link" data-scroll-target="#tableau-exercise---exam-data">Tableau Exercise - Exam Data</a>
+  <ul class="collapse">
+  <li><a href="#scatterplot-with-marginal-boxplot" id="toc-scatterplot-with-marginal-boxplot" class="nav-link" data-scroll-target="#scatterplot-with-marginal-boxplot">scatterplot with marginal boxplot</a></li>
+  <li><a href="#create-dashboard" id="toc-create-dashboard" class="nav-link" data-scroll-target="#create-dashboard">Create Dashboard</a></li>
+  <li><a href="#create-story" id="toc-create-story" class="nav-link" data-scroll-target="#create-story">Create Story</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -232,14 +248,14 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">January 13, 2024</p>
+      <p class="date">January 22, 2024</p>
     </div>
   </div>
   
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">January 13, 2024</p>
+      <p class="date-modified">January 27, 2024</p>
     </div>
   </div>
     
@@ -248,8 +264,51 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
+<section id="data-visualisation-makeover" class="level1">
+<h1>Data Visualisation Makeover</h1>
+<p>We were tasked to critique Figure 5 presented in the State of the Industry report prepared by the Data Visualization Society. The figure is on page 14 of the report found in this <a href="https://drive.google.com/file/d/17tETrT7AFar3YUuooWwqgGdIYhmFpaOm/view?pli=1">link</a>.</p>
+<ul>
+<li>organisation of the legends is confusing</li>
+<li>text on pie chart contradicts the legend (e.g.&nbsp;“Employee” is labelled on dark purple segment on pie chart instead of light purple segment)</li>
+<li>Employee + Other Roles and Employee And Freelance – are they mutually exclusive?</li>
+<li>bar chart underneath pie chart is not clear – how to read??</li>
+</ul>
+</section>
+<section id="tableau-exercise---superstore" class="level1">
+<h1>Tableau Exercise - Superstore</h1>
+<section id="create-additional-individual-plots" class="level2">
+<h2 class="anchored" data-anchor-id="create-additional-individual-plots">Create Additional Individual Plots</h2>
+<p>We will continue from last week’s in-class exercise completed on Tableau.</p>
+<p>First, we create a scatterplot of sales vs profit by state.</p>
+<p>By default, Tableau aggregates data by default to reduce the number of data points to be rendered. We can toggle this setting under Analysis.</p>
+<p><img src="images/Screenshot 2024-01-27 132403.png" class="img-fluid"></p>
+<p><img src="images/Screenshot 2024-01-27 132817.png" class="img-fluid"></p>
+<p>We can toggle the Level of Detail to be displayed on Tableau. For example, we can drag State into the Detail box to display the scatterplot by State</p>
+<p><img src="images/Screenshot 2024-01-27 132601-01.png" class="img-fluid"></p>
+<p>The data points are clustered together. We can use some in-built calculation function on Tableau to transform the raw data points into derived values such as percentile.</p>
+<p>The calculation functions can be accessed by clicking on the dropdown arrow next to the variable, and selecting Quick Table Calculation</p>
+<p><img src="images/Screenshot 2024-01-27 133021.png" class="img-fluid"></p>
+</section>
+</section>
+<section id="tableau-exercise---exam-data" class="level1">
+<h1>Tableau Exercise - Exam Data</h1>
+<section id="scatterplot-with-marginal-boxplot" class="level2">
+<h2 class="anchored" data-anchor-id="scatterplot-with-marginal-boxplot">scatterplot with marginal boxplot</h2>
+<p>make individual plot</p>
+<p>make dashboard</p>
+<p>make coordinated linked view - all plots must have a common link (ID in this case)</p>
+</section>
+<section id="create-dashboard" class="level2">
+<h2 class="anchored" data-anchor-id="create-dashboard">Create Dashboard</h2>
+<p>A dashboard displays a smaller view of each selected sheet on one single page when published to Tableau Public.</p>
+</section>
+<section id="create-story" class="level2">
+<h2 class="anchored" data-anchor-id="create-story">Create Story</h2>
+<p>A Story allows us to present each Tableau sheet on a single page when published to Tableau Public.</p>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

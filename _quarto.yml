@@ -19,8 +19,17 @@ website:
           - text: Hands-on Exercise 3.2 Animated Visualisations
             href: hands_on_ex/hands_on_ex03/hands_on_ex03_2.html
             
-          - text: Hands-on Exercise 4
+          - text: Hands-on Exercise 4.1 Visualising Distributions
             href: hands_on_ex/hands_on_ex04/hands_on_ex04.html
+
+          - text: Hands-on Exercise 4.2 
+            #href:
+
+          - text: Hands-on Exercise 4.3 
+            #href: 
+            
+          - text: Hands-on Exercise 4.4 
+            #href: 
             
           - text: Hands-on Exercise 5
             href: hands_on_ex/hands_on_ex05/hands_on_ex05.html           

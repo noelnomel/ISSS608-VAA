@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-01-13">
+<meta name="dcterms.date" content="2024-01-29">
 
-<title>Noel’s Learning Journey in Visual Analytics - Hands-on Exercise 04</title>
+<title>Noel’s Learning Journey in Visual Analytics - Hands-on Exercise 04 - Visualising Distributions</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -104,8 +138,11 @@ ul.task-list li input[type="checkbox"] {
   </li>  
         <li>
     <a class="dropdown-item" href="../../hands_on_ex/hands_on_ex04/hands_on_ex04.html" rel="" target="">
- <span class="dropdown-text">Hands-on Exercise 4</span></a>
+ <span class="dropdown-text">Hands-on Exercise 4.1 Visualising Distributions</span></a>
   </li>  
+        <li class="dropdown-header">Hands-on Exercise 4.2</li>
+        <li class="dropdown-header">Hands-on Exercise 4.3</li>
+        <li class="dropdown-header">Hands-on Exercise 4.4</li>
         <li>
     <a class="dropdown-item" href="../../hands_on_ex/hands_on_ex05/hands_on_ex05.html" rel="" target="">
  <span class="dropdown-text">Hands-on Exercise 5</span></a>
@@ -214,14 +251,33 @@ ul.task-list li input[type="checkbox"] {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">1. Overview</a></li>
+  <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started">2. Getting Started</a>
+  <ul class="collapse">
+  <li><a href="#installing-and-loading-packages" id="toc-installing-and-loading-packages" class="nav-link" data-scroll-target="#installing-and-loading-packages">2.1. Installing and Loading Packages</a></li>
+  <li><a href="#import-data" id="toc-import-data" class="nav-link" data-scroll-target="#import-data">2.2. Import Data</a></li>
+  </ul></li>
+  <li><a href="#ridgeline-plot" id="toc-ridgeline-plot" class="nav-link" data-scroll-target="#ridgeline-plot">3. Ridgeline Plot</a></li>
+  <li><a href="#raincloud-plot" id="toc-raincloud-plot" class="nav-link" data-scroll-target="#raincloud-plot">4. Raincloud Plot</a>
+  <ul class="collapse">
+  <li><a href="#plotting-a-half-eye-graph" id="toc-plotting-a-half-eye-graph" class="nav-link" data-scroll-target="#plotting-a-half-eye-graph">4.1. Plotting a Half Eye Graph</a></li>
+  <li><a href="#adding-a-boxplot" id="toc-adding-a-boxplot" class="nav-link" data-scroll-target="#adding-a-boxplot">4.2. Adding a Boxplot</a></li>
+  <li><a href="#adding-a-half-dotplot" id="toc-adding-a-half-dotplot" class="nav-link" data-scroll-target="#adding-a-half-dotplot">4.3. Adding a Half-Dotplot</a></li>
+  <li><a href="#let-it-rain-insights" id="toc-let-it-rain-insights" class="nav-link" data-scroll-target="#let-it-rain-insights">4.4. Let It Rain (Insights)</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Hands-on Exercise 04</h1>
+<h1 class="title">Hands-on Exercise 04 - Visualising Distributions</h1>
 </div>
 
 
@@ -232,14 +288,14 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">January 13, 2024</p>
+      <p class="date">January 29, 2024</p>
     </div>
   </div>
   
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">January 13, 2024</p>
+      <p class="date-modified">February 2, 2024</p>
     </div>
   </div>
     
@@ -248,8 +304,269 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
+<section id="overview" class="level1">
+<h1>1. Overview</h1>
+<p>In the first part of the fourth lesson, we learn to visualise distributions using ridgeline and raincloud plots by using <code>ggplot2</code> and its extensions.</p>
+</section>
+<section id="getting-started" class="level1">
+<h1>2. Getting Started</h1>
+<section id="installing-and-loading-packages" class="level2">
+<h2 class="anchored" data-anchor-id="installing-and-loading-packages">2.1. Installing and Loading Packages</h2>
+<p>We will use the following R packages in addition to <code>tidyverse</code> and <code>ggthemes</code> for this exercise:</p>
+<ol type="1">
+<li><p><a href="https://mjskay.github.io/ggdist"><code>ggdist</code></a>: <code>ggplot2</code> extension designed for visualising distributions and uncertainty</p></li>
+<li><p><a href="https://wilkelab.org/ggridges"><code>ggridges</code></a>: to create partially overlapping line plots to visualise changes in distribution over time or space</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/colorspace/vignettes/colorspace"><code>colorspace</code></a>: toolbox for manipulating colours and palettes</p></li>
+</ol>
+<p>The packages to be used can be installed and loaded into the R environment using the <code>p_load()</code> function from the <code>pacman</code> package:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, ggthemes, </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>               ggdist, ggridges, colorspace)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="import-data" class="level2">
+<h2 class="anchored" data-anchor-id="import-data">2.2. Import Data</h2>
+<p>Next, we will read the data provided by the Course Instructor into the R environment. We will use the <code>read_csv()</code> function from the <code>readr</code> package found in <code>tidyverse</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>exam_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/Exam_data.csv"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(exam_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 322
+Columns: 7
+$ ID      &lt;chr&gt; "Student321", "Student305", "Student289", "Student227", "Stude…
+$ CLASS   &lt;chr&gt; "3I", "3I", "3H", "3F", "3I", "3I", "3I", "3I", "3I", "3H", "3…
+$ GENDER  &lt;chr&gt; "Male", "Female", "Male", "Male", "Male", "Female", "Male", "M…
+$ RACE    &lt;chr&gt; "Malay", "Malay", "Chinese", "Chinese", "Malay", "Malay", "Chi…
+$ ENGLISH &lt;dbl&gt; 21, 24, 26, 27, 27, 31, 31, 31, 33, 34, 34, 36, 36, 36, 37, 38…
+$ MATHS   &lt;dbl&gt; 9, 22, 16, 77, 11, 16, 21, 18, 19, 49, 39, 35, 23, 36, 49, 30,…
+$ SCIENCE &lt;dbl&gt; 15, 16, 16, 31, 25, 16, 25, 27, 15, 37, 42, 22, 32, 36, 35, 45…</code></pre>
+</div>
+</div>
+<p>Using <code>glimpse</code> to view the data, it is observed that the data contains the examination grades of a batch of primary 3 students for the subjects English, Maths, and Science.</p>
+</section>
+</section>
+<section id="ridgeline-plot" class="level1">
+<h1>3. Ridgeline Plot</h1>
+<p>A ridgeline plot is a visualisation technique that reveals the distribution of a numeric value for several groups or over different time periods.</p>
+<p>Ridgeline plots are useful when there are more than five groups to be represented on the plot. This is because space is used more efficiently in a ridgeline plot due to the overlaps. Ridgeline plots also work well when there are clear patterns in the results, such as obvious rankings across groups.</p>
+<p>We can use the <code>ggridges</code> package to plot ridgeline plots. In this package, we use <code>geom_ridgeline()</code> to draw the ridgelines and <code>geom_density_ridges()</code> to draw the estimated data densities using ridgelines.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true"><code>geom_density_ridges()</code></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Varying Fill Colours</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Mapping Probabilities</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false">Mapping Quantile Lines</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-5" role="tab" aria-controls="tabset-1-5" aria-selected="false">Mapping Specified Quantile Cut-Points</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="cell">
+<details>
+<summary>Codes here</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> exam_data,</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> ENGLISH,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> CLASS)) <span class="sc">+</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density_ridges</span>(</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">scale =</span> <span class="dv">3</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">rel_min_height =</span> <span class="fl">0.01</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">bandwidth =</span> <span class="fl">3.4</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="fu">lighten</span>(<span class="st">'#7097BB'</span>, <span class="fl">0.3</span>),</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"white"</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"English Grades"</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(<span class="at">name =</span> <span class="cn">NULL</span>,</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>                   <span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">add =</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">2.6</span>))) <span class="sc">+</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_ridges</span>() <span class="sc">+</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Distribution of English Grades by Class"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="hands_on_ex04_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p>We can use the <code>geom_ridgeline_gradient()</code> or the <code>geom_density_ridges_gradient()</code> functions that allow for varying fill colours.</p>
+<div class="cell">
+<details>
+<summary>Codes here</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> exam_data,</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> ENGLISH,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> CLASS,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> <span class="fu">stat</span>(x))) <span class="sc">+</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density_ridges_gradient</span>(</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">scale =</span> <span class="dv">3</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">rel_min_height =</span> <span class="fl">0.01</span>) <span class="sc">+</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">name =</span> <span class="st">"Temp. [F]"</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>                        <span class="at">option =</span> <span class="st">"C"</span>) <span class="sc">+</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"English Grades"</span>,</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(<span class="at">name =</span> <span class="cn">NULL</span>,</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>                   <span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">add =</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">2.6</span>))) <span class="sc">+</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_ridges</span>() <span class="sc">+</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Distribution of English Grades by Class (Varying Fill)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="hands_on_ex04_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<p>We can use the <code>stat_density_ridges()</code> function to map probabilities onto the ridgeline plot. In the example below, we use <code>stat(ecdf)</code> to map the empirical cumulative density function for the distribution of English grades.</p>
+<div class="cell">
+<details>
+<summary>Codes here</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> exam_data,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> ENGLISH,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> CLASS,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> <span class="fl">0.5</span> <span class="sc">-</span> <span class="fu">abs</span>(<span class="fl">0.5</span><span class="sc">-</span><span class="fu">stat</span>(ecdf)))) <span class="sc">+</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_density_ridges</span>(<span class="at">geom =</span> <span class="st">"density_ridges_gradient"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>                      <span class="at">calc_ecdf =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">name =</span> <span class="st">"Tail Probability"</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>                       <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_ridges</span>() <span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Distribution of English Grades by Class (Probability)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="hands_on_ex04_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+<div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
+<p>We can fill a ridgeline plot by quantile using <code>geom_density_ridges_gradient()</code> and the calculated <code>stat(quantile)</code>:</p>
+<div class="cell">
+<details>
+<summary>Codes here</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(exam_data,</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> ENGLISH, </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> CLASS, </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> <span class="fu">factor</span>(<span class="fu">stat</span>(quantile)))) <span class="sc">+</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_density_ridges</span>(<span class="at">geom =</span> <span class="st">"density_ridges_gradient"</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>                      <span class="at">calc_ecdf =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>                      <span class="at">quantiles =</span> <span class="dv">4</span>, </span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>                      <span class="at">quantile_lines =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_d</span>(<span class="at">name =</span> <span class="st">"Quartiles"</span>) <span class="sc">+</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_ridges</span>() <span class="sc">+</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Distribution of English Grades by Class (Quantile)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="hands_on_ex04_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+<div id="tabset-1-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-5-tab">
+<p>Instead of using a defined number of quantiles, we can specify the quantiles using cut points. In this example, we specify the quantile cut points to be 2.5% and 07.5% tails:</p>
+<div class="cell">
+<details>
+<summary>Codes here</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(exam_data,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> ENGLISH, </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> CLASS, </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> <span class="fu">factor</span>(<span class="fu">stat</span>(quantile)))) <span class="sc">+</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_density_ridges</span>(<span class="at">geom =</span> <span class="st">"density_ridges_gradient"</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>                      <span class="at">calc_ecdf =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>                      <span class="at">quantiles =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>), </span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>                      <span class="at">quantile_lines =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">name =</span> <span class="st">"Probability"</span>,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>                    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#FF0000A0"</span>, <span class="st">"#A0A0A0A0"</span>, <span class="st">"#0000FFA0"</span>),</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>                    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"(0, 0.025]"</span>, <span class="st">"(0.025, 0.975]"</span>, <span class="st">"(0.975, 1]"</span>)) <span class="sc">+</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_ridges</span>() <span class="sc">+</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Distribution of English Grades by Class (Quantile)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="hands_on_ex04_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="raincloud-plot" class="level1">
+<h1>4. Raincloud Plot</h1>
+<p>Raincloud Plot is a data visualisation technique that combines a half-density plot and a half-dotplot. The half-density plot forms the “raincloud” while the half-dotplot forms the “raindrops”. This visualisation technique highlights where densities are clustered, thus enhancing the traditional boxplot.</p>
+<section id="plotting-a-half-eye-graph" class="level2">
+<h2 class="anchored" data-anchor-id="plotting-a-half-eye-graph">4.1. Plotting a Half Eye Graph</h2>
+<p>The first step to creating a raincloud plot is to create a half eye plot. This can be done using the <code>stat_halfeye()</code> function from the <code>ggdist</code> package. In this example, we plot English grades against Race.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> exam_data,</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> RACE,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> ENGLISH)) <span class="sc">+</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>(<span class="at">adjust =</span> <span class="fl">0.5</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">justification =</span> <span class="sc">-</span><span class="fl">0.2</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">.width =</span> <span class="dv">0</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">point_color =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Half Eye Plot Is The First Step"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hands_on_ex04_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="adding-a-boxplot" class="level2">
+<h2 class="anchored" data-anchor-id="adding-a-boxplot">4.2. Adding a Boxplot</h2>
+<p>Next, we add a boxplot to the half eye plot using <code>geom_boxplot()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> exam_data,</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> RACE,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> ENGLISH)) <span class="sc">+</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>(<span class="at">adjust =</span> <span class="fl">0.5</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">justification =</span> <span class="sc">-</span><span class="fl">0.2</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">.width =</span> <span class="dv">0</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">point_color =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">width =</span> <span class="fl">0.1</span>,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Next We Add A Boxplot"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hands_on_ex04_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="adding-a-half-dotplot" class="level2">
+<h2 class="anchored" data-anchor-id="adding-a-half-dotplot">4.3. Adding a Half-Dotplot</h2>
+<p>The third step requires use to add in the “raindrops” in the form of a dotplot. This can be done using the <code>stat_dots()</code> function of the <code>ggdist</code> package. This creates a half-dotplot:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> exam_data,</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> RACE,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> ENGLISH)) <span class="sc">+</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>(<span class="at">adjust =</span> <span class="fl">0.5</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">justification =</span> <span class="sc">-</span><span class="fl">0.2</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">.width =</span> <span class="dv">0</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">point_color =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">width =</span> <span class="fl">0.1</span>,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_dots</span>(<span class="at">side =</span> <span class="st">"left"</span>,</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">justification =</span> <span class="fl">1.2</span>,</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">binwidth =</span> <span class="fl">0.5</span>,</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>            <span class="at">dotsize =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Thirdly, We Add A Dotplot"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hands_on_ex04_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="let-it-rain-insights" class="level2">
+<h2 class="anchored" data-anchor-id="let-it-rain-insights">4.4. Let It Rain (Insights)</h2>
+<p>Lastly, we use the <code>coord_flip()</code> function to rotate the chart to complete the raincloud appearance.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> exam_data,</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> RACE,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> ENGLISH)) <span class="sc">+</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>(<span class="at">adjust =</span> <span class="fl">0.5</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">justification =</span> <span class="sc">-</span><span class="fl">0.2</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">.width =</span> <span class="dv">0</span>,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">point_color =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">width =</span> <span class="fl">0.1</span>,</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_dots</span>(<span class="at">side =</span> <span class="st">"left"</span>,</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">justification =</span> <span class="fl">1.2</span>,</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">binwidth =</span> <span class="fl">0.5</span>,</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>            <span class="at">dotsize =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Raincloud Plot"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hands_on_ex04_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
