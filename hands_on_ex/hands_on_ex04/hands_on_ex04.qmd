@@ -44,14 +44,13 @@ glimpse(exam_data)
 
 Using `glimpse` to view the data, it is observed that the data contains the examination grades of a batch of primary 3 students for the subjects English, Maths, and Science.
 
-
 # 3. Ridgeline Plot
 
 A ridgeline plot is a visualisation technique that reveals the distribution of a numeric value for several groups or over different time periods.
 
-Ridgeline plots are useful when there are more than five groups to be represented on the plot. This is because space is used more efficiently in a ridgeline plot due to the overlaps. Ridgeline plots also work well when there are clear patterns in the results, such as obvious rankings across groups. 
+Ridgeline plots are useful when there are more than five groups to be represented on the plot. This is because space is used more efficiently in a ridgeline plot due to the overlaps. Ridgeline plots also work well when there are clear patterns in the results, such as obvious rankings across groups.
 
-We can use the `ggridges` package to plot ridgeline plots. In this package, we use `geom_ridgeline()` to draw the ridgelines and `geom_density_ridges()` to draw the estimated data densities using ridgelines. 
+We can use the `ggridges` package to plot ridgeline plots. In this package, we use `geom_ridgeline()` to draw the ridgelines and `geom_density_ridges()` to draw the estimated data densities using ridgelines.
 
 ::: panel-tabset
 #### `geom_density_ridges()`
@@ -146,7 +145,6 @@ ggplot(exam_data,
   ggtitle("Distribution of English Grades by Class (Quantile)")
 ```
 
-
 #### Mapping Specified Quantile Cut-Points
 
 Instead of using a defined number of quantiles, we can specify the quantiles using cut points. In this example, we specify the quantile cut points to be 2.5% and 07.5% tails:
@@ -169,12 +167,11 @@ ggplot(exam_data,
   theme_ridges() +
   ggtitle("Distribution of English Grades by Class (Quantile)")
 ```
-
 :::
 
 # 4. Raincloud Plot
 
-Raincloud Plot is a data visualisation technique that combines a half-density plot and a half-dotplot. The half-density plot forms the "raincloud" while the half-dotplot forms the "raindrops". This visualisation technique highlights where densities are clustered, thus enhancing the traditional boxplot. 
+Raincloud Plot is a data visualisation technique that combines a half-density plot and a half-dotplot. The half-density plot forms the "raincloud" while the half-dotplot forms the "raindrops". This visualisation technique highlights where densities are clustered, thus enhancing the traditional boxplot.
 
 ## 4.1. Plotting a Half Eye Graph
 
@@ -207,7 +204,6 @@ ggplot(data = exam_data,
                outlier.shape = NA) +
   ggtitle("Next We Add A Boxplot")
 ```
-
 
 ## 4.3. Adding a Half-Dotplot
 
@@ -252,14 +248,3 @@ ggplot(data = exam_data,
   theme_classic() +
   ggtitle("Raincloud Plot")
 ```
-
-
-
-
-
-
-
-
-
-
-

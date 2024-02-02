@@ -142,7 +142,7 @@ car_resale <- read_xls("data/ToyotaCorolla.xls",
 glimpse(car_resale)
 ```
 
-Using `glimpse` to view the data, it is observed that the data contains the details, vehicle parts and price of Toyota Corolla cars. 
+Using `glimpse` to view the data, it is observed that the data contains the details, vehicle parts and price of Toyota Corolla cars.
 
 ## 3.2. Multiple Regression Model using `lm()`
 
@@ -218,26 +218,4 @@ We use the `ggcoefstats()` function from the `ggstatsplot` package to visualise 
 ggcoefstats(model1, 
             output = "plot")
 ```
-
 :::
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
