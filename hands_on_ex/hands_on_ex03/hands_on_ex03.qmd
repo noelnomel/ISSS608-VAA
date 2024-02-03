@@ -401,7 +401,7 @@ crosstalk::bscols(gg,
 ```
 
 ::: callout-tip
-![](images/Screenshot 2024-02-03 143003.png)
+![](images/Screenshot%202024-02-03%20143003.png)
 
 Using crosstalk, we are able to link interactive functions such as highlighting selected data points and display the details of the selected points in the table.
 :::

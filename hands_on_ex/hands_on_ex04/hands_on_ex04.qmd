@@ -30,7 +30,7 @@ The packages to be used can be installed and loaded into the R environment using
 
 ```{r}
 pacman::p_load(tidyverse, ggthemes, 
-               ggdist, ggridges, colorspace)
+               ggdist, ggridges, colorspace, plotly)
 ```
 
 ## 2.2. Import Data
@@ -260,3 +260,5 @@ ggplot(data = exam_data,
   theme_classic() +
   ggtitle("Raincloud Plot")
 ```
+
+
