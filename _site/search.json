@@ -305,7 +305,7 @@
     "href": "hands_on_ex/hands_on_ex04/hands_on_ex04.html#plotting-a-half-eye-graph",
     "title": "Hands-on Exercise 04 - Visualising Distributions",
     "section": "4.1. Plotting a Half Eye Graph",
-    "text": "4.1. Plotting a Half Eye Graph\nThe first step to creating a raincloud plot is to create a half eye plot. This can be done using the stat_halfeye() function from the ggdist package. In this example, we plot English grades against Race.\n\nggplot(data = exam_data,\n       aes(x = RACE,\n           y = ENGLISH)) +\n  stat_halfeye(adjust = 0.5,\n               justification = -0.2,\n               .width = 0,\n               point_color = NA) +\n  ggtitle(\"Half Eye Plot Is The First Step\")"
+    "text": "4.1. Plotting a Half Eye Graph\nThe first step to creating a raincloud plot is to create a half eye plot, which is half of a violin plot. This can be done using the stat_halfeye() function from the ggdist package. In this example, we plot English grades against Race.\n\nggplot(data = exam_data,\n       aes(x = RACE,\n           y = ENGLISH)) +\n  stat_halfeye(adjust = 0.5,\n               justification = -0.2,\n               .width = 0,\n               point_color = NA) +\n  ggtitle(\"Half Eye Plot Is The First Step\")"
   },
   {
     "objectID": "hands_on_ex/hands_on_ex04/hands_on_ex04.html#adding-a-boxplot",

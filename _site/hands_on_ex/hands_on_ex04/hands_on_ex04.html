@@ -491,6 +491,7 @@ Important
 <p><img src="hands_on_ex04_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p>Once again, comparing classes 3A and 3B, we can tell that the top 50 percentile of 3A students perform better than the top 50 percentile of 3B students. In addition, the top 90 percentile of 3A students perform better than the top 90 percentile of 3B students. However, the lower 20 to 25 percentile of 3A and 3B students perform similarly in English.</p>
 </div>
 <div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
 <p>We can fill a ridgeline plot by quantile using <code>geom_density_ridges_gradient()</code> and the calculated <code>stat(quantile)</code>:</p>
@@ -546,7 +547,7 @@ Important
 <p>Raincloud Plot is a data visualisation technique that combines a half-density plot and a half-dotplot. The half-density plot forms the “raincloud” while the half-dotplot forms the “raindrops”. This visualisation technique highlights where densities are clustered, thus enhancing the traditional boxplot.</p>
 <section id="plotting-a-half-eye-graph" class="level2">
 <h2 class="anchored" data-anchor-id="plotting-a-half-eye-graph">4.1. Plotting a Half Eye Graph</h2>
-<p>The first step to creating a raincloud plot is to create a half eye plot. This can be done using the <code>stat_halfeye()</code> function from the <code>ggdist</code> package. In this example, we plot English grades against Race.</p>
+<p>The first step to creating a raincloud plot is to create a half eye plot, which is half of a violin plot. This can be done using the <code>stat_halfeye()</code> function from the <code>ggdist</code> package. In this example, we plot English grades against Race.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> exam_data,</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> RACE,</span>

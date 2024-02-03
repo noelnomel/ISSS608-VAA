@@ -1,6 +1,6 @@
 ---
 title: "Take-home Exercise 03"
-date: "13 January 2024"
+date: "4 February 2024"
 date-modified: "last-modified"
 format: html
 execute: 

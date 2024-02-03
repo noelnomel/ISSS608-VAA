@@ -134,6 +134,8 @@ ggplot(data = exam_data,
   ggtitle("Distribution of English Grades by Class (Probability)")
 ```
 
+Once again, comparing classes 3A and 3B, we can tell that the top 50 percentile of 3A students perform better than the top 50 percentile of 3B students. In addition, the top 90 percentile of 3A students perform better than the top 90 percentile of 3B students. However, the lower 20 to 25 percentile of 3A and 3B students perform similarly in English. 
+
 #### Mapping Quantile Lines
 
 We can fill a ridgeline plot by quantile using `geom_density_ridges_gradient()` and the calculated `stat(quantile)`:
@@ -185,7 +187,7 @@ Raincloud Plot is a data visualisation technique that combines a half-density pl
 
 ## 4.1. Plotting a Half Eye Graph
 
-The first step to creating a raincloud plot is to create a half eye plot. This can be done using the `stat_halfeye()` function from the `ggdist` package. In this example, we plot English grades against Race.
+The first step to creating a raincloud plot is to create a half eye plot, which is half of a violin plot. This can be done using the `stat_halfeye()` function from the `ggdist` package. In this example, we plot English grades against Race.
 
 ```{r}
 ggplot(data = exam_data,
