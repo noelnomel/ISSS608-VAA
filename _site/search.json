@@ -242,7 +242,7 @@
     "href": "hands_on_ex/hands_on_ex03/hands_on_ex03.html#plot_ly-vs-ggplotly",
     "title": "Hands-on Exercise 03 - Interactive Visualisation",
     "section": "4.1. plot_ly() vs ggplotly()",
-    "text": "4.1. plot_ly() vs ggplotly()\nWe create a scatterplot as an example to compare the methods between plot_ly() and ggplotly().\n\nplot_ly()ggplotly()\n\n\n\nplot_ly(data = exam_data,\n        x = ~MATHS,\n        y = ~ENGLISH,\n        color = ~RACE)\n\n\n\n\n\n\n\n\nmaths_eng &lt;- ggplot(data = exam_data,\n                    aes(x = MATHS,\n                        y = ENGLISH,\n                        color = RACE)) +\n  geom_point(size = 1) +\n  coord_cartesian(xlim = c(0,100),\n                  ylim = c(0,100))\n\nggplotly(maths_eng)\n\n\n\n\n\n\n\n\n\n\n\nTip\n\n\n\nWe create the plot and store it as a variable before passing it into ggplotly()."
+    "text": "4.1. plot_ly() vs ggplotly()\nWe create a scatterplot as an example to compare the methods between plot_ly() and ggplotly().\n\nplot_ly()ggplotly()\n\n\n\nplot_ly(data = exam_data,\n        x = ~MATHS,\n        y = ~ENGLISH,\n        color = ~RACE)\n\n\n\n\n\n\n\n\nmaths_eng &lt;- ggplot(data = exam_data,\n                    aes(x = MATHS,\n                        y = ENGLISH,\n                        color = RACE)) +\n  geom_point(size = 1) +\n  coord_cartesian(xlim = c(0,100),\n                  ylim = c(0,100))\n\nggplotly(maths_eng)\n\n\n\n\n\n\n\n\n\n\n\nTip\n\n\n\nWe create the plot and store it as a variable before passing it into ggplotly().\nWe see that interactive tools are included at the top right hand corner of the plot using ggplotly()."
   },
   {
     "objectID": "hands_on_ex/hands_on_ex03/hands_on_ex03.html#coordinated-multiple-views-1",

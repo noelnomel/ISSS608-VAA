@@ -326,6 +326,10 @@ ggplotly(maths_eng)
 
 ::: callout-tip
 We create the plot and store it as a variable before passing it into `ggplotly()`.
+
+We see that interactive tools are included at the top right hand corner of the plot using `ggplotly()`.
+
+![](images/Screenshot 2024-02-03 142123.png)
 :::
 :::
 
@@ -344,6 +348,7 @@ The following steps are involved in the creation of a coordinated linked plot us
 examdata <- highlight_key(exam_data)
 
 # Step 2: Create two plots
+# data = must point to the shared data created in step 1
 maths_eng <- ggplot(data = examdata,
                     aes(x = MATHS,
                         y = ENGLISH,
@@ -361,6 +366,7 @@ maths_sci <- ggplot(data = examdata,
                   ylim = c(0,100))
 
 # Step 3: Place both plots side-by-side
+# use subplot function instead of patchwork or crosstalk
 subplot(ggplotly(maths_eng),
         ggplotly(maths_sci))
 
