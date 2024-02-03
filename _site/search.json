@@ -726,5 +726,89 @@
     "title": "Hands-on Exercise 05 - Building Ternary Plot",
     "section": "2.2. Import Data",
     "text": "2.2. Import Data\nNext, we will read the data provided by the Course Instructor into the R environment. We will use the read_csv() function from the readr package found in tidyverse.\nUsing glimpse to view the data, it is observed that the data contains the examination grades of a batch of primary 3 students for the subjects English, Maths, and Science."
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex05/hands_on_ex05_2.html",
+    "href": "hands_on_ex/hands_on_ex05/hands_on_ex05_2.html",
+    "title": "Hands-on Exercise 05 - Visual Correlation Analysis",
+    "section": "",
+    "text": "In the first part of the fourth lesson, we learn to visualise distributions using ridgeline and raincloud plots by using ggplot2 and its extensions."
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex05/hands_on_ex05_2.html#installing-and-loading-packages",
+    "href": "hands_on_ex/hands_on_ex05/hands_on_ex05_2.html#installing-and-loading-packages",
+    "title": "Hands-on Exercise 05 - Visual Correlation Analysis",
+    "section": "2.1. Installing and Loading Packages",
+    "text": "2.1. Installing and Loading Packages\nWe will use the following R packages in addition to tidyverse and ggthemes for this exercise:\n\nggdist: ggplot2 extension designed for visualising distributions and uncertainty\nggridges: to create partially overlapping line plots to visualise changes in distribution over time or space\ncolorspace: toolbox for manipulating colours and palettes\n\nThe packages to be used can be installed and loaded into the R environment using the p_load() function from the pacman package:\n\npacman::p_load(tidyverse, ggthemes, \n               ggdist, ggridges, colorspace)"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex05/hands_on_ex05_2.html#import-data",
+    "href": "hands_on_ex/hands_on_ex05/hands_on_ex05_2.html#import-data",
+    "title": "Hands-on Exercise 05 - Visual Correlation Analysis",
+    "section": "2.2. Import Data",
+    "text": "2.2. Import Data\nNext, we will read the data provided by the Course Instructor into the R environment. We will use the read_csv() function from the readr package found in tidyverse.\nUsing glimpse to view the data, it is observed that the data contains the examination grades of a batch of primary 3 students for the subjects English, Maths, and Science."
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex05/hands_on_ex05_3.html",
+    "href": "hands_on_ex/hands_on_ex05/hands_on_ex05_3.html",
+    "title": "Hands-on Exercise 05 - Multivariate Analysis with Heatmap",
+    "section": "",
+    "text": "In the first part of the fourth lesson, we learn to visualise distributions using ridgeline and raincloud plots by using ggplot2 and its extensions."
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex05/hands_on_ex05_3.html#installing-and-loading-packages",
+    "href": "hands_on_ex/hands_on_ex05/hands_on_ex05_3.html#installing-and-loading-packages",
+    "title": "Hands-on Exercise 05 - Multivariate Analysis with Heatmap",
+    "section": "2.1. Installing and Loading Packages",
+    "text": "2.1. Installing and Loading Packages\nWe will use the following R packages in addition to tidyverse and ggthemes for this exercise:\n\nggdist: ggplot2 extension designed for visualising distributions and uncertainty\nggridges: to create partially overlapping line plots to visualise changes in distribution over time or space\ncolorspace: toolbox for manipulating colours and palettes\n\nThe packages to be used can be installed and loaded into the R environment using the p_load() function from the pacman package:\n\npacman::p_load(tidyverse, ggthemes, \n               ggdist, ggridges, colorspace)"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex05/hands_on_ex05_3.html#import-data",
+    "href": "hands_on_ex/hands_on_ex05/hands_on_ex05_3.html#import-data",
+    "title": "Hands-on Exercise 05 - Multivariate Analysis with Heatmap",
+    "section": "2.2. Import Data",
+    "text": "2.2. Import Data\nNext, we will read the data provided by the Course Instructor into the R environment. We will use the read_csv() function from the readr package found in tidyverse.\nUsing glimpse to view the data, it is observed that the data contains the examination grades of a batch of primary 3 students for the subjects English, Maths, and Science."
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex05/hands_on_ex05_4.html",
+    "href": "hands_on_ex/hands_on_ex05/hands_on_ex05_4.html",
+    "title": "Hands-on Exercise 05 - Multivariate Analysis with Parallel Coordinates Plot",
+    "section": "",
+    "text": "In the first part of the fourth lesson, we learn to visualise distributions using ridgeline and raincloud plots by using ggplot2 and its extensions."
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex05/hands_on_ex05_4.html#installing-and-loading-packages",
+    "href": "hands_on_ex/hands_on_ex05/hands_on_ex05_4.html#installing-and-loading-packages",
+    "title": "Hands-on Exercise 05 - Multivariate Analysis with Parallel Coordinates Plot",
+    "section": "2.1. Installing and Loading Packages",
+    "text": "2.1. Installing and Loading Packages\nWe will use the following R packages in addition to tidyverse and ggthemes for this exercise:\n\nggdist: ggplot2 extension designed for visualising distributions and uncertainty\nggridges: to create partially overlapping line plots to visualise changes in distribution over time or space\ncolorspace: toolbox for manipulating colours and palettes\n\nThe packages to be used can be installed and loaded into the R environment using the p_load() function from the pacman package:\n\npacman::p_load(tidyverse, ggthemes, \n               ggdist, ggridges, colorspace)"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex05/hands_on_ex05_4.html#import-data",
+    "href": "hands_on_ex/hands_on_ex05/hands_on_ex05_4.html#import-data",
+    "title": "Hands-on Exercise 05 - Multivariate Analysis with Parallel Coordinates Plot",
+    "section": "2.2. Import Data",
+    "text": "2.2. Import Data\nNext, we will read the data provided by the Course Instructor into the R environment. We will use the read_csv() function from the readr package found in tidyverse.\nUsing glimpse to view the data, it is observed that the data contains the examination grades of a batch of primary 3 students for the subjects English, Maths, and Science."
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex05/hands_on_ex05_5.html",
+    "href": "hands_on_ex/hands_on_ex05/hands_on_ex05_5.html",
+    "title": "Hands-on Exercise 5 - Treemap Visualisation",
+    "section": "",
+    "text": "In the first part of the fourth lesson, we learn to visualise distributions using ridgeline and raincloud plots by using ggplot2 and its extensions."
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex05/hands_on_ex05_5.html#installing-and-loading-packages",
+    "href": "hands_on_ex/hands_on_ex05/hands_on_ex05_5.html#installing-and-loading-packages",
+    "title": "Hands-on Exercise 5 - Treemap Visualisation",
+    "section": "2.1. Installing and Loading Packages",
+    "text": "2.1. Installing and Loading Packages\nWe will use the following R packages in addition to tidyverse and ggthemes for this exercise:\n\nggdist: ggplot2 extension designed for visualising distributions and uncertainty\nggridges: to create partially overlapping line plots to visualise changes in distribution over time or space\ncolorspace: toolbox for manipulating colours and palettes\n\nThe packages to be used can be installed and loaded into the R environment using the p_load() function from the pacman package:\n\npacman::p_load(tidyverse, ggthemes, \n               ggdist, ggridges, colorspace)"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex05/hands_on_ex05_5.html#import-data",
+    "href": "hands_on_ex/hands_on_ex05/hands_on_ex05_5.html#import-data",
+    "title": "Hands-on Exercise 5 - Treemap Visualisation",
+    "section": "2.2. Import Data",
+    "text": "2.2. Import Data\nNext, we will read the data provided by the Course Instructor into the R environment. We will use the read_csv() function from the readr package found in tidyverse.\nUsing glimpse to view the data, it is observed that the data contains the examination grades of a batch of primary 3 students for the subjects English, Maths, and Science."
   }
 ]
