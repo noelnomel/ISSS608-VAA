@@ -20,7 +20,7 @@ In the first part of the third lesson, we learn to create interactive data visua
 
 We will use the following R packages in addition to `tidyverse` and `patchwork` for this exercise:
 
-1.  [`ggiraph`](https://davidgohel.github.io/ggiraph): makes R graphing library interactive
+1.  [`ggiraph`](https://davidgohel.github.io/ggiraph): makes R graphing library interactive (additional resource: [ggiraph-book](https://www.ardata.fr/ggiraph-book/))
 
 2.  [`plotly`](https://plotly.com/r): provides extra themes, geoms, and scales for`ggplot2`
 
@@ -192,6 +192,10 @@ girafe(ggobj = maths,
          opts_hover_inv(css = "opacity:0.2;")
        ))
 ```
+
+::: callout-tip
+CSS colour codes can be obtained on this [link](https://www.htmlcsscolor.com/) :)
+:::
 
 ## 3.3. Combining `tooltip` and `data_id`
 

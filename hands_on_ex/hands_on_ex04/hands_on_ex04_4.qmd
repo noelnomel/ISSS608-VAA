@@ -89,6 +89,7 @@ funnel_plot(
   y_range = c(0, 0.05) 
 )
 ```
+
 ::: callout-note
 -   The `data_type` argument is used to change the default to "PR" for proportions.
 
@@ -223,32 +224,3 @@ fp_interact <- ggplotly(p,
 
 fp_interact
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
