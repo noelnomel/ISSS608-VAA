@@ -1,6 +1,6 @@
 ---
-title: "Hands-on Exercise 07 - Choropleth Mapping"
-date: "13 January 2024"
+title: "Hands-on Exercise 7 - Analytical Mapping"
+date: "3 February 2024"
 date-modified: "last-modified"
 format: html
 execute: 
