@@ -156,7 +156,8 @@ Next, we explore the use of the `data_id` aesthetic in the `ggiraph` package.
 maths <- ggplot(data = exam_data,
                 aes(x = MATHS)) +
   geom_dotplot_interactive(
-    aes(data_id = CLASS),
+    aes(data_id = CLASS,
+        tooltip = ID),
     stackgroups = TRUE,
     binwidth = 1,
     method = "histodot") +
