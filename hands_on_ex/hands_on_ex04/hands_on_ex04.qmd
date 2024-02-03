@@ -50,7 +50,11 @@ A ridgeline plot is a visualisation technique that reveals the distribution of a
 
 Ridgeline plots are useful when there are more than five groups to be represented on the plot. This is because space is used more efficiently in a ridgeline plot due to the overlaps. Ridgeline plots also work well when there are clear patterns in the results, such as obvious rankings across groups.
 
-We can use the `ggridges` package to plot ridgeline plots. In this package, we use `geom_ridgeline()` to draw the ridgelines and `geom_density_ridges()` to draw the estimated data densities using ridgelines.
+We can use the `ggridges` package to plot ridgeline plots. In this package, we use `geom_ridgeline()` (gives exact x and y values, need to define height) to draw the ridgelines and `geom_density_ridges()` (gives interpolated values) to draw the estimated data densities using ridgelines.
+
+::: callout-important
+When constructing a ridgeline plot, data must consist of one catoegorical and one continuous type. For example, when plotting time in months, it is safer to use months in its spelling form (Jan, Feb) instead of its numerical form (1, 2).
+:::
 
 ::: panel-tabset
 #### `geom_density_ridges()`
@@ -78,6 +82,12 @@ ggplot(data = exam_data,
   ggtitle("Distribution of English Grades by Class")
 ```
 
+::: callout-important
+As `geom_density_ridges()` uses interpolated values, it is best not to represent this plot in an interactive manner as it may confuse the user.
+:::
+
+We can observe that the distribution of English scores for classes 3A, 3B, 3C and 3D generally resemble a normal distribution. It is observed that the distribution of 3A is wider than that of 3B (bigger variability); this means that generally the students of 3B generally do almost equally well in English. 
+
 #### Varying Fill Colours
 
 We can use the `geom_ridgeline_gradient()` or the `geom_density_ridges_gradient()` functions that allow for varying fill colours.
@@ -93,7 +103,7 @@ ggplot(data = exam_data,
   geom_density_ridges_gradient(
     scale = 3,
     rel_min_height = 0.01) +
-  scale_fill_viridis_c(name = "Temp. [F]",
+  scale_fill_viridis_c(name = "Grades",
                         option = "C") +
   scale_x_continuous(
     name = "English Grades",

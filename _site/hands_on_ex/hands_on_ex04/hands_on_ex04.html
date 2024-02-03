@@ -386,7 +386,20 @@ $ SCIENCE &lt;dbl&gt; 15, 16, 16, 31, 25, 16, 25, 27, 15, 37, 42, 22, 32, 36, 35
 <h1>3. Ridgeline Plot</h1>
 <p>A ridgeline plot is a visualisation technique that reveals the distribution of a numeric value for several groups or over different time periods.</p>
 <p>Ridgeline plots are useful when there are more than five groups to be represented on the plot. This is because space is used more efficiently in a ridgeline plot due to the overlaps. Ridgeline plots also work well when there are clear patterns in the results, such as obvious rankings across groups.</p>
-<p>We can use the <code>ggridges</code> package to plot ridgeline plots. In this package, we use <code>geom_ridgeline()</code> to draw the ridgelines and <code>geom_density_ridges()</code> to draw the estimated data densities using ridgelines.</p>
+<p>We can use the <code>ggridges</code> package to plot ridgeline plots. In this package, we use <code>geom_ridgeline()</code> (gives exact x and y values, need to define height) to draw the ridgelines and <code>geom_density_ridges()</code> (gives interpolated values) to draw the estimated data densities using ridgelines.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When constructing a ridgeline plot, data must consist of one catoegorical and one continuous type. For example, when plotting time in months, it is safer to use months in its spelling form (Jan, Feb) instead of its numerical form (1, 2).</p>
+</div>
+</div>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true"><code>geom_density_ridges()</code></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Varying Fill Colours</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Mapping Probabilities</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false">Mapping Quantile Lines</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-5" role="tab" aria-controls="tabset-1-5" aria-selected="false">Mapping Specified Quantile Cut-Points</a></li></ul>
 <div class="tab-content">
@@ -416,6 +429,20 @@ $ SCIENCE &lt;dbl&gt; 15, 16, 16, 31, 25, 16, 25, 27, 15, 37, 42, 22, 32, 36, 35
 <p><img src="hands_on_ex04_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>As <code>geom_density_ridges()</code> uses interpolated values, it is best not to represent this plot in an interactive manner as it may confuse the user.</p>
+</div>
+</div>
+<p>We can observe that the distribution of English scores for classes 3A, 3B, 3C and 3D generally resemble a normal distribution. It is observed that the distribution of 3A is wider than that of 3B (bigger variability); this means that generally the students of 3B generally do almost equally well in English.</p>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <p>We can use the <code>geom_ridgeline_gradient()</code> or the <code>geom_density_ridges_gradient()</code> functions that allow for varying fill colours.</p>
@@ -429,7 +456,7 @@ $ SCIENCE &lt;dbl&gt; 15, 16, 16, 31, 25, 16, 25, 27, 15, 37, 42, 22, 32, 36, 35
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density_ridges_gradient</span>(</span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">scale =</span> <span class="dv">3</span>,</span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">rel_min_height =</span> <span class="fl">0.01</span>) <span class="sc">+</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">name =</span> <span class="st">"Temp. [F]"</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">name =</span> <span class="st">"Grades"</span>,</span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>                        <span class="at">option =</span> <span class="st">"C"</span>) <span class="sc">+</span></span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(</span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"English Grades"</span>,</span>
