@@ -55,11 +55,15 @@ agegp_aggregated <- pop_data %>%
 agegp_aggregated
 ```
 
-`spread()`: used to spread a key-value pair across multiple columns. 
-key: column from original data whose values will become variable names
-value: column from original data whose values will fill under new variables created from key
+::: callout-note
+-   `spread()`: used to 'spread' a key-value pair across multiple columns.
 
-In this example, each age group forms a new column and the corresponding population size is filled into the respective columns. 
+-   key: column from original data whose values will become variable names
+
+-   value: column from original data whose values will fill under new variables created from key
+
+In this example, each age group forms a new column and the corresponding population size is filled into the respective columns.
+:::
 
 # 3. Ternary Plot
 
@@ -69,7 +73,7 @@ In this example, each age group forms a new column and the corresponding populat
 We will first use the `ggtern()` function from the `ggtern` package to create a simple ternary plot.
 
 ```{r}
-#| fig-height: 12
+#| fig-height: 8
 #| fig-width: 10
 
 ggtern(data = agegp_aggregated,
@@ -78,9 +82,11 @@ ggtern(data = agegp_aggregated,
            z = Old)) +
   geom_point()
 ```
+
 #### Customsie Ternary Plot
 
 We can customise the ternary plot by adding a theme and a plot title:
+
 ```{r}
 ggtern(data = agegp_aggregated,
        aes(x = Young,
@@ -92,7 +98,17 @@ ggtern(data = agegp_aggregated,
 
 ```
 
-Some built-in themes include: theme_matrix(), theme_rgbg(), theme_rgbw(), and theme_tropical().
+::: callout-note
+Some built-in themes include:
+
+-   theme_matrix()
+
+-   theme_rgbg()
+
+-   theme_rgbw()
+
+-   theme_tropical()
+:::
 
 #### Interactive Ternary Plot
 
