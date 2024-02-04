@@ -12,87 +12,134 @@ editor: visual
 
 # 1. Overview
 
-In the first part of the fourth lesson, we learn to visualise distributions using ridgeline and raincloud plots by using `ggplot2` and its extensions.
+In the first part of the fifth lesson, we learn to plot ternary plots to display the distribution and variability of three-part composition data. The plot is displayed as a triangle with each side, representing one component, scaled from 0 t 1.
 
 # 2. Getting Started
 
 ## 2.1. Installing and Loading Packages
 
-We will use the following R packages in addition to `tidyverse` and `ggthemes` for this exercise:
+We will use the the `ggtern` package in addition to `tidyverse` and `plotly` for this exercise:
 
-1.  [`ggdist`](https://mjskay.github.io/ggdist): `ggplot2` extension designed for visualising distributions and uncertainty
-
-2.  [`ggridges`](https://wilkelab.org/ggridges): to create partially overlapping line plots to visualise changes in distribution over time or space
-
-3.  [`colorspace`](https://cran.r-project.org/web/packages/colorspace/vignettes/colorspace): toolbox for manipulating colours and palettes
+1.  [`ggtern`](http://www.ggtern.com/d/2.2.0/): `ggplot2` extension designed to create ternary diagrams
 
 The packages to be used can be installed and loaded into the R environment using the `p_load()` function from the `pacman` package:
 
 ```{r}
-pacman::p_load(tidyverse, ggthemes, 
-               ggdist, ggridges, colorspace)
+pacman::p_load(tidyverse, plotly, ggtern)
 ```
 
 ## 2.2. Import Data
 
-Next, we will read the data provided by the Course Instructor into the R environment. We will use the `read_csv()` function from the `readr` package found in `tidyverse`.
+For this exercise. we will use the [`Singapore Residents by Planning Area Subzone, Age Group, Sex, and Type of Dwelling, June 2000 - 2018`](https://www.singstat.gov.sg/find-data/search-by-theme/population/geographic-distribution/latest-data) data set available on SingStat. We will use import a tidied version provided by the Course Instructor into the R environment via the `read_csv()` function from the `readr` package found in `tidyverse`.
 
 ```{r}
-#| fig-height: 8
-#| fig-width: 10
-
+pop_data <- read_csv("data/respopagsex2000to2018_tidy.csv")
+glimpse(pop_data)
 ```
 
-Using `glimpse` to view the data, it is observed that the data contains the examination grades of a batch of primary 3 students for the subjects English, Maths, and Science.
+Using `glimpse` to view the data, it is observed that the data contains the Planning Area, Subzone, Age Group, Year, and Population.
 
-# 3. 
+Next, we use the `mutate()` function from the `dplyr` package to aggregate the Age Group: Young, Active, and Old. This will form the three-part composition data in the ternary diagram.
+
+```{r}
+agegp_aggregated <- pop_data %>%
+  mutate('Year' = as.character(Year)) %>%
+  spread(key = AG, value = Population) %>%
+  mutate(Young = rowSums(.[4:8])) %>%
+  mutate(Active = rowSums(.[9:16])) %>%
+  mutate(Old = rowSums(.[17:21])) %>%
+  mutate(Total = rowSums(.[22:24])) %>%
+  filter(Year == 2018) %>%
+  filter(Total > 0)
+
+agegp_aggregated
+```
+
+`spread()`: used to spread a key-value pair across multiple columns. 
+key: column from original data whose values will become variable names
+value: column from original data whose values will fill under new variables created from key
+
+In this example, each age group forms a new column and the corresponding population size is filled into the respective columns. 
+
+# 3. Ternary Plot
 
 ::: panel-tabset
-#### `geom_density_ridges()`
+#### Basic Teranary Plot
+
+We will first use the `ggtern()` function from the `ggtern` package to create a simple ternary plot.
 
 ```{r}
-#| code-fold: true
-#| code-summary: "Codes here"
+#| fig-height: 12
+#| fig-width: 10
+
+ggtern(data = agegp_aggregated,
+       aes(x = Young,
+           y = Active,
+           z = Old)) +
+  geom_point()
+```
+#### Customsie Ternary Plot
+
+We can customise the ternary plot by adding a theme and a plot title:
+```{r}
+ggtern(data = agegp_aggregated,
+       aes(x = Young,
+           y = Active,
+           z = Old)) +
+  geom_point() +
+  theme_tropical() + 
+  ggtitle("Population by Aggregated Age Group, 2018")
 
 ```
 
-#### Varying Fill Colours
+Some built-in themes include: theme_matrix(), theme_rgbg(), theme_rgbw(), and theme_tropical().
 
+#### Interactive Ternary Plot
 
 ```{r}
 #| code-fold: true
-#| code-summary: "Codes here"
+#| code-summary: "Function for Annotation Object"
 
+label <- function(txt) {
+  list(
+    text = txt, 
+    x = 0.1, y = 1,
+    ax = 0, ay = 0,
+    xref = "paper", yref = "paper", 
+    align = "center",
+    font = list(family = "serif", size = 15, color = "white"),
+    bgcolor = "#b3b3b3", bordercolor = "black", borderwidth = 2
+  )
+}
+```
+
+```{r}
+#| code-fold: true
+#| code-summary: "Function for Axis Formatting"
+
+axis <- function(txt) {
+  list(
+    title = txt, tickformat = ".0%", tickfont = list(size = 10)
+  )
+}
+
+ternaryAxes <- list(
+  aaxis = axis("Active"), 
+  baxis = axis("Young"), 
+  caxis = axis("Old")
+)
 
 ```
 
-#### Mapping Probabilities
-
-
 ```{r}
-#| code-fold: true
-#| code-summary: "Codes here"
-
-
-```
-
-#### Mapping Quantile Lines
-
-
-```{r}
-#| code-fold: true
-#| code-summary: "Codes here"
-
-
-```
-
-#### Mapping Specified Quantile Cut-Points
-
-
-
-```{r}
-#| code-fold: true
-#| code-summary: "Codes here"
+plot_ly(agegp_aggregated,
+        a = ~Active,
+        b = ~Young,
+        c = ~Old,
+        color = I("black"),
+        type = "scatterternary") %>%
+  layout(annotations = label("Ternary Markers"),
+         ternary = ternaryAxes)
 
 ```
 :::
