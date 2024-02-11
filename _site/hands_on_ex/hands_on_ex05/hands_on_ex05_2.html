@@ -298,7 +298,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#installing-and-loading-packages" id="toc-installing-and-loading-packages" class="nav-link" data-scroll-target="#installing-and-loading-packages">2.1. Installing and Loading Packages</a></li>
   <li><a href="#import-data" id="toc-import-data" class="nav-link" data-scroll-target="#import-data">2.2. Import Data</a></li>
   </ul></li>
-  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section">3.</a></li>
+  <li><a href="#pairs-method" id="toc-pairs-method" class="nav-link" data-scroll-target="#pairs-method">3. <code>pairs()</code> Method</a>
+  <ul class="collapse">
+  <li><a href="#basic-correlation-matrix" id="toc-basic-correlation-matrix" class="nav-link" data-scroll-target="#basic-correlation-matrix">3.1. Basic Correlation Matrix</a></li>
+  <li><a href="#customisation" id="toc-customisation" class="nav-link" data-scroll-target="#customisation">3.2. Customisation</a>
+  <ul class="collapse">
+  <li><a href="#drawing-one-corner" id="toc-drawing-one-corner" class="nav-link" data-scroll-target="#drawing-one-corner">3.2.1. Drawing One Corner</a></li>
+  <li><a href="#including-correlation-coefficient" id="toc-including-correlation-coefficient" class="nav-link" data-scroll-target="#including-correlation-coefficient">3.2.2. Including Correlation Coefficient</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#ggcormat-method" id="toc-ggcormat-method" class="nav-link" data-scroll-target="#ggcormat-method">4. <code>ggcormat()</code> Method</a>
+  <ul class="collapse">
+  <li><a href="#basic-corrgram" id="toc-basic-corrgram" class="nav-link" data-scroll-target="#basic-corrgram">4.1. Basic Corrgram</a></li>
+  </ul></li>
+  <li><a href="#building-multiple-plots" id="toc-building-multiple-plots" class="nav-link" data-scroll-target="#building-multiple-plots">5. Building Multiple Plots</a></li>
+  <li><a href="#corrplot-method" id="toc-corrplot-method" class="nav-link" data-scroll-target="#corrplot-method">6. <code>corrplot()</code> Method</a>
+  <ul class="collapse">
+  <li><a href="#visual-geometrics" id="toc-visual-geometrics" class="nav-link" data-scroll-target="#visual-geometrics">6.1.Visual Geometrics</a></li>
+  <li><a href="#layout" id="toc-layout" class="nav-link" data-scroll-target="#layout">6.2. Layout</a></li>
+  <li><a href="#mixed-layout" id="toc-mixed-layout" class="nav-link" data-scroll-target="#mixed-layout">6.3. Mixed Layout</a></li>
+  <li><a href="#significant-test" id="toc-significant-test" class="nav-link" data-scroll-target="#significant-test">6.4. Significant Test</a></li>
+  <li><a href="#reorder-a-corrgram" id="toc-reorder-a-corrgram" class="nav-link" data-scroll-target="#reorder-a-corrgram">6.5. Reorder a Corrgram</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -325,7 +346,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">February 3, 2024</p>
+      <p class="date-modified">February 11, 2024</p>
     </div>
   </div>
     
@@ -336,54 +357,257 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="overview" class="level1">
 <h1>1. Overview</h1>
-<p>In the first part of the fourth lesson, we learn to visualise distributions using ridgeline and raincloud plots by using <code>ggplot2</code> and its extensions.</p>
+<p>Correlation coefficient is a statistic used to measure the type and strength of the relationship between two variables. The values of a correlation coefficient ranges from -1.0 to 1.0 - a correlation coefficient of 1 shows a perfect positive correlation, a correlation coefficient of -1 shows a perfect negative correlation, and a correlation coefficient of 0 shows no linear relationship.</p>
+<p>When multivariate data is used, we can display pair-wise comparisons of the correlation coefficient as a correlation matrix or a scatterplot matrix. This helps to reveal the relationship between high-dimensional variables, to be included into other analyses, and to use as a diagnostic tool such as testing for multi-collinearity.</p>
+<p>In this exercise, we will visualise correlation matrix use <code>pairs()</code> and the <code>corrplot</code> package.</p>
 </section>
 <section id="getting-started" class="level1">
 <h1>2. Getting Started</h1>
 <section id="installing-and-loading-packages" class="level2">
 <h2 class="anchored" data-anchor-id="installing-and-loading-packages">2.1. Installing and Loading Packages</h2>
-<p>We will use the following R packages in addition to <code>tidyverse</code> and <code>ggthemes</code> for this exercise:</p>
+<p>We will use the following R packages in addition to <code>tidyverse</code> for this exercise:</p>
 <ol type="1">
-<li><p><a href="https://mjskay.github.io/ggdist"><code>ggdist</code></a>: <code>ggplot2</code> extension designed for visualising distributions and uncertainty</p></li>
-<li><p><a href="https://wilkelab.org/ggridges"><code>ggridges</code></a>: to create partially overlapping line plots to visualise changes in distribution over time or space</p></li>
-<li><p><a href="https://cran.r-project.org/web/packages/colorspace/vignettes/colorspace"><code>colorspace</code></a>: toolbox for manipulating colours and palettes</p></li>
+<li><p><a href="https://indrajeetpatil.github.io/ggstatsplot/"><code>ggststplot</code></a>: <code>ggplot2</code> extension designed for creating graphics with details from statistical tsts</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html"><code>corrplot</code></a>: to create correlation matrix</p></li>
 </ol>
 <p>The packages to be used can be installed and loaded into the R environment using the <code>p_load()</code> function from the <code>pacman</code> package:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, ggthemes, </span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>               ggdist, ggridges, colorspace)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, ggstatsplot, corrplot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="import-data" class="level2">
 <h2 class="anchored" data-anchor-id="import-data">2.2. Import Data</h2>
 <p>Next, we will read the data provided by the Course Instructor into the R environment. We will use the <code>read_csv()</code> function from the <code>readr</code> package found in <code>tidyverse</code>.</p>
-<p>Using <code>glimpse</code> to view the data, it is observed that the data contains the examination grades of a batch of primary 3 students for the subjects English, Maths, and Science.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>wine <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">'data/wine_quality.csv'</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(wine)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 6,497
+Columns: 13
+$ `fixed acidity`        &lt;dbl&gt; 7.4, 7.8, 7.8, 11.2, 7.4, 7.4, 7.9, 7.3, 7.8, 7…
+$ `volatile acidity`     &lt;dbl&gt; 0.700, 0.880, 0.760, 0.280, 0.700, 0.660, 0.600…
+$ `citric acid`          &lt;dbl&gt; 0.00, 0.00, 0.04, 0.56, 0.00, 0.00, 0.06, 0.00,…
+$ `residual sugar`       &lt;dbl&gt; 1.9, 2.6, 2.3, 1.9, 1.9, 1.8, 1.6, 1.2, 2.0, 6.…
+$ chlorides              &lt;dbl&gt; 0.076, 0.098, 0.092, 0.075, 0.076, 0.075, 0.069…
+$ `free sulfur dioxide`  &lt;dbl&gt; 11, 25, 15, 17, 11, 13, 15, 15, 9, 17, 15, 17, …
+$ `total sulfur dioxide` &lt;dbl&gt; 34, 67, 54, 60, 34, 40, 59, 21, 18, 102, 65, 10…
+$ density                &lt;dbl&gt; 0.9978, 0.9968, 0.9970, 0.9980, 0.9978, 0.9978,…
+$ pH                     &lt;dbl&gt; 3.51, 3.20, 3.26, 3.16, 3.51, 3.51, 3.30, 3.39,…
+$ sulphates              &lt;dbl&gt; 0.56, 0.68, 0.65, 0.58, 0.56, 0.56, 0.46, 0.47,…
+$ alcohol                &lt;dbl&gt; 9.4, 9.8, 9.8, 9.8, 9.4, 9.4, 9.4, 10.0, 9.5, 1…
+$ quality                &lt;dbl&gt; 5, 5, 5, 6, 5, 5, 5, 7, 7, 5, 5, 5, 5, 5, 5, 5,…
+$ type                   &lt;chr&gt; "red", "red", "red", "red", "red", "red", "red"…</code></pre>
+</div>
+</div>
+<p>Using <code>glimpse</code> to view the data, it is observed that the data contains 13 variables and 6497 observations of wine attributes and quality of red and white wine.</p>
 </section>
 </section>
-<section id="section" class="level1">
-<h1>3.</h1>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true"><code>geom_density_ridges()</code></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Varying Fill Colours</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Mapping Probabilities</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false">Mapping Quantile Lines</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-5" role="tab" aria-controls="tabset-1-5" aria-selected="false">Mapping Specified Quantile Cut-Points</a></li></ul>
-<div class="tab-content">
-<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-
-</div>
-<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-
-</div>
-<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
-
-</div>
-<div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
-
-</div>
-<div id="tabset-1-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-5-tab">
-
+<section id="pairs-method" class="level1">
+<h1>3. <code>pairs()</code> Method</h1>
+<p>We will use the <code>pairs()</code> function to create a scatterplot matrix.</p>
+<section id="basic-correlation-matrix" class="level2">
+<h2 class="anchored" data-anchor-id="basic-correlation-matrix">3.1. Basic Correlation Matrix</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(wine[,<span class="dv">2</span><span class="sc">:</span><span class="dv">11</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hands_on_ex05_2_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+</section>
+<section id="customisation" class="level2">
+<h2 class="anchored" data-anchor-id="customisation">3.2. Customisation</h2>
+<section id="drawing-one-corner" class="level3">
+<h3 class="anchored" data-anchor-id="drawing-one-corner">3.2.1. Drawing One Corner</h3>
+<p>The <code>pairs()</code> function provides customisation arguments to show either the upper ror lower half of the correlation matrix.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(wine[,<span class="dv">2</span><span class="sc">:</span><span class="dv">12</span>], <span class="at">upper.panel =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hands_on_ex05_2_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(wine[,<span class="dv">2</span><span class="sc">:</span><span class="dv">12</span>], <span class="at">lower.panel =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hands_on_ex05_2_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="including-correlation-coefficient" class="level3">
+<h3 class="anchored" data-anchor-id="including-correlation-coefficient">3.2.2. Including Correlation Coefficient</h3>
+<p>We can use the `panel.cor function to include the correlation coefficient into the correlation matrix.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>panel.cor <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, <span class="at">digits=</span><span class="dv">2</span>, <span class="at">prefix=</span><span class="st">""</span>, cex.cor, ...) {</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>usr <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="st">"usr"</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">on.exit</span>(<span class="fu">par</span>(usr))</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">usr =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">abs</span>(<span class="fu">cor</span>(x, y, <span class="at">use=</span><span class="st">"complete.obs"</span>))</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>txt <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">c</span>(r, <span class="fl">0.123456789</span>), <span class="at">digits=</span>digits)[<span class="dv">1</span>]</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>txt <span class="ot">&lt;-</span> <span class="fu">paste</span>(prefix, txt, <span class="at">sep=</span><span class="st">""</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">missing</span>(cex.cor)) cex.cor <span class="ot">&lt;-</span> <span class="fl">0.8</span><span class="sc">/</span><span class="fu">strwidth</span>(txt)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>, txt, <span class="at">cex =</span> cex.cor <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">+</span> r) <span class="sc">/</span> <span class="dv">2</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(wine[,<span class="dv">2</span><span class="sc">:</span><span class="dv">12</span>], </span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">upper.panel =</span> panel.cor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hands_on_ex05_2_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="ggcormat-method" class="level1">
+<h1>4. <code>ggcormat()</code> Method</h1>
+<p>Corrgram visaulisation technique is designed to overcome the problem of cluttered correlation matrix when the number of observations is large. The <code>ggstatsplot</code> package provides functions to build corrgrams.</p>
+<section id="basic-corrgram" class="level2">
+<h2 class="anchored" data-anchor-id="basic-corrgram">4.1. Basic Corrgram</h2>
+<p>We will use the <code>ggcormat()</code> function to create a scatterplot matrix.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggcorrmat</span>(<span class="at">data =</span> wine,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">cor.vars =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">11</span>,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">ggcorrplot.args =</span> <span class="fu">list</span>(<span class="at">outline.color =</span> <span class="st">"black"</span>, </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">hc.order =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>                         <span class="at">tl.cex =</span> <span class="dv">10</span>),</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">title    =</span> <span class="st">"Correlogram for wine dataset"</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">subtitle =</span> <span class="st">"Four pairs are no significant at p &lt; 0.05"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hands_on_ex05_2_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="building-multiple-plots" class="level1">
+<h1>5. Building Multiple Plots</h1>
+<p>We can use the <code>grouped_ggcormat()</code> function to build facet plots.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grouped_ggcorrmat</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> wine,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">cor.vars =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">11</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">grouping.var =</span> type,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"robust"</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">p.adjust.method =</span> <span class="st">"holm"</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">plotgrid.args =</span> <span class="fu">list</span>(<span class="at">ncol =</span> <span class="dv">2</span>),</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">ggcorrplot.args =</span> <span class="fu">list</span>(<span class="at">outline.color =</span> <span class="st">"black"</span>, </span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>                         <span class="at">hc.order =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>                         <span class="at">tl.cex =</span> <span class="dv">10</span>),</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">annotation.args =</span> <span class="fu">list</span>(</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">tag_levels =</span> <span class="st">"a"</span>,</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Correlogram for Wine"</span>,</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Dataset: UCI Machine Learning Repository"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hands_on_ex05_2_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="corrplot-method" class="level1">
+<h1>6. <code>corrplot()</code> Method</h1>
+<p>Before we plot a corrgram using <code>corrplot()</code>, we first compute the correlation matrix of the wine dataset.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>wine.cor <span class="ot">&lt;-</span> <span class="fu">cor</span>(wine[,<span class="dv">2</span><span class="sc">:</span><span class="dv">11</span>])</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(wine.cor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hands_on_ex05_2_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The default visual object used to plot the corrgram is circle, the default layout is a symmetric matrix, and the default colour scheme is diverging blue-red. Blue represents positive correlation and red represents negative correlation The intensity of the colour represents the strength of the linear correlation - darker colours represent a stronger linear relationship.</p>
+<section id="visual-geometrics" class="level2">
+<h2 class="anchored" data-anchor-id="visual-geometrics">6.1.Visual Geometrics</h2>
+<p>In the <code>corrplot()</code> package, there are seven visual geometrics to encode the attribute values: circle, square, ellipse, number, shade, color, and pie, We can change the geometrics using the following code:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(wine.cor, </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">method =</span> <span class="st">'number'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hands_on_ex05_2_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="layout" class="level2">
+<h2 class="anchored" data-anchor-id="layout">6.2. Layout</h2>
+<p>The <code>corrplot()</code> package supports three layout types: full, upper, or lower.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(wine.cor,</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">method =</span> <span class="st">"ellipse"</span>,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">type =</span> <span class="st">"upper"</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">diag =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">tl.col =</span> <span class="st">"black"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hands_on_ex05_2_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="mixed-layout" class="level2">
+<h2 class="anchored" data-anchor-id="mixed-layout">6.3. Mixed Layout</h2>
+<p>The <code>corrplot()</code> function allows for customisations to mix the visual matrix with half visual matrix and half numerical matrix. We can use the <code>corrplot.mixed()</code> function to achieve this.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot.mixed</span>(wine.cor, </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">lower =</span> <span class="st">"ellipse"</span>, </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">upper =</span> <span class="st">"number"</span>,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">tl.pos =</span> <span class="st">"lt"</span>,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">diag =</span> <span class="st">"l"</span>,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">tl.col =</span> <span class="st">"black"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hands_on_ex05_2_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="significant-test" class="level2">
+<h2 class="anchored" data-anchor-id="significant-test">6.4. Significant Test</h2>
+<p>We can use the <code>cor.mtest()</code> function to compute the p-values and confidence interval for each pair of variables.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>wine.sig <span class="ot">=</span> <span class="fu">cor.mtest</span>(wine.cor, <span class="at">conf.level =</span> <span class="fl">0.95</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(wine.cor,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">method =</span> <span class="st">"number"</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">type =</span> <span class="st">"lower"</span>,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">diag =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">tl.col =</span> <span class="st">"black"</span>,</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">tl.srt =</span> <span class="dv">45</span>,</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">p.mat =</span> wine.sig<span class="sc">$</span>p,</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">sig.level =</span> <span class="fl">0.05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hands_on_ex05_2_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="reorder-a-corrgram" class="level2">
+<h2 class="anchored" data-anchor-id="reorder-a-corrgram">6.5. Reorder a Corrgram</h2>
+<p><code>corrplot()</code> supports four sorting methods:</p>
+<ul>
+<li>“AOE” for the angular order of the eigenvectors</li>
+<li>“FPC” for the first principal component order</li>
+<li>“hclust” for hierarchical clustering order and “hclust.method” for the agglomeration method where a definiion must be provided: “ward”, “single”, “complete”, “average”, “mcquitty”, “median”, or “centroid”</li>
+<li>“alphabet” for alphabetical order</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot.mixed</span>(wine.cor, </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">lower =</span> <span class="st">"ellipse"</span>, </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">upper =</span> <span class="st">"number"</span>,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">tl.pos =</span> <span class="st">"lt"</span>,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">diag =</span> <span class="st">"l"</span>,</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">order=</span><span class="st">"AOE"</span>,</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">tl.col =</span> <span class="st">"black"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hands_on_ex05_2_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>We can use the <code>hclust()</code> method to reorder the correlation matrix:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(wine.cor, </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">method =</span> <span class="st">"ellipse"</span>, </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">tl.pos =</span> <span class="st">"lt"</span>,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">tl.col =</span> <span class="st">"black"</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">order=</span><span class="st">"hclust"</span>,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">hclust.method =</span> <span class="st">"ward.D"</span>,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">addrect =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hands_on_ex05_2_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+</div>
 </div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

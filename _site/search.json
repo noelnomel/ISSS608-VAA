@@ -732,21 +732,21 @@
     "href": "hands_on_ex/hands_on_ex05/hands_on_ex05_2.html",
     "title": "Hands-on Exercise 05 - Visual Correlation Analysis",
     "section": "",
-    "text": "In the first part of the fourth lesson, we learn to visualise distributions using ridgeline and raincloud plots by using ggplot2 and its extensions."
+    "text": "Correlation coefficient is a statistic used to measure the type and strength of the relationship between two variables. The values of a correlation coefficient ranges from -1.0 to 1.0 - a correlation coefficient of 1 shows a perfect positive correlation, a correlation coefficient of -1 shows a perfect negative correlation, and a correlation coefficient of 0 shows no linear relationship.\nWhen multivariate data is used, we can display pair-wise comparisons of the correlation coefficient as a correlation matrix or a scatterplot matrix. This helps to reveal the relationship between high-dimensional variables, to be included into other analyses, and to use as a diagnostic tool such as testing for multi-collinearity.\nIn this exercise, we will visualise correlation matrix use pairs() and the corrplot package."
   },
   {
     "objectID": "hands_on_ex/hands_on_ex05/hands_on_ex05_2.html#installing-and-loading-packages",
     "href": "hands_on_ex/hands_on_ex05/hands_on_ex05_2.html#installing-and-loading-packages",
     "title": "Hands-on Exercise 05 - Visual Correlation Analysis",
     "section": "2.1. Installing and Loading Packages",
-    "text": "2.1. Installing and Loading Packages\nWe will use the following R packages in addition to tidyverse and ggthemes for this exercise:\n\nggdist: ggplot2 extension designed for visualising distributions and uncertainty\nggridges: to create partially overlapping line plots to visualise changes in distribution over time or space\ncolorspace: toolbox for manipulating colours and palettes\n\nThe packages to be used can be installed and loaded into the R environment using the p_load() function from the pacman package:\n\npacman::p_load(tidyverse, ggthemes, \n               ggdist, ggridges, colorspace)"
+    "text": "2.1. Installing and Loading Packages\nWe will use the following R packages in addition to tidyverse for this exercise:\n\nggststplot: ggplot2 extension designed for creating graphics with details from statistical tsts\ncorrplot: to create correlation matrix\n\nThe packages to be used can be installed and loaded into the R environment using the p_load() function from the pacman package:\n\npacman::p_load(tidyverse, ggstatsplot, corrplot)"
   },
   {
     "objectID": "hands_on_ex/hands_on_ex05/hands_on_ex05_2.html#import-data",
     "href": "hands_on_ex/hands_on_ex05/hands_on_ex05_2.html#import-data",
     "title": "Hands-on Exercise 05 - Visual Correlation Analysis",
     "section": "2.2. Import Data",
-    "text": "2.2. Import Data\nNext, we will read the data provided by the Course Instructor into the R environment. We will use the read_csv() function from the readr package found in tidyverse.\nUsing glimpse to view the data, it is observed that the data contains the examination grades of a batch of primary 3 students for the subjects English, Maths, and Science."
+    "text": "2.2. Import Data\nNext, we will read the data provided by the Course Instructor into the R environment. We will use the read_csv() function from the readr package found in tidyverse.\n\nwine &lt;- read_csv('data/wine_quality.csv')\n\nglimpse(wine)\n\nRows: 6,497\nColumns: 13\n$ `fixed acidity`        &lt;dbl&gt; 7.4, 7.8, 7.8, 11.2, 7.4, 7.4, 7.9, 7.3, 7.8, 7…\n$ `volatile acidity`     &lt;dbl&gt; 0.700, 0.880, 0.760, 0.280, 0.700, 0.660, 0.600…\n$ `citric acid`          &lt;dbl&gt; 0.00, 0.00, 0.04, 0.56, 0.00, 0.00, 0.06, 0.00,…\n$ `residual sugar`       &lt;dbl&gt; 1.9, 2.6, 2.3, 1.9, 1.9, 1.8, 1.6, 1.2, 2.0, 6.…\n$ chlorides              &lt;dbl&gt; 0.076, 0.098, 0.092, 0.075, 0.076, 0.075, 0.069…\n$ `free sulfur dioxide`  &lt;dbl&gt; 11, 25, 15, 17, 11, 13, 15, 15, 9, 17, 15, 17, …\n$ `total sulfur dioxide` &lt;dbl&gt; 34, 67, 54, 60, 34, 40, 59, 21, 18, 102, 65, 10…\n$ density                &lt;dbl&gt; 0.9978, 0.9968, 0.9970, 0.9980, 0.9978, 0.9978,…\n$ pH                     &lt;dbl&gt; 3.51, 3.20, 3.26, 3.16, 3.51, 3.51, 3.30, 3.39,…\n$ sulphates              &lt;dbl&gt; 0.56, 0.68, 0.65, 0.58, 0.56, 0.56, 0.46, 0.47,…\n$ alcohol                &lt;dbl&gt; 9.4, 9.8, 9.8, 9.8, 9.4, 9.4, 9.4, 10.0, 9.5, 1…\n$ quality                &lt;dbl&gt; 5, 5, 5, 6, 5, 5, 5, 7, 7, 5, 5, 5, 5, 5, 5, 5,…\n$ type                   &lt;chr&gt; \"red\", \"red\", \"red\", \"red\", \"red\", \"red\", \"red\"…\n\n\nUsing glimpse to view the data, it is observed that the data contains 13 variables and 6497 observations of wine attributes and quality of red and white wine."
   },
   {
     "objectID": "hands_on_ex/hands_on_ex05/hands_on_ex05_3.html",
@@ -810,5 +810,61 @@
     "title": "Hands-on Exercise 5 - Treemap Visualisation",
     "section": "2.2. Import Data",
     "text": "2.2. Import Data\nNext, we will read the data provided by the Course Instructor into the R environment. We will use the read_csv() function from the readr package found in tidyverse.\nUsing glimpse to view the data, it is observed that the data contains the examination grades of a batch of primary 3 students for the subjects English, Maths, and Science."
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex05/hands_on_ex05_2.html#basic-correlation-matrix",
+    "href": "hands_on_ex/hands_on_ex05/hands_on_ex05_2.html#basic-correlation-matrix",
+    "title": "Hands-on Exercise 05 - Visual Correlation Analysis",
+    "section": "3.1. Basic Correlation Matrix",
+    "text": "3.1. Basic Correlation Matrix\n\npairs(wine[,2:11])"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex05/hands_on_ex05_2.html#customisation",
+    "href": "hands_on_ex/hands_on_ex05/hands_on_ex05_2.html#customisation",
+    "title": "Hands-on Exercise 05 - Visual Correlation Analysis",
+    "section": "3.2. Customisation",
+    "text": "3.2. Customisation\n\n3.2.1. Drawing One Corner\nThe pairs() function provides customisation arguments to show either the upper ror lower half of the correlation matrix.\n\npairs(wine[,2:12], upper.panel = NULL)\n\n\n\n\n\npairs(wine[,2:12], lower.panel = NULL)\n\n\n\n\n\n\n3.2.2. Including Correlation Coefficient\nWe can use the `panel.cor function to include the correlation coefficient into the correlation matrix.\n\npanel.cor &lt;- function(x, y, digits=2, prefix=\"\", cex.cor, ...) {\nusr &lt;- par(\"usr\")\non.exit(par(usr))\npar(usr = c(0, 1, 0, 1))\nr &lt;- abs(cor(x, y, use=\"complete.obs\"))\ntxt &lt;- format(c(r, 0.123456789), digits=digits)[1]\ntxt &lt;- paste(prefix, txt, sep=\"\")\nif(missing(cex.cor)) cex.cor &lt;- 0.8/strwidth(txt)\ntext(0.5, 0.5, txt, cex = cex.cor * (1 + r) / 2)\n}\n\npairs(wine[,2:12], \n      upper.panel = panel.cor)"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex05/hands_on_ex05_2.html#basic-corrgram",
+    "href": "hands_on_ex/hands_on_ex05/hands_on_ex05_2.html#basic-corrgram",
+    "title": "Hands-on Exercise 05 - Visual Correlation Analysis",
+    "section": "4.1. Basic Corrgram",
+    "text": "4.1. Basic Corrgram\nWe will use the ggcormat() function to create a scatterplot matrix.\n\nggcorrmat(data = wine,\n          cor.vars = 1:11,\n          ggcorrplot.args = list(outline.color = \"black\", \n                         hc.order = TRUE,\n                         tl.cex = 10),\n          title    = \"Correlogram for wine dataset\",\n          subtitle = \"Four pairs are no significant at p &lt; 0.05\")"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex05/hands_on_ex05_2.html#visual-geometrics",
+    "href": "hands_on_ex/hands_on_ex05/hands_on_ex05_2.html#visual-geometrics",
+    "title": "Hands-on Exercise 05 - Visual Correlation Analysis",
+    "section": "6.1.Visual Geometrics",
+    "text": "6.1.Visual Geometrics\nIn the corrplot() package, there are seven visual geometrics to encode the attribute values: circle, square, ellipse, number, shade, color, and pie, We can change the geometrics using the following code:\n\ncorrplot(wine.cor, \n         method = 'number')"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex05/hands_on_ex05_2.html#layout",
+    "href": "hands_on_ex/hands_on_ex05/hands_on_ex05_2.html#layout",
+    "title": "Hands-on Exercise 05 - Visual Correlation Analysis",
+    "section": "6.2. Layout",
+    "text": "6.2. Layout\nThe corrplot() package supports three layout types: full, upper, or lower.\n\ncorrplot(wine.cor,\n         method = \"ellipse\",\n         type = \"upper\",\n         diag = FALSE,\n         tl.col = \"black\")"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex05/hands_on_ex05_2.html#mixed-layout",
+    "href": "hands_on_ex/hands_on_ex05/hands_on_ex05_2.html#mixed-layout",
+    "title": "Hands-on Exercise 05 - Visual Correlation Analysis",
+    "section": "6.3. Mixed Layout",
+    "text": "6.3. Mixed Layout\nThe corrplot() function allows for customisations to mix the visual matrix with half visual matrix and half numerical matrix. We can use the corrplot.mixed() function to achieve this.\n\ncorrplot.mixed(wine.cor, \n               lower = \"ellipse\", \n               upper = \"number\",\n               tl.pos = \"lt\",\n               diag = \"l\",\n               tl.col = \"black\")"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex05/hands_on_ex05_2.html#significant-test",
+    "href": "hands_on_ex/hands_on_ex05/hands_on_ex05_2.html#significant-test",
+    "title": "Hands-on Exercise 05 - Visual Correlation Analysis",
+    "section": "6.4. Significant Test",
+    "text": "6.4. Significant Test\nWe can use the cor.mtest() function to compute the p-values and confidence interval for each pair of variables.\n\nwine.sig = cor.mtest(wine.cor, conf.level = 0.95)\n\ncorrplot(wine.cor,\n         method = \"number\",\n         type = \"lower\",\n         diag = FALSE,\n         tl.col = \"black\",\n         tl.srt = 45,\n         p.mat = wine.sig$p,\n         sig.level = 0.05)"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex05/hands_on_ex05_2.html#reorder-a-corrgram",
+    "href": "hands_on_ex/hands_on_ex05/hands_on_ex05_2.html#reorder-a-corrgram",
+    "title": "Hands-on Exercise 05 - Visual Correlation Analysis",
+    "section": "6.5. Reorder a Corrgram",
+    "text": "6.5. Reorder a Corrgram\ncorrplot() supports four sorting methods:\n\n“AOE” for the angular order of the eigenvectors\n“FPC” for the first principal component order\n“hclust” for hierarchical clustering order and “hclust.method” for the agglomeration method where a definiion must be provided: “ward”, “single”, “complete”, “average”, “mcquitty”, “median”, or “centroid”\n“alphabet” for alphabetical order\n\n\ncorrplot.mixed(wine.cor, \n               lower = \"ellipse\", \n               upper = \"number\",\n               tl.pos = \"lt\",\n               diag = \"l\",\n               order=\"AOE\",\n               tl.col = \"black\")\n\n\n\n\nWe can use the hclust() method to reorder the correlation matrix:\n\ncorrplot(wine.cor, \n         method = \"ellipse\", \n         tl.pos = \"lt\",\n         tl.col = \"black\",\n         order=\"hclust\",\n         hclust.method = \"ward.D\",\n         addrect = 3)"
   }
 ]
