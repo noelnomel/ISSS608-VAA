@@ -1,6 +1,6 @@
 ---
-title: "Hands-on Exercise 06"
-date: "13 January 2024"
+title: "Hands-on Exercise 06 - Time-Oriented Data"
+date: "11 Febrauary 2024"
 date-modified: "last-modified"
 format: html
 execute: 
@@ -9,3 +9,248 @@ execute:
   warning: false # do not display warning message
 editor: visual
 ---
+
+# 1. Overview
+
+In the sixth lesson, we learn to visualise and analyse time-oriented data such as calendar heatmap, cyclce plot, slopeplot, and a horizon chart.
+
+# 2. Getting Started
+
+## 2.1. Installing and Loading Packages
+
+We will use the following R packages for this exercise:
+
+```{r}
+pacman::p_load(tidyverse, readxl, data.table,
+               ggthemes, scales, viridis, 
+               knitr, lubridate, gridExtra, CGPfunctions)
+```
+
+
+# 3. Calendar Heatmaps
+
+## 3.1. Import Data
+
+We will read the dataset on cyber attack records provided by the Course Instructor into the R environment. We will use the `read_csv()` function from the `readr` package found in `tidyverse`.
+
+```{r}
+attacks <- read_csv("data/eventlog.csv")
+
+kable(head(attacks))
+```
+
+Using `kable()` from the `knitr` packaage to view the data, it is observed that the data contains three columns:
+-   timestamp: datetime values in POSIXct format
+-   source_country: source of cyber attack following ISO 3166-1 alpha-2 country code
+-   tz: timezone of the source IP address. 
+
+## 3.2. Data Preparation
+
+First, w write the following function to derive the weekday and hour of day fields to be used later in the calendar heatmap: 
+
+```{r}
+hr_wkday <- function(ts, sc, tz) {
+  real_times <- ymd_hms(ts, 
+                        tz = tz[1], 
+                        quiet = TRUE)
+  dt <- data.table(source_country = sc,
+                   weekday = weekdays(real_times),
+                   hour = hour(real_times))
+  return(dt)
+  }
+```
+
+## 3.3. Basic Calendar Heatmap
+Next, we derive a tibble data frame containing cyber attacks grouped by source country time zone.
+```{r}
+wkday_levels <- c('Saturday', 'Friday', 
+                  'Thursday', 'Wednesday', 
+                  'Tuesday', 'Monday', 'Sunday')
+
+attacks <- attacks %>%
+  group_by(tz) %>%
+  do(hr_wkday(.$timestamp, 
+                   .$source_country, 
+                   .$tz)) %>% 
+  ungroup() %>% 
+  mutate(weekday = factor(
+    weekday, levels = wkday_levels),
+    hour  = factor(
+      hour, levels = 0:23))
+
+kable(head(attacks))
+```
+
+Lastly, we create the plot:
+```{r}
+grouped <- attacks %>% 
+  count(weekday, hour) %>% 
+  ungroup() %>%
+  na.omit()
+
+ggplot(grouped, 
+       aes(hour, 
+           weekday, 
+           fill = n)) + 
+geom_tile(color = "white", 
+          size = 0.1) + 
+theme_tufte(base_family = "Helvetica") + 
+coord_equal() +
+scale_fill_gradient(name = "# of attacks",
+                    low = "thistle1", 
+                    high = "red3") +
+labs(x = NULL, 
+     y = NULL, 
+     title = "Attacks by day of week and time of day") +
+theme(axis.ticks = element_blank(),
+      plot.title = element_text(hjust = 0.5),
+      legend.title = element_text(size = 8),
+      legend.text = element_text(size = 6) )
+```
+
+## 3.4. Multiple Calendar Heatmaps
+
+We can plot multiple calendar heatmaps with the top four source countries of cyber attacks.
+
+First, we have to derive an object containing the count of attacks by source country:
+
+```{r}
+attacks_by_country <- count(
+  attacks, source_country) %>%
+  mutate(percent = percent(n/sum(n))) %>%
+  arrange(desc(n))
+```
+
+Next, we prepare the tibble data frame containing the attack records of the top four source countries:
+
+```{r}
+top4 <- attacks_by_country$source_country[1:4]
+
+top4_attacks <- attacks %>%
+  filter(source_country %in% top4) %>%
+  count(source_country, weekday, hour) %>%
+  ungroup() %>%
+  mutate(source_country = factor(
+    source_country, levels = top4)) %>%
+  na.omit()
+```
+
+Lastly, we create the plot:
+
+```{r}
+ggplot(top4_attacks, 
+       aes(hour, 
+           weekday, 
+           fill = n)) + 
+  geom_tile(color = "white", 
+          size = 0.1) + 
+  theme_tufte(base_family = "Helvetica") + 
+  coord_equal() +
+  scale_fill_gradient(name = "# of attacks",
+                    low = "thistle1", 
+                    high = "red3") +
+  facet_wrap(~source_country, ncol = 2) +
+  labs(x = NULL, y = NULL, 
+     title = "Attacks on top 4 countries by day of week and time of day") +
+  theme(axis.ticks = element_blank(),
+        axis.text.x = element_text(size = 7),
+        plot.title = element_text(hjust = 0.5),
+        legend.title = element_text(size = 8),
+        legend.text = element_text(size = 6) )
+```
+
+# 4. Cylce Plot
+
+## 4.1. Import Data
+
+We will read the dataset on visitor arrivals from Vietnam provided by the Course Instructor into the R environment. We will use the `read_excel()` function from the `readxl` package.
+
+```{r}
+arrive_air <- read_excel("data/arrivals_by_air.xlsx")
+
+glimpse(arrive_air)
+```
+
+Using `glimpse()` to view the data, it is observed that the data contains 36 columns and 240 observations.
+
+## 4.2. Data Preparation
+
+First, we create two new columns "month" and "year" from the "Month-Year" field:
+
+```{r}
+arrive_air$month <- factor(month(arrive_air$`Month-Year`), 
+                    levels=1:12, 
+                    labels=month.abb, 
+                    ordered=TRUE) 
+arrive_air$year <- year(ymd(arrive_air$`Month-Year`))
+```
+
+We now extract the data for this study, which is arrivals from Vietnam:
+
+```{r}
+vietnam <- arrive_air %>% 
+  select(`Vietnam`, 
+         month, 
+         year) %>%
+  filter(year >= 2010)
+
+glimpse(vietnam)
+```
+
+Next, we compute the yearly average arrival numbers, grouped by month:
+
+```{r}
+hline.data <- vietnam %>% 
+  group_by(month) %>%
+  summarise(avgvalue = mean(`vietnam`))
+```
+## 4.3. Create Cycle Plot
+
+Lastly, we create the plot:
+
+```{r}
+ggplot() + 
+  geom_line(data = vietnam,
+            aes(x = year, 
+                y = Vietnam, 
+                group = month), 
+            colour="black") +
+  geom_hline(aes(yintercept=avgvalue), 
+             data=hline.data, 
+             linetype=6, 
+             colour="red", 
+             size=0.5) + 
+  facet_grid(~month) +
+  labs(axis.text.x = element_blank(),
+       title = "Visitor arrivals from Vietnam by air, Jan 2010-Dec 2019") +
+  xlab("") +
+  ylab("No. of Visitors") +
+  theme_tufte(base_family = "Helvetica")
+```
+
+# 5. Slopegraph
+
+## 5.1. Import Data
+
+We will read the dataset on rice yied provided by the Course Instructor into the R environment. We will use the `read_csv()` function from the `readr` package found in `tidyverse`.
+
+```{r}
+rice <- read_csv("data/rice.csv")
+
+glimpse(rice)
+```
+
+Using `glimpse()` to view the data, it is observed that the data contains four columns and 550 records on the yield of rice by year and country.
+
+
+## 5.2. Create Slopegraph
+
+```{r}
+rice %>% 
+  mutate(Year = factor(Year)) %>%
+  filter(Year %in% c(1961, 1980)) %>%
+  newggslopegraph(Year, Yield, Country,
+                Title = "Rice Yield of Top 11 Asian Counties",
+                SubTitle = "1961-1980",
+                Caption = "")
+```

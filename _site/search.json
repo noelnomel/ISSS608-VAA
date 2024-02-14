@@ -753,21 +753,21 @@
     "href": "hands_on_ex/hands_on_ex05/hands_on_ex05_3.html",
     "title": "Hands-on Exercise 05 - Multivariate Analysis with Heatmap",
     "section": "",
-    "text": "In the first part of the fourth lesson, we learn to visualise distributions using ridgeline and raincloud plots by using ggplot2 and its extensions."
+    "text": "In the third part of the fifth lesson, we learn to visualise multivariate data using heatmaps. Heatmaps show variance across multiple variables and reveal patterns about the data."
   },
   {
     "objectID": "hands_on_ex/hands_on_ex05/hands_on_ex05_3.html#installing-and-loading-packages",
     "href": "hands_on_ex/hands_on_ex05/hands_on_ex05_3.html#installing-and-loading-packages",
     "title": "Hands-on Exercise 05 - Multivariate Analysis with Heatmap",
     "section": "2.1. Installing and Loading Packages",
-    "text": "2.1. Installing and Loading Packages\nWe will use the following R packages in addition to tidyverse and ggthemes for this exercise:\n\nggdist: ggplot2 extension designed for visualising distributions and uncertainty\nggridges: to create partially overlapping line plots to visualise changes in distribution over time or space\ncolorspace: toolbox for manipulating colours and palettes\n\nThe packages to be used can be installed and loaded into the R environment using the p_load() function from the pacman package:\n\npacman::p_load(tidyverse, ggthemes, \n               ggdist, ggridges, colorspace)"
+    "text": "2.1. Installing and Loading Packages\nWe will use the following R packages in addition to tidyverse for this exercise:\n\n[seriation](https://cran.r-project.org/web/packages/seriation/index.html: infrastructure for ordering objects such as matrices, dissimiliarity matrices, and dendograms\nheatmaply: to create heatmaps\ndendextend: function for extending dendogram objects on R\n\nThe packages to be used can be installed and loaded into the R environment using the p_load() function from the pacman package:\n\npacman::p_load(tidyverse, seriation, heatmaply,\n               dendextend)"
   },
   {
     "objectID": "hands_on_ex/hands_on_ex05/hands_on_ex05_3.html#import-data",
     "href": "hands_on_ex/hands_on_ex05/hands_on_ex05_3.html#import-data",
     "title": "Hands-on Exercise 05 - Multivariate Analysis with Heatmap",
     "section": "2.2. Import Data",
-    "text": "2.2. Import Data\nNext, we will read the data provided by the Course Instructor into the R environment. We will use the read_csv() function from the readr package found in tidyverse.\nUsing glimpse to view the data, it is observed that the data contains the examination grades of a batch of primary 3 students for the subjects English, Maths, and Science."
+    "text": "2.2. Import Data\nNext, we will read the data provided by the Course Instructor into the R environment. We will use the read_csv() function from the readr package found in tidyverse.\n\nwh &lt;- read_csv(\"data/WHData-2018.csv\")\n\nglimpse(wh)\n\nRows: 156\nColumns: 12\n$ Country                        &lt;chr&gt; \"Albania\", \"Bosnia and Herzegovina\", \"B…\n$ Region                         &lt;chr&gt; \"Central and Eastern Europe\", \"Central …\n$ `Happiness score`              &lt;dbl&gt; 4.586, 5.129, 4.933, 5.321, 6.711, 5.73…\n$ `Whisker-high`                 &lt;dbl&gt; 4.695, 5.224, 5.022, 5.398, 6.783, 5.81…\n$ `Whisker-low`                  &lt;dbl&gt; 4.477, 5.035, 4.844, 5.244, 6.639, 5.66…\n$ Dystopia                       &lt;dbl&gt; 1.462, 1.883, 1.219, 1.769, 2.494, 1.45…\n$ `GDP per capita`               &lt;dbl&gt; 0.916, 0.915, 1.054, 1.115, 1.233, 1.20…\n$ `Social support`               &lt;dbl&gt; 0.817, 1.078, 1.515, 1.161, 1.489, 1.53…\n$ `Healthy life expectancy`      &lt;dbl&gt; 0.790, 0.758, 0.712, 0.737, 0.854, 0.73…\n$ `Freedom to make life choices` &lt;dbl&gt; 0.419, 0.280, 0.359, 0.380, 0.543, 0.55…\n$ Generosity                     &lt;dbl&gt; 0.149, 0.216, 0.064, 0.120, 0.064, 0.08…\n$ `Perceptions of corruption`    &lt;dbl&gt; 0.032, 0.000, 0.009, 0.039, 0.034, 0.17…\n\n\nUsing glimpse to view the data, it is observed that the data contains the happiness index in 12 columns and 156 observations."
   },
   {
     "objectID": "hands_on_ex/hands_on_ex05/hands_on_ex05_4.html",
@@ -866,5 +866,89 @@
     "title": "Hands-on Exercise 05 - Visual Correlation Analysis",
     "section": "6.5. Reorder a Corrgram",
     "text": "6.5. Reorder a Corrgram\ncorrplot() supports four sorting methods:\n\n“AOE” for the angular order of the eigenvectors\n“FPC” for the first principal component order\n“hclust” for hierarchical clustering order and “hclust.method” for the agglomeration method where a definiion must be provided: “ward”, “single”, “complete”, “average”, “mcquitty”, “median”, or “centroid”\n“alphabet” for alphabetical order\n\n\ncorrplot.mixed(wine.cor, \n               lower = \"ellipse\", \n               upper = \"number\",\n               tl.pos = \"lt\",\n               diag = \"l\",\n               order=\"AOE\",\n               tl.col = \"black\")\n\n\n\n\nWe can use the hclust() method to reorder the correlation matrix:\n\ncorrplot(wine.cor, \n         method = \"ellipse\", \n         tl.pos = \"lt\",\n         tl.col = \"black\",\n         order=\"hclust\",\n         hclust.method = \"ward.D\",\n         addrect = 3)"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex06/hands_on_ex06.html",
+    "href": "hands_on_ex/hands_on_ex06/hands_on_ex06.html",
+    "title": "Hands-on Exercise 06 - Time-Oriented Data",
+    "section": "",
+    "text": "In the sixth lesson, we learn to visualise and analyse time-oriented data such as calendar heatmap, cyclce plot, slopeplot, and a horizon chart."
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex06/hands_on_ex06.html#installing-and-loading-packages",
+    "href": "hands_on_ex/hands_on_ex06/hands_on_ex06.html#installing-and-loading-packages",
+    "title": "Hands-on Exercise 06 - Time-Oriented Data",
+    "section": "2.1. Installing and Loading Packages",
+    "text": "2.1. Installing and Loading Packages\nWe will use the following R packages for this exercise:\n\npacman::p_load(tidyverse, readxl, data.table,\n               ggthemes, scales, viridis, \n               knitr, lubridate, gridExtra, CGPfunctions)"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex06/hands_on_ex06.html#import-data",
+    "href": "hands_on_ex/hands_on_ex06/hands_on_ex06.html#import-data",
+    "title": "Hands-on Exercise 06 - Time-Oriented Data",
+    "section": "3.1. Import Data",
+    "text": "3.1. Import Data\nWe will read the dataset on cyber attack records provided by the Course Instructor into the R environment. We will use the read_csv() function from the readr package found in tidyverse.\n\nattacks &lt;- read_csv(\"data/eventlog.csv\")\n\nkable(head(attacks))\n\n\n\n\ntimestamp\nsource_country\ntz\n\n\n\n\n2015-03-12 15:59:16\nCN\nAsia/Shanghai\n\n\n2015-03-12 16:00:48\nFR\nEurope/Paris\n\n\n2015-03-12 16:02:26\nCN\nAsia/Shanghai\n\n\n2015-03-12 16:02:38\nUS\nAmerica/Chicago\n\n\n2015-03-12 16:03:22\nCN\nAsia/Shanghai\n\n\n2015-03-12 16:03:45\nCN\nAsia/Shanghai\n\n\n\n\n\nUsing kable() from the knitr packaage to view the data, it is observed that the data contains three columns: - timestamp: datetime values in POSIXct format - source_country: source of cyber attack following ISO 3166-1 alpha-2 country code - tz: timezone of the source IP address."
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex06/hands_on_ex06.html#data-preparation",
+    "href": "hands_on_ex/hands_on_ex06/hands_on_ex06.html#data-preparation",
+    "title": "Hands-on Exercise 06 - Time-Oriented Data",
+    "section": "3.2. Data Preparation",
+    "text": "3.2. Data Preparation\nFirst, w write the following function to derive the weekday and hour of day fields to be used later in the calendar heatmap:\n\nhr_wkday &lt;- function(ts, sc, tz) {\n  real_times &lt;- ymd_hms(ts, \n                        tz = tz[1], \n                        quiet = TRUE)\n  dt &lt;- data.table(source_country = sc,\n                   weekday = weekdays(real_times),\n                   hour = hour(real_times))\n  return(dt)\n  }"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex06/hands_on_ex06.html#basic-calendar-heatmap",
+    "href": "hands_on_ex/hands_on_ex06/hands_on_ex06.html#basic-calendar-heatmap",
+    "title": "Hands-on Exercise 06 - Time-Oriented Data",
+    "section": "3.3. Basic Calendar Heatmap",
+    "text": "3.3. Basic Calendar Heatmap\nNext, we derive a tibble data frame containing cyber attacks grouped by source country time zone.\n\nwkday_levels &lt;- c('Saturday', 'Friday', \n                  'Thursday', 'Wednesday', \n                  'Tuesday', 'Monday', 'Sunday')\n\nattacks &lt;- attacks %&gt;%\n  group_by(tz) %&gt;%\n  do(hr_wkday(.$timestamp, \n                   .$source_country, \n                   .$tz)) %&gt;% \n  ungroup() %&gt;% \n  mutate(weekday = factor(\n    weekday, levels = wkday_levels),\n    hour  = factor(\n      hour, levels = 0:23))\n\nkable(head(attacks))\n\n\n\n\ntz\nsource_country\nweekday\nhour\n\n\n\n\nAfrica/Cairo\nBG\nSaturday\n20\n\n\nAfrica/Cairo\nTW\nSunday\n6\n\n\nAfrica/Cairo\nTW\nSunday\n8\n\n\nAfrica/Cairo\nCN\nSunday\n11\n\n\nAfrica/Cairo\nUS\nSunday\n15\n\n\nAfrica/Cairo\nCA\nMonday\n11\n\n\n\n\n\nLastly, we create the plot:\n\ngrouped &lt;- attacks %&gt;% \n  count(weekday, hour) %&gt;% \n  ungroup() %&gt;%\n  na.omit()\n\nggplot(grouped, \n       aes(hour, \n           weekday, \n           fill = n)) + \ngeom_tile(color = \"white\", \n          size = 0.1) + \ntheme_tufte(base_family = \"Helvetica\") + \ncoord_equal() +\nscale_fill_gradient(name = \"# of attacks\",\n                    low = \"thistle1\", \n                    high = \"red3\") +\nlabs(x = NULL, \n     y = NULL, \n     title = \"Attacks by day of week and time of day\") +\ntheme(axis.ticks = element_blank(),\n      plot.title = element_text(hjust = 0.5),\n      legend.title = element_text(size = 8),\n      legend.text = element_text(size = 6) )"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex06/hands_on_ex06.html#multiple-calendar-heatmaps",
+    "href": "hands_on_ex/hands_on_ex06/hands_on_ex06.html#multiple-calendar-heatmaps",
+    "title": "Hands-on Exercise 06 - Time-Oriented Data",
+    "section": "3.4. Multiple Calendar Heatmaps",
+    "text": "3.4. Multiple Calendar Heatmaps\nWe can plot multiple calendar heatmaps with the top four source countries of cyber attacks.\nFirst, we have to derive an object containing the count of attacks by source country:\n\nattacks_by_country &lt;- count(\n  attacks, source_country) %&gt;%\n  mutate(percent = percent(n/sum(n))) %&gt;%\n  arrange(desc(n))\n\nNext, we prepare the tibble data frame containing the attack records of the top four source countries:\n\ntop4 &lt;- attacks_by_country$source_country[1:4]\n\ntop4_attacks &lt;- attacks %&gt;%\n  filter(source_country %in% top4) %&gt;%\n  count(source_country, weekday, hour) %&gt;%\n  ungroup() %&gt;%\n  mutate(source_country = factor(\n    source_country, levels = top4)) %&gt;%\n  na.omit()\n\nLastly, we create the plot:\n\nggplot(top4_attacks, \n       aes(hour, \n           weekday, \n           fill = n)) + \n  geom_tile(color = \"white\", \n          size = 0.1) + \n  theme_tufte(base_family = \"Helvetica\") + \n  coord_equal() +\n  scale_fill_gradient(name = \"# of attacks\",\n                    low = \"thistle1\", \n                    high = \"red3\") +\n  facet_wrap(~source_country, ncol = 2) +\n  labs(x = NULL, y = NULL, \n     title = \"Attacks on top 4 countries by day of week and time of day\") +\n  theme(axis.ticks = element_blank(),\n        axis.text.x = element_text(size = 7),\n        plot.title = element_text(hjust = 0.5),\n        legend.title = element_text(size = 8),\n        legend.text = element_text(size = 6) )"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex06/hands_on_ex06.html#import-data-1",
+    "href": "hands_on_ex/hands_on_ex06/hands_on_ex06.html#import-data-1",
+    "title": "Hands-on Exercise 06 - Time-Oriented Data",
+    "section": "4.1. Import Data",
+    "text": "4.1. Import Data\nWe will read the dataset on visitor arrivals from Vietnam provided by the Course Instructor into the R environment. We will use the read_excel() function from the readxl package.\n\narrive_air &lt;- read_excel(\"data/arrivals_by_air.xlsx\")\n\nglimpse(arrive_air)\n\nRows: 240\nColumns: 36\n$ `Month-Year`               &lt;dttm&gt; 2000-01-01, 2000-02-01, 2000-03-01, 2000-0…\n$ `Republic of South Africa` &lt;dbl&gt; 3291, 2357, 4036, 4241, 2841, 2776, 3728, 2…\n$ Canada                     &lt;dbl&gt; 5545, 6120, 6255, 4521, 3914, 3487, 4238, 4…\n$ USA                        &lt;dbl&gt; 25906, 28262, 30439, 25378, 26163, 28179, 2…\n$ Bangladesh                 &lt;dbl&gt; 2883, 2469, 2904, 2843, 2793, 3146, 3489, 3…\n$ Brunei                     &lt;dbl&gt; 3749, 3236, 3342, 5117, 4152, 5018, 5026, 6…\n$ China                      &lt;dbl&gt; 33895, 34344, 27053, 30464, 30775, 26720, 3…\n$ `Hong Kong SAR (China)`    &lt;dbl&gt; 13692, 19870, 17086, 22346, 16357, 18133, 2…\n$ India                      &lt;dbl&gt; 19235, 18975, 21049, 26160, 35869, 31314, 2…\n$ Indonesia                  &lt;dbl&gt; 65151, 37105, 44205, 45480, 38350, 47982, 5…\n$ Japan                      &lt;dbl&gt; 59288, 58188, 74426, 49985, 48937, 53798, 6…\n$ `South Korea`              &lt;dbl&gt; 21457, 19634, 20719, 17489, 19398, 17522, 2…\n$ Kuwait                     &lt;dbl&gt; 507, 199, 386, 221, 164, 440, 1943, 2694, 4…\n$ Malaysia                   &lt;dbl&gt; 27472, 29084, 30504, 34478, 34795, 34660, 2…\n$ Myanmar                    &lt;dbl&gt; 1177, 1161, 1355, 1593, 1397, 1715, 1354, 1…\n$ Pakistan                   &lt;dbl&gt; 2150, 2496, 2429, 2711, 2594, 2924, 4001, 3…\n$ Philippines                &lt;dbl&gt; 8404, 9128, 11691, 14141, 13305, 10555, 968…\n$ `Saudi Arabia`             &lt;dbl&gt; 1312, 623, 1578, 705, 679, 2749, 5748, 4012…\n$ `Sri Lanka`                &lt;dbl&gt; 3922, 3988, 4259, 6579, 4625, 4740, 4764, 5…\n$ Taiwan                     &lt;dbl&gt; 15766, 24861, 18767, 22735, 18399, 21042, 2…\n$ Thailand                   &lt;dbl&gt; 12048, 12745, 16971, 20397, 15769, 17217, 1…\n$ `United Arab Emirates`     &lt;dbl&gt; 1318, 899, 1474, 1284, 1042, 1545, 3641, 33…\n$ Vietnam                    &lt;dbl&gt; 1527, 2269, 2034, 2420, 1833, 2480, 2221, 2…\n$ `Belgium & Luxembourg`     &lt;dbl&gt; 1434, 1596, 1548, 1592, 1167, 1170, 1912, 1…\n$ CIS                        &lt;dbl&gt; 2703, 1182, 1088, 1012, 660, 712, 911, 864,…\n$ Finland                    &lt;dbl&gt; 1634, 1297, 1220, 1208, 743, 982, 680, 1029…\n$ France                     &lt;dbl&gt; 4752, 6391, 5528, 5544, 4225, 4047, 5769, 6…\n$ Germany                    &lt;dbl&gt; 12739, 13093, 13645, 13366, 10878, 9054, 10…\n$ Ireland                    &lt;dbl&gt; 1292, 1200, 1368, 1345, 1067, 1363, 1348, 1…\n$ Italy                      &lt;dbl&gt; 3544, 2897, 2717, 2512, 2205, 2196, 2988, 6…\n$ Netherlands                &lt;dbl&gt; 4962, 5054, 4950, 4149, 3643, 3544, 5969, 5…\n$ Spain                      &lt;dbl&gt; 925, 747, 935, 941, 764, 855, 1163, 1669, 1…\n$ Switzerland                &lt;dbl&gt; 3731, 3980, 3576, 3850, 3025, 2580, 3656, 2…\n$ `United Kingdom`           &lt;dbl&gt; 28986, 35148, 36117, 33792, 23377, 21769, 2…\n$ Australia                  &lt;dbl&gt; 34616, 26030, 31119, 34824, 33139, 35731, 4…\n$ `New Zealand`              &lt;dbl&gt; 5034, 3938, 4668, 6890, 7006, 7634, 9502, 6…\n\n\nUsing glimpse() to view the data, it is observed that the data contains 36 columns and 240 observations."
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex06/hands_on_ex06.html#data-preparation-1",
+    "href": "hands_on_ex/hands_on_ex06/hands_on_ex06.html#data-preparation-1",
+    "title": "Hands-on Exercise 06 - Time-Oriented Data",
+    "section": "4.2. Data Preparation",
+    "text": "4.2. Data Preparation\nFirst, we create two new columns “month” and “year” from the “Month-Year” field:\n\narrive_air$month &lt;- factor(month(arrive_air$`Month-Year`), \n                    levels=1:12, \n                    labels=month.abb, \n                    ordered=TRUE) \narrive_air$year &lt;- year(ymd(arrive_air$`Month-Year`))\n\nWe now extract the data for this study, which is arrivals from Vietnam:\n\nvietnam &lt;- arrive_air %&gt;% \n  select(`Vietnam`, \n         month, \n         year) %&gt;%\n  filter(year &gt;= 2010)\n\nglimpse(vietnam)\n\nRows: 120\nColumns: 3\n$ Vietnam &lt;dbl&gt; 15781, 16335, 18061, 22154, 21461, 28146, 34020, 25351, 20105,…\n$ month   &lt;ord&gt; Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec, Ja…\n$ year    &lt;int&gt; 2010, 2010, 2010, 2010, 2010, 2010, 2010, 2010, 2010, 2010, 20…\n\n\nNext, we compute the yearly average arrival numbers, grouped by month:\n\nhline.data &lt;- vietnam %&gt;% \n  group_by(month) %&gt;%\n  summarise(avgvalue = mean(`vietnam`))"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex06/hands_on_ex06.html#create-cycle-plot",
+    "href": "hands_on_ex/hands_on_ex06/hands_on_ex06.html#create-cycle-plot",
+    "title": "Hands-on Exercise 06 - Time-Oriented Data",
+    "section": "4.3. Create Cycle Plot",
+    "text": "4.3. Create Cycle Plot\nLastly, we create the plot:\n\nggplot() + \n  geom_line(data = vietnam,\n            aes(x = year, \n                y = Vietnam, \n                group = month), \n            colour=\"black\") +\n  geom_hline(aes(yintercept=avgvalue), \n             data=hline.data, \n             linetype=6, \n             colour=\"red\", \n             size=0.5) + \n  facet_grid(~month) +\n  labs(axis.text.x = element_blank(),\n       title = \"Visitor arrivals from Vietnam by air, Jan 2010-Dec 2019\") +\n  xlab(\"\") +\n  ylab(\"No. of Visitors\") +\n  theme_tufte(base_family = \"Helvetica\")"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex06/hands_on_ex06.html#import-data-2",
+    "href": "hands_on_ex/hands_on_ex06/hands_on_ex06.html#import-data-2",
+    "title": "Hands-on Exercise 06 - Time-Oriented Data",
+    "section": "5.1. Import Data",
+    "text": "5.1. Import Data\nWe will read the dataset on rice yied provided by the Course Instructor into the R environment. We will use the read_csv() function from the readr package found in tidyverse.\n\nrice &lt;- read_csv(\"data/rice.csv\")\n\nglimpse(rice)\n\nRows: 550\nColumns: 4\n$ Country    &lt;chr&gt; \"China\", \"China\", \"China\", \"China\", \"China\", \"China\", \"Chin…\n$ Year       &lt;dbl&gt; 1961, 1962, 1963, 1964, 1965, 1966, 1967, 1968, 1969, 1970,…\n$ Yield      &lt;dbl&gt; 20787, 23700, 26833, 28289, 29667, 31445, 31006, 31868, 314…\n$ Production &lt;dbl&gt; 56217601, 65675288, 76439280, 85853780, 90705630, 98403990,…\n\n\nUsing glimpse() to view the data, it is observed that the data contains four columns and 550 records on the yield of rice by year and country."
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex06/hands_on_ex06.html#create-slopegraph",
+    "href": "hands_on_ex/hands_on_ex06/hands_on_ex06.html#create-slopegraph",
+    "title": "Hands-on Exercise 06 - Time-Oriented Data",
+    "section": "5.2. Create Slopegraph",
+    "text": "5.2. Create Slopegraph\n\nrice %&gt;% \n  mutate(Year = factor(Year)) %&gt;%\n  filter(Year %in% c(1961, 1980)) %&gt;%\n  newggslopegraph(Year, Yield, Country,\n                Title = \"Rice Yield of Top 11 Asian Counties\",\n                SubTitle = \"1961-1980\",\n                Caption = \"\")"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex05/hands_on_ex05_3.html#data-preparation",
+    "href": "hands_on_ex/hands_on_ex05/hands_on_ex05_3.html#data-preparation",
+    "title": "Hands-on Exercise 05 - Multivariate Analysis with Heatmap",
+    "section": "2.3. Data Preparation",
+    "text": "2.3. Data Preparation\nWe prepare the data by arranging the rows according to country name instead of row number.\n\nrow.names(wh) &lt;- wh$Country\n\nNext, we transform the data frame into a matrix before we can create a heatmap.\n\nwh1 &lt;- dplyr::select(wh, c(3, 7:12))\nwh_matrix &lt;- data.matrix(wh)"
   }
 ]
