@@ -12,25 +12,25 @@ editor: visual
 
 # 1. Overview
 
-In the first part of the fourth lesson, we learn to visualise distributions using ridgeline and raincloud plots by using `ggplot2` and its extensions.
+In the third part of the fifth lesson, we learn to visualise multivariate data using heatmaps. Heatmaps show variance across multiple variables and reveal patterns about the data.
 
 # 2. Getting Started
 
 ## 2.1. Installing and Loading Packages
 
-We will use the following R packages in addition to `tidyverse` and `ggthemes` for this exercise:
+We will use the following R packages in addition to `tidyverse` for this exercise:
 
-1.  [`ggdist`](https://mjskay.github.io/ggdist): `ggplot2` extension designed for visualising distributions and uncertainty
+1.  [`seriation`](https://cran.r-project.org/web/packages/seriation/index.html): infrastructure for ordering objects such as matrices, dissimiliarity matrices, and dendograms
 
-2.  [`ggridges`](https://wilkelab.org/ggridges): to create partially overlapping line plots to visualise changes in distribution over time or space
+2.  [`heatmaply`](https://cran.r-project.org/web/packages/heatmaply/vignettes/heatmaply.html): to create heatmaps
 
-3.  [`colorspace`](https://cran.r-project.org/web/packages/colorspace/vignettes/colorspace): toolbox for manipulating colours and palettes
+3.  [`dendextend`](https://cran.r-project.org/web/packages/dendextend/vignettes/dendextend.htmle): function for extending dendogram objects on R
 
 The packages to be used can be installed and loaded into the R environment using the `p_load()` function from the `pacman` package:
 
 ```{r}
-pacman::p_load(tidyverse, ggthemes, 
-               ggdist, ggridges, colorspace)
+pacman::p_load(tidyverse, seriation, heatmaply,
+               dendextend)
 ```
 
 ## 2.2. Import Data
@@ -38,60 +38,217 @@ pacman::p_load(tidyverse, ggthemes,
 Next, we will read the data provided by the Course Instructor into the R environment. We will use the `read_csv()` function from the `readr` package found in `tidyverse`.
 
 ```{r}
+wh <- read_csv("data/WHData-2018.csv")
 
+glimpse(wh)
 ```
 
-Using `glimpse` to view the data, it is observed that the data contains the examination grades of a batch of primary 3 students for the subjects English, Maths, and Science.
+Using `glimpse` to view the data, it is observed that the data contains the happiness index in 12 columns and 156 observations.
 
-# 3. 
+## 2.3. Data Preparation
+
+We prepare the data by arranging the rows according to country name instead of row number.
+
+```{r}
+row.names(wh) <- wh$Country
+```
+
+Next, we transform the data frame into a matrix before we can create a heatmap.
+
+```{r}
+wh1 <- dplyr::select(wh, c(3, 7:12))
+wh_matrix <- data.matrix(wh)
+```
+
+# 3. `heatmap()`
 
 ::: panel-tabset
-#### `geom_density_ridges()`
+#### Heatmap
+
+We will use the `heatmap()` function from the R Stats package to create the heatmap.
 
 ```{r}
-#| code-fold: true
-#| code-summary: "Codes here"
-
+wh_heatmap <- heatmap(wh_matrix,
+                      Rowv = NA, Colv = NA)
 ```
 
-#### Varying Fill Colours
+By default, `heatmap()` plots a cluster heatmap. In the code above, `Rowv = NA` and `Colv = NA` is used to turn off the row and column dendograms.
 
+#### Cluster Heatmap
 
 ```{r}
-#| code-fold: true
-#| code-summary: "Codes here"
-
-
+wh_heatmap <- heatmap(wh_matrix)
 ```
 
-#### Mapping Probabilities
+The order of rows and columns is changed in the cluster heatmap due to the clustering where similar pairs of rows and columns are put together.
 
-
-```{r}
-#| code-fold: true
-#| code-summary: "Codes here"
-
-
-```
-
-#### Mapping Quantile Lines
-
+This heatmap is not informative; the Happiness Score variable contains relatively big values compared to other variables such as Perceptions of corruption and generosity. Thus, the matrix has to be normalised to show more insights:
 
 ```{r}
-#| code-fold: true
-#| code-summary: "Codes here"
-
-
-```
-
-#### Mapping Specified Quantile Cut-Points
-
-
-
-```{r}
-#| code-fold: true
-#| code-summary: "Codes here"
-
+wh_heatmap <- heatmap(wh_matrix,
+                      scale="column", # normalise by columns
+                      cexRow = 0.6, # font size for y-axis
+                      cexCol = 0.8, # font size for x-axis
+                      margins = c(10, 4)) # to display plot with full labels shown
 ```
 :::
 
+# 4. Interactive Heatmap
+
+We will use the `heatmaply` package to create interactive cluster heatmaps.
+
+```{r}
+heatmaply(wh_matrix[, -c(1, 2, 4, 5)])
+```
+
+## 4.1. Data Transformation
+
+There are three main data transformation methods supported by `heatmaply()` top transform data using a common scale for comparison: scale, normalise, percentise.
+
+::: panel-tabset
+#### Scale
+
+When all variables are from or assumed to be from a normal distribution, scaling would bring all the values close to the standard normal distribution. After scaling, the value would reflect the number of standard deviations away from the mean.
+
+```{r}
+heatmaply(wh_matrix[, -c(1, 2, 4, 5)],
+          scale = "column")
+```
+
+#### Normalise
+
+When the variables in the data are from possibly different distributions, the normalise function can be used to bring the data onto a common 0.00 to 1.00 scale. This preserves the shape of each variable's distribution while making them comparable on the same scale.
+
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]))
+```
+
+#### Percentise
+
+The variables are ranked and each rank received is divided by the maximum rank to obtain a percentage. This provides clear interpretation as each value reflects the percentage of observations that received less than or equal to its own value.
+
+```{r}
+heatmaply(percentize(wh_matrix[, -c(1, 2, 4, 5)]))
+```
+:::
+
+## 4.2. Clustering Algorithm
+
+`heatmaply()` supports different hierarchical clustering algorithms through the following arguments:
+
+-   `distfun`: computes the distance (dissimilarity) between both rows and columns. Defaults to dist. The options "pearson", "spearman" and "kendall" can be used foruse correlation-based clustering.
+
+-   `hclustfun`: used to compute the hierarchical clustering when Rowv or Colv are not dendrograms. Defaults to hclust.
+
+-   `dist_method`: default is NULL, which uses "euclidean". Alternative methods include: "euclidean", "maximum", "manhattan", "canberra", "binary" or "minkowski".
+
+-   `hclust_method`: default is NULL, which uses "complete" method. Alternative methods include: "ward.D", "ward.D2", "single", "complete", "average" (= UPGMA), "mcquitty" (= WPGMA), "median" (= WPGMC) or "centroid" (= UPGMC).
+
+A clustering model can be calibrated manually or statistically. We explore both options below:
+
+::: panel-tabset
+#### Manually
+
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
+          dist_method = "euclidean",
+          hclust_method = "ward.D")
+```
+
+#### Statistical
+
+First, we determine the best clustering method and the number of clusters using the `dend_expend()` and `find_k()` functions from the `dendextend` package:
+
+```{r}
+wh_d <- dist(normalize(wh_matrix[, -c(1, 2, 4, 5)]), method = "euclidean")
+dend_expend(wh_d)[[3]]
+```
+
+From the output, we can tell that the "average" method should be used as it gave the highest optimum value.
+
+```{r}
+wh_clust <- hclust(wh_d, method = "average")
+num_k <- find_k(wh_clust)
+plot(num_k)
+```
+
+From the graph, we can tell that having 3 clusters would give us optimal results
+
+Hence, we can plot the heatmap accordingly:
+
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
+          dist_method = "euclidean",
+          hclust_method = "average",
+          k_row = 3)
+```
+:::
+
+# 5. Seriation
+
+`heatmaply` uses the seriation package to find an optimal ordering of rows and columns by optimising the Hamiltonian path length that is restricted by the dendrogram structure. This means that branches are rotated such that the sum of distances between each adjacent leaf (label) will be minimised.
+
+::: panel-tabset
+#### Optimal Leaf Ordering ("OLO")
+
+The OLO algorithm starts with the output of an agglomerative clustering algorithm and produces a unique ordering that flips the various branches of the dendrogram around to minimise the sum of dissimilarities between adjacent leaves. Here is the result of applying Optimal Leaf Ordering to the heatmap created previously:
+
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
+          seriate = "OLO")
+```
+
+#### Gruvaeus and Wainer ("GW")
+
+The GW method aims for the same goal as OLO but uses a potentially faster heuristic:
+
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
+          seriate = "GW")
+```
+
+#### "mean"
+
+The "mean" option gives the same default output created from heatmap functions from other packages such as heatmap.2.
+
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
+          seriate = "mean")
+```
+
+#### "none"
+
+Lastly, the "none" option creates a cluster heatmap without any rotations:
+
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
+          seriate = "none")
+```
+:::
+
+# 6. Colour Palettes
+
+The default colour palette used by `heatmaply` us viridis but this can be changed using colour palettes available on R, such as [rColorBrewer](https://r-graph-gallery.com/38-rcolorbrewers-palettes.html):
+
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
+          seriate = "none",
+          colors = YlOrRd)
+```
+
+# 7. Finishing Touches
+
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
+          Colv=NA,
+          seriate = "none",
+          colors = YlOrRd,
+          k_row = 3,
+          margins = c(NA,250,60,NA),
+          fontsize_row = 4,
+          fontsize_col = 5,
+          main="World Happiness Score and Variables by Country, 2018 \nData Transformation using Normalise Method",
+          xlab = "World Happiness Indicators",
+          ylab = "World Countries"
+          )
+```
