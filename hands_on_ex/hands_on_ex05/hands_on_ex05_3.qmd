@@ -186,7 +186,7 @@ heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
 
 # 5. Seriation
 
-`heatmaply` uses the seriation package to find an optimal ordering of rows and columns by optimising the Hamiltonian path length that is restricted by the dendrogram structure. This means that branches are rotated such that the sum of distances between each adjacent leaf (label) will be minimised.
+`heatmaply` uses the `seriation` package to find an optimal ordering of rows and columns by optimising the Hamiltonian path length that is restricted by the dendrogram structure. This means that branches are rotated such that the sum of distances between each adjacent leaf (label) will be minimised.
 
 ::: panel-tabset
 #### Optimal Leaf Ordering ("OLO")

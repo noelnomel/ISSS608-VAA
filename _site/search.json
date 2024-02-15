@@ -774,21 +774,21 @@
     "href": "hands_on_ex/hands_on_ex05/hands_on_ex05_4.html",
     "title": "Hands-on Exercise 05 - Multivariate Analysis with Parallel Coordinates Plot",
     "section": "",
-    "text": "In the first part of the fourth lesson, we learn to visualise distributions using ridgeline and raincloud plots by using ggplot2 and its extensions."
+    "text": "In the fourth part of the fifth lesson, we learn to visualise multivariate, numerical datau sing parallel coordinates plots. It is ideal for comparing multiple variables and seeing relationships between them. It can be used to characterise clusters that are detected during customer segmentation."
   },
   {
     "objectID": "hands_on_ex/hands_on_ex05/hands_on_ex05_4.html#installing-and-loading-packages",
     "href": "hands_on_ex/hands_on_ex05/hands_on_ex05_4.html#installing-and-loading-packages",
     "title": "Hands-on Exercise 05 - Multivariate Analysis with Parallel Coordinates Plot",
     "section": "2.1. Installing and Loading Packages",
-    "text": "2.1. Installing and Loading Packages\nWe will use the following R packages in addition to tidyverse and ggthemes for this exercise:\n\nggdist: ggplot2 extension designed for visualising distributions and uncertainty\nggridges: to create partially overlapping line plots to visualise changes in distribution over time or space\ncolorspace: toolbox for manipulating colours and palettes\n\nThe packages to be used can be installed and loaded into the R environment using the p_load() function from the pacman package:\n\npacman::p_load(tidyverse, ggthemes, \n               ggdist, ggridges, colorspace)"
+    "text": "2.1. Installing and Loading Packages\nWe will load the following R packages for this exercise using the p_load() function from the pacman package:\n\npacman::p_load(tidyverse, GGally, parallelPlot)"
   },
   {
     "objectID": "hands_on_ex/hands_on_ex05/hands_on_ex05_4.html#import-data",
     "href": "hands_on_ex/hands_on_ex05/hands_on_ex05_4.html#import-data",
     "title": "Hands-on Exercise 05 - Multivariate Analysis with Parallel Coordinates Plot",
     "section": "2.2. Import Data",
-    "text": "2.2. Import Data\nNext, we will read the data provided by the Course Instructor into the R environment. We will use the read_csv() function from the readr package found in tidyverse.\nUsing glimpse to view the data, it is observed that the data contains the examination grades of a batch of primary 3 students for the subjects English, Maths, and Science."
+    "text": "2.2. Import Data\nNext, we will read the data provided by the Course Instructor into the R environment. We will use the read_csv() function from the readr package found in tidyverse.\n\nwh &lt;- read_csv(\"data/WHData-2018.csv\")\n\nglimpse(wh)\n\nRows: 156\nColumns: 12\n$ Country                        &lt;chr&gt; \"Albania\", \"Bosnia and Herzegovina\", \"B…\n$ Region                         &lt;chr&gt; \"Central and Eastern Europe\", \"Central …\n$ `Happiness score`              &lt;dbl&gt; 4.586, 5.129, 4.933, 5.321, 6.711, 5.73…\n$ `Whisker-high`                 &lt;dbl&gt; 4.695, 5.224, 5.022, 5.398, 6.783, 5.81…\n$ `Whisker-low`                  &lt;dbl&gt; 4.477, 5.035, 4.844, 5.244, 6.639, 5.66…\n$ Dystopia                       &lt;dbl&gt; 1.462, 1.883, 1.219, 1.769, 2.494, 1.45…\n$ `GDP per capita`               &lt;dbl&gt; 0.916, 0.915, 1.054, 1.115, 1.233, 1.20…\n$ `Social support`               &lt;dbl&gt; 0.817, 1.078, 1.515, 1.161, 1.489, 1.53…\n$ `Healthy life expectancy`      &lt;dbl&gt; 0.790, 0.758, 0.712, 0.737, 0.854, 0.73…\n$ `Freedom to make life choices` &lt;dbl&gt; 0.419, 0.280, 0.359, 0.380, 0.543, 0.55…\n$ Generosity                     &lt;dbl&gt; 0.149, 0.216, 0.064, 0.120, 0.064, 0.08…\n$ `Perceptions of corruption`    &lt;dbl&gt; 0.032, 0.000, 0.009, 0.039, 0.034, 0.17…\n\n\nUsing glimpse to view the data, it is observed that the data contains the happiness index in 12 columns and 156 observations."
   },
   {
     "objectID": "hands_on_ex/hands_on_ex05/hands_on_ex05_5.html",
