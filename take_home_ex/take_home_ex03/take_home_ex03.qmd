@@ -10,11 +10,13 @@ execute:
 editor: visual
 ---
 
-# ![](info-1-01.jpg)1. Overview
+# 1. Overview
 
 Climate change poses an existential threat to all living things on Earth, and Singapore is not spared from its effects as a low-lying state on the equator. It is not uncommon to hear Singaporeans talk about how the weather feels hotter in recent years amidst increasing frequency of news reports on "temperatures hitting record highs in Singapore.
 
 After the findings from the [Intergovernmental Panel on Climate Change's (IPCC) Working Group I Fifth Assessment Report](https://www.ipcc.ch/assessment-report/ar5/) were released in 2014, the Meteorological Service Singapore's (MSS) Centre for Climate Research Singapore (CCRS) and the UK Met Office, Hadley Centre, updated the projections for Singapore in a joint effort. The projections were summarised in an infographic on the National Climate Change Secretariat (NCCS) Singapore's [website](https://www.nccs.gov.sg/singapores-climate-action/impact-of-climate-change-in-singapore/):
+
+![](info-1-01.jpg)
 
 In this exercise, we hope to broadly explore the historical trends in Singapore's surface temperature at a selected location over the last few decades. For a personal reason, I have selected the **Tengah** weather station for analysis even though temperature data was only collected at this weather station starting from 1985.
 
