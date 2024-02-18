@@ -95,7 +95,7 @@ stu_qqq_SG <- read_rds("data/stu_qqq_SG.rds")
 As the dataset contains too many columns, we will extract only the relevant columns required for this exercise and keep the data as `stu_sg_data`. The columns we need are:
 
 | Col Name            | Label                                                   | Reason                                                                                               |
-|---------------|--------------------|-------------------------------------|
+|------------------|-------------------|-----------------------------------|
 | ST004D01T           | Gender, where 1 is Female and 2 is Male                 | To explore if there are any relationships between gender and performance in the test                 |
 | RELATST             | Measure of the quality of student-teacher relationships | As a proxy to measure if the school provided a good environment to bring out the best in every child |
 | BELONG              | Index of sense of belonging at school                   | As a proxy to measure if the school provided a good environment to bring out the best in every child |

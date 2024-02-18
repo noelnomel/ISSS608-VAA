@@ -1,5 +1,5 @@
 ---
-title: "Take-home Exercise 03"
+title: "How Is Climate Change Affecting Singapore's Temperature?"
 date: "4 February 2024"
 date-modified: "last-modified"
 format: html
@@ -9,3 +9,453 @@ execute:
   warning: false # do not display warning message
 editor: visual
 ---
+
+# ![](info-1-01.jpg)1. Overview
+
+Climate change poses an existential threat to all living things on Earth, and Singapore is not spared from its effects as a low-lying state on the equator. It is not uncommon to hear Singaporeans talk about how the weather feels hotter in recent years amidst increasing frequency of news reports on "temperatures hitting record highs in Singapore.
+
+After the findings from the [Intergovernmental Panel on Climate Change's (IPCC) Working Group I Fifth Assessment Report](https://www.ipcc.ch/assessment-report/ar5/) were released in 2014, the Meteorological Service Singapore's (MSS) Centre for Climate Research Singapore (CCRS) and the UK Met Office, Hadley Centre, updated the projections for Singapore in a joint effort. The projections were summarised in an infographic on the National Climate Change Secretariat (NCCS) Singapore's [website](https://www.nccs.gov.sg/singapores-climate-action/impact-of-climate-change-in-singapore/):
+
+In this exercise, we hope to broadly explore the historical trends in Singapore's surface temperature at a selected location over the last few decades. For a personal reason, I have selected the **Tengah** weather station for analysis even though temperature data was only collected at this weather station starting from 1985.
+
+Tengah is one of Housing and Development Board's latest residential area and it will be the site of my future home. To make space for this residential development, HDB planned to clear almost 90% of the Tengah forest. It was estimated in 2021 that 40% of the Tengah forest had been cleared for the first phase of the development of the residential town. Using historical data, we will explore if the clearing of the Tengah forest has affected surface temperature.
+
+We will use the daily temperature data recorded in **September** in **1986**, **1993**, **2003**, **2013**, and **2023**. As we do not have temparature data from 1983 to ensure a consistent 10-year interval, the 1986 data will be used instead. Comprehensive histrocial temperature records were only availble from 1986 onwards.
+
+# 2. Getting Started
+
+First, we will download the Historical Daily Records for the selected weather station and time periods from the [Meteorological Service Singapore Website](https://www.weather.gov.sg/climate-historical-daily/). A total of five CSV files will be used for this exercise.
+
+## 2.1. Loading Relevant Packages
+
+We will load [`tidyverse`](https://www.tidyverse.org/) where the [`ggplot2`](https://ggplot2.tidyverse.org/) package can be found, and [`patchwork`](https://patchwork.data-imaginist.com/). We will use `ggplot2` to plot the statistical graphs, and `patchwork` to create composite graphs.
+
+```{r}
+pacman::p_load(tidyverse, patchwork, stringr,
+               ggiraph, DT, crosstalk, plotly)
+```
+
+## 2.2. Import Data
+
+We will use the `read_csv()` function from the `readr` package found in `tidyverse` to load each dataset into R:
+
+```{r}
+sep1986 <- read_csv("data/DAILYDATA_S23_198609.csv")
+sep1993 <- read_csv("data/DAILYDATA_S23_199309.csv")
+sep2003 <- read_csv("data/DAILYDATA_S23_200309.csv")
+sep2013 <- read_csv("data/DAILYDATA_S23_201309.csv")
+sep2023 <- read_csv("data/DAILYDATA_S23_202309.csv")
+```
+
+```{r}
+glimpse(sep1986)
+glimpse(sep1993)
+glimpse(sep2003)
+glimpse(sep2013)
+glimpse(sep2023)
+```
+
+Using `glimpse()` to view one of the data sets, we can see that each data set contains the daily rainfall, temperature and wind speed data of the selected weather station, month, and year.
+
+# 3. Prepare Data
+
+## 3.1. Selecting Relevant Features
+
+As we will only be analysing temperature data and trends in this exercise, we will extract the required fields from the imported data set. Using the `sep1986` dataset as an example, we will extract only the Year, Month, Day, and Mean, Minimum and Maximum Temperature. We will change the data type of Year and Month, and Day from dbl to chr to avoid them being read as integers. In addition, we will add a preceding 0 for Days 1 to 9 for sorting purposes.
+
+```{r}
+sep1986 <- sep1986 %>%
+  select('Year','Month','Day',
+         'Mean Temperature', 'Maximum Temperature', 'Minimum Temperature') %>%
+  rename('Mean_Temp' = 'Mean Temperature',
+         'Max_Temp' = 'Maximum Temperature',
+         'Min_Temp' = 'Minimum Temperature') %>%
+  mutate(Year = as.character(Year),
+         Month = as.character(Month),
+         Day = str_pad(as.character(Day), width = 2, pad = "0"))
+```
+
+We will repeat the same steps for the remaining four data sets.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Codes here"
+
+sep1993 <- sep1993 %>%
+  select('Year','Month','Day',
+         'Mean Temperature', 'Maximum Temperature', 'Minimum Temperature') %>%
+  rename('Mean_Temp' = 'Mean Temperature',
+         'Max_Temp' = 'Maximum Temperature',
+         'Min_Temp' = 'Minimum Temperature') %>%
+  mutate(Year = as.character(Year),
+         Month = as.character(Month),
+         Day = str_pad(as.character(Day), width = 2, pad = "0"))
+
+sep2003 <- sep2003 %>%
+  select('Year','Month','Day',
+         'Mean Temperature', 'Maximum Temperature', 'Minimum Temperature') %>%
+  rename('Mean_Temp' = 'Mean Temperature',
+         'Max_Temp' = 'Maximum Temperature',
+         'Min_Temp' = 'Minimum Temperature') %>%
+  mutate(Year = as.character(Year),
+         Month = as.character(Month),
+         Day = str_pad(as.character(Day), width = 2, pad = "0"))
+
+sep2013 <- sep2013 %>%
+  select('Year','Month','Day',
+         'Mean Temperature', 'Maximum Temperature', 'Minimum Temperature') %>%
+  rename('Mean_Temp' = 'Mean Temperature',
+         'Max_Temp' = 'Maximum Temperature',
+         'Min_Temp' = 'Minimum Temperature') %>%
+  mutate(Year = as.character(Year),
+         Month = as.character(Month),
+         Day = str_pad(as.character(Day), width = 2, pad = "0"))
+
+sep2023 <- sep2023 %>%
+  select('Year','Month','Day',
+         'Mean Temperature', 'Maximum Temperature', 'Minimum Temperature') %>%
+  rename('Mean_Temp' = 'Mean Temperature',
+         'Max_Temp' = 'Maximum Temperature',
+         'Min_Temp' = 'Minimum Temperature') %>%
+  mutate(Year = as.character(Year),
+         Month = as.character(Month),
+         Day = str_pad(as.character(Day), width = 2, pad = "0"))
+```
+
+## 3.2. Combine Into One Table
+
+For the purpose of this exercise, we will combine the five data sets into one tibble data frame using the [`bind_rows()`](https://dplyr.tidyverse.org/reference/bind_rows.html) function from the `dplyr` package. `bind_rows()` is chosen over `bind_cols()` as we want to group the data by its respective columns.
+
+```{r}
+tengah_sep <- bind_rows(sep1986, sep1993, sep2003, sep2013, sep2023)
+```
+
+# 4. Visualisations
+
+## 4.1. Daily Mean Temperature
+
+First, we will visualise the Daily Mean Temperature trend by year using the following code:
+
+```{r}
+#| code-fold: true
+#| code-summary: "Codes here"
+
+tengah_sep$tooltip <- c(paste0(
+  "Day: ", tengah_sep$Day,"-",tengah_sep$Month,"-",tengah_sep$Year,
+  "\n Mean Temp: ", tengah_sep$Mean_Temp, "°C"))
+
+line <- ggplot(data = tengah_sep,
+               aes(x = Day,
+                   y = Mean_Temp,
+                   group = Year,
+                   color = Year,
+                   data_id = Year)) +
+  geom_line_interactive(size = 1.2,
+                        alpha = 0.4) +
+  geom_point_interactive(aes(tooltip = tengah_sep$tooltip),
+                         fill = "white",
+                         size = 1,
+                         stroke = 1,
+                         shape = 21) +
+  theme_classic() +
+  ylab("Daily Mean Temperature (°C)") +
+  xlab("Day of Month") +
+  ggtitle("Daily Mean Temperature Recorded At Tengah Weather Station",
+          subtitle = "September 1986, 1993, 2003, 2013, 2023") +
+  theme(plot.title = element_text(size = 10),
+        plot.subtitle = element_text(size = 8)) 
+
+girafe(ggobj = line, 
+       width_svg = 8,
+       height_svg = 6 * 0.618,
+       options = list(
+         opts_hover(css = "stroke-width: 2.5; opacity: 1;"),
+         opts_hover_inv(css = "stroke-width: 1;opacity:0.6;")))
+
+```
+
+It can be observed from the graph that the daily mean temperature recorded at the Tengah weather station is generally higher in 2023 (purple line) and 2013 (blue line). This is in stark contrast to the daily mean temperatures recorded in 1986 (red line), where it is generally lower.
+
+## 4.2. Highlighting Data Points From The Same Year
+
+```{r}
+#| code-fold: true
+#| code-summary: "Codes here"
+
+daily_temp <- ggplot(data = tengah_sep,
+               aes(x = Mean_Temp)) +
+  geom_dotplot_interactive(
+    aes(data_id = Year,
+        tooltip = tengah_sep$tooltip),
+    stackgroups = TRUE,
+    binwidth = 0.1,
+    method = "histodot") +
+  scale_y_continuous(NULL, breaks = NULL) +
+  scale_x_continuous(breaks = seq(23, 30, by = 1)) +
+  theme_classic() +
+  xlab("Daily Mean Temperature (°C)") +
+  ggtitle("Daily Mean Temperature Recorded At Tengah Weather Station",
+          subtitle = "September 1986, 1993, 2003, 2013, 2023") +
+  theme(plot.title = element_text(size = 10),
+        plot.subtitle = element_text(size = 8),
+        axis.line.y = element_blank()) 
+  
+
+girafe(ggobj = daily_temp,
+       width_svg = 8,
+       height_svg = 6 * 0.618,
+       options = list(
+         opts_hover(css = "fill:red;"),
+         opts_hover_inv(css = "opacity:0.4;")))
+
+```
+
+We can make the same observation that higher daily mean temperatures are observed in 2013 and 2023 from the graph above as well. Many of the data points found on the higher end of the x-axis belong to 2013 and 2023, while many of the data points found on the lower end of the x-axis belong to 1986, 1993, and 2003.
+
+Let's try to visualise the distribution of daily mean temperatures with each year occupying its own plot.
+
+First, we create a new column in each tibble data frame to contain the tooltip. The tooltip will contain the corresponding date and mean temperature recorded on the chosen data point. Using the `sep1986` data frame as an example, we will use the following code chunk to create the tooltip and graph before storing it as an object to be used with the `giraph()` function.
+
+```{r}
+sep1986$tooltip <- c(paste0(
+  "Day: ", sep1986$Day,"-",sep1986$Month,"-",sep1986$Year,
+  "\n Mean Temp: ", sep1986$Mean_Temp, "°C"))
+
+dotplot86 <- ggplot(data = sep1986,
+                    aes(x = Mean_Temp)) +
+  geom_dotplot_interactive(
+    aes(data_id = Day,
+        tooltip = sep1986$tooltip),
+    stackgroups = TRUE,
+    binwidth = 0.3,
+    method = "histodot") +
+  scale_y_continuous(NULL, breaks = NULL) +
+  coord_cartesian(xlim = c(23.5, 30)) +
+  xlab("1986 Daily Mean Temperature (°C)") +
+  theme_classic() +
+  ggtitle("Daily Mean Temperature Recorded At Tengah Weather Station",
+          subtitle = "September 1986, 1993, 2003, 2013, 2023") +
+  theme(plot.title = element_text(size = 4.8),
+        plot.subtitle = element_text(size = 4),
+        axis.title.x = element_text(size = 4.5),
+        axis.line.y = element_blank()) 
+```
+
+We will repeat the above steps with the other data frames.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Codes here"
+
+sep1993$tooltip <- c(paste0(
+  "Day: ", sep1993$Day,"-",sep1993$Month,"-",sep1993$Year,
+  "\n Mean Temp: ", sep1993$Mean_Temp, "°C"))
+
+dotplot93 <- ggplot(data = sep1993,
+                    aes(x = Mean_Temp)) +
+  geom_dotplot_interactive(
+    aes(data_id = Day,
+        tooltip = sep1993$tooltip),
+    stackgroups = TRUE,
+    binwidth = 0.3,
+    method = "histodot") +
+  scale_y_continuous(NULL, breaks = NULL) +
+  coord_cartesian(xlim = c(23.5, 30)) +
+  xlab("1993 Daily Mean Temperature (°C)") +
+  theme_classic() +
+  theme(axis.title.x = element_text(size = 4.5),
+        axis.line.y = element_blank()) 
+
+sep2003$tooltip <- c(paste0(
+  "Day: ", sep2003$Day,"-",sep2003$Month,"-",sep2003$Year,
+  "\n Mean Temp: ", sep2003$Mean_Temp, "°C"))
+
+dotplot03 <- ggplot(data = sep2003,
+                    aes(x = Mean_Temp)) +
+  geom_dotplot_interactive(
+    aes(data_id = Day,
+        tooltip = sep2003$tooltip),
+    stackgroups = TRUE,
+    binwidth = 0.3,
+    method = "histodot") +
+  scale_y_continuous(NULL, breaks = NULL) +
+  coord_cartesian(xlim = c(23.5, 30)) +
+  xlab("2003 Daily Mean Temperature (°C)") +
+  theme_classic() +
+  theme(axis.title.x = element_text(size = 4.5),
+        axis.line.y = element_blank()) 
+
+sep2013$tooltip <- c(paste0(
+  "Day: ", sep2013$Day,"-",sep2013$Month,"-",sep2013$Year,
+  "\n Temp: ", sep2013$Mean_Temp, "°C"))
+
+
+dotplot13 <- ggplot(data = sep2013,
+                    aes(x = Mean_Temp)) +
+  geom_dotplot_interactive(
+    aes(data_id = Day,
+        tooltip = sep2013$tooltip),
+    stackgroups = TRUE,
+    binwidth = 0.3,
+    method = "histodot") +
+  scale_y_continuous(NULL, breaks = NULL) +
+  coord_cartesian(xlim = c(23.5, 30)) +
+  xlab("2013 Daily Mean Temperature (°C)") +
+  theme_classic() +
+  theme(axis.title.x = element_text(size = 4.5),
+        axis.line.y = element_blank()) 
+
+sep2023$tooltip <- c(paste0(
+  "Day: ", sep2023$Day,"-",sep2023$Month,"-",sep2023$Year,
+  "\n Mean Temp: ", sep2023$Mean_Temp, "°C"))
+
+
+dotplot23 <- ggplot(data = sep2023,
+                    aes(x = Mean_Temp)) +
+  geom_dotplot_interactive(
+    aes(data_id = Day,
+        tooltip = sep2023$tooltip),
+    stackgroups = TRUE,
+    binwidth = 0.3,
+    method = "histodot") +
+  scale_y_continuous(NULL, breaks = NULL) +
+  coord_cartesian(xlim = c(23.5, 30)) +
+  xlab("2023 Daily Mean Temperature (°C)") +
+  theme_classic() +
+  theme(axis.title.x = element_text(size = 4.5),
+        axis.line.y = element_blank()) 
+
+girafe(code = print(dotplot86 + dotplot93 + dotplot03 + dotplot13 + dotplot23),
+       width_svg = 6,
+       height_svg = 3,
+       options = list(
+         opts_hover(css = "fill:red;"),
+         opts_hover_inv(css = "opacity:0.2;")
+       ))
+
+```
+
+From the plot above, we can see that the distribution of daily mean temperature has shifted from a range of 23°C to 28°C in 1986 to a range of 26°C to 30°C in 2023. This shows an increase in the daily mean temperatures recorded over the the same month per decade.
+
+However, there is no clear pattern in the temperature trend if we look at the day-of-month level of detail. For example, 28 September recorded the highest daily mean temperature in 2023 but the same day recorded mid-range daily mean temperatures in the preceding years.
+
+## 4.3. Confidence Interval of Daily Mean Temperature
+
+```{r}
+#| code-fold: true
+#| code-summary: "Codes here"
+tooltip <- function(y, ymax, accuracy = 0.1) {
+  mean <- scales::number(y, accuracy = accuracy)
+  sem <- scales::number(ymax - y, accuracy = accuracy)
+  paste("September mean temperature:", mean, "+/-", sem)
+}
+
+gg_pt <- ggplot(data = tengah_sep,
+                aes(x = Year)) +
+  stat_summary(aes(y = Mean_Temp,
+                   tooltip = after_stat(
+                     tooltip(y, ymax))),
+               fun.data = "mean_se",
+               geom = GeomInteractiveCol,
+               fill = "rosybrown2"
+               ) +
+  stat_summary(aes(y = Mean_Temp),
+               fun.data = mean_se,
+               geom = "errorbar", width = 0.2, linewidth = 0.2) +
+  ylab("Mean Temperature (°C)") +
+  xlab("Year") +
+  theme_classic() +
+  ggtitle("Confidence Interval of Daily Mean Temperature Recorded At Tengah Weather Station",
+          subtitle = "September 1986, 1993, 2003, 2013, 2023") +
+  theme(plot.title = element_text(size = 10),
+        plot.subtitle = element_text(size = 8),
+        axis.title.x = element_text(size = 4.5),
+        axis.line.y = element_blank()) 
+
+girafe(ggobj = gg_pt,
+       width_svg = 8,
+       height_svg = 8*0.618)
+```
+
+From the bar chart, we can see that the September mean temperature recorded at the Tengah weather station increased by 0.7°C from 2003 to 2013, and 0.9°C from 2013 to 2023 while the it remained relatively stable from 1986 to 1993 to 2003.
+
+The small range of the error bar indicates small variability in the mean temperature recorded in September across the five selected years. This means that both the lowest and highest of the mean temperatures recorded increased at a similar pace.
+
+## 4.4. Confidence Interval of Point Estimates
+
+Lastly, we will visualise a confidence interval of point estimates according to the minimum, maximum and mean temperatures recorded at the Tengah weather station in September of the five selected years. In order to do it, we have to create a long data table using the following code:
+
+```{r}
+tengah_sep_long <- pivot_longer(data = tengah_sep,
+                     cols = 4:6,
+                     names_to = "Measurement",
+                     values_to = "Temperature")
+```
+
+Next, we create a table containing the summary statistics of each measurement type:
+
+```{r}
+sum_stat <- tengah_sep_long %>%
+  group_by(Measurement) %>%
+  summarise(n = n(),
+            mean = mean(Temperature),
+            sd = sd(Temperature)) %>%
+  mutate(se = sd/sqrt(n-1))
+```
+
+Lastly, we use the summary statistics to create the the plot that is linked to a data table displaying the details.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Codes here"
+shared_df = SharedData$new(sum_stat)
+
+bscols(widths = c(4,8),
+       ggplotly((ggplot(data = shared_df) +
+                   geom_errorbar(aes(x=reorder(Measurement, -mean),
+                                     ymin=mean-2.58*se, 
+                                     ymax=mean+2.58*se), 
+                                 width=0.2, 
+                                 colour="black", 
+                                 alpha=0.9, 
+                                 size=0.5) +
+                    geom_point(aes(x=Measurement, 
+                                   y=mean, 
+                                   text = paste("Measurement:", `Measurement`, 
+                                                "<br>N:", `n`,
+                                                "<br>Avg. Temp:", round(mean, digits = 2),
+                                                "<br>99% CI:[", 
+                                                round((mean-2.58*se), digits = 2), ",",
+                                                round((mean+2.58*se), digits = 2),"]")),
+                               stat="identity", 
+                               color="red", 
+                               size = 1.5, 
+                               alpha=1) + 
+                   xlab("Measurement Type") + 
+                   ylab("Temperature (°C)") + 
+                   theme_classic() + 
+                   theme(axis.text.x = element_text(
+                     angle = 45, vjust = 0.5, hjust=1)) +
+                   ggtitle("99% Confidence Interval of /<br>Temperature by Measurement Type")), 
+                tooltip = "text"), 
+       DT::datatable(shared_df, 
+                     rownames = FALSE, 
+                     class="compact", 
+                     width="100%", 
+                     options = list(pageLength = 10,
+                                    scrollX=T), 
+                     colnames = c("No. of observations", 
+                                  "Mean Temperature (°C)",
+                                  "Std Dev",
+                                  "Std Error")) %>%
+         formatRound(columns=c('mean', 'sd', 'se'),
+                     digits=2))
+```
+
+From the graph, we can see that there is a bigger variability in the maximum temperature recorded at the Tengah weather station in September of the five selected years. This can be observed from the data table as well.
+
+From the 99% confidence interval, it can be observed that the maximum temperature recorded could lie in the range of 31.27°C to 31.99°C, while the minimum temperature recorded could lie in the range of 23.26 °C to 23.85 °C.
+
+# Conclusion
+
+From this exercise, it is obvious that ground temperature at Tengah has seen an increase between 2003 to 2013, and between 2013 to 2023. Linking back to the opening case, the decision by HDB to remove the Tengah forest came before 2021. As the observed increase in ground temperature started before the removal of the Tengah forest, there may not be clear associations between the government's actions and its results on the environment now. This case requires further observation as development continues before any other conclusions can be drawn.
