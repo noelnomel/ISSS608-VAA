@@ -10,6 +10,10 @@ execute:
 editor: visual
 ---
 
+::: callout-note
+Final edits made on 19 February 2024 to the aesthetics of plots found in section 4.3 and 4.4 to ensure plot titles and other text can be seen clearly. No other changes were made.
+:::
+
 # 1. Overview
 
 Climate change poses an existential threat to all living things on Earth, and Singapore is not spared from its effects as a low-lying state on the equator. It is not uncommon to hear Singaporeans talk about how the weather feels hotter in recent years amidst increasing frequency of news reports on "temperatures hitting record highs in Singapore.
@@ -371,8 +375,7 @@ gg_pt <- ggplot(data = tengah_sep,
           subtitle = "September 1986, 1993, 2003, 2013, 2023") +
   theme(plot.title = element_text(size = 10),
         plot.subtitle = element_text(size = 8),
-        axis.title.x = element_text(size = 4.5),
-        axis.line.y = element_blank()) 
+        axis.title.x = element_text(size = 4.5)) 
 
 girafe(ggobj = gg_pt,
        width_svg = 8,
@@ -437,13 +440,17 @@ bscols(widths = c(4,8),
                    ylab("Temperature (°C)") + 
                    theme_classic() + 
                    theme(axis.text.x = element_text(
-                     angle = 45, vjust = 0.5, hjust=1)) +
-                   ggtitle("99% Confidence Interval of /<br>Temperature by Measurement Type")), 
+                     angle = 45, vjust = 0.5, hjust=1, size = 6),
+                     plot.title = element_text(size = 9.4),
+                     axis.text.y = element_text(size = 6),
+                     axis.title.x = element_text(size = 8),
+                     axis.title.y = element_text(size = 8)) +
+                   ggtitle("99% CI of Temperature <br>by Measurement Type")), 
                 tooltip = "text"), 
        DT::datatable(shared_df, 
                      rownames = FALSE, 
                      class="compact", 
-                     width="100%", 
+                     width="80%", 
                      options = list(pageLength = 10,
                                     scrollX=T), 
                      colnames = c("No. of observations", 
@@ -458,6 +465,6 @@ From the graph, we can see that there is a bigger variability in the maximum tem
 
 From the 99% confidence interval, it can be observed that the maximum temperature recorded could lie in the range of 31.27°C to 31.99°C, while the minimum temperature recorded could lie in the range of 23.26 °C to 23.85 °C.
 
-# Conclusion
+# 5. Conclusion
 
 From this exercise, it is obvious that ground temperature at Tengah has seen an increase between 2003 to 2013, and between 2013 to 2023. Linking back to the opening case, the decision by HDB to remove the Tengah forest came before 2021. As the observed increase in ground temperature started before the removal of the Tengah forest, there may not be clear associations between the government's actions and its results on the environment now. This case requires further observation as development continues before any other conclusions can be drawn.
