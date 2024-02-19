@@ -11,7 +11,7 @@ editor: visual
 ---
 
 ::: callout-note
-Final edits made on 19 February 2024 to the aesthetics of plots found in section 4.3 and 4.4 to ensure plot titles and other text can be seen clearly. No other changes were made.
+Final edits were made on 19 February 2024 to the aesthetics of plots found in section 4.3 and 4.4 to ensure plot titles and other text can be seen clearly. No other changes were made.
 :::
 
 # 1. Overview
@@ -450,7 +450,7 @@ bscols(widths = c(4,8),
        DT::datatable(shared_df, 
                      rownames = FALSE, 
                      class="compact", 
-                     width="80%", 
+                     width="100%", 
                      options = list(pageLength = 10,
                                     scrollX=T), 
                      colnames = c("No. of observations", 
