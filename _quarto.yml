@@ -69,22 +69,13 @@ website:
             
       - text: In-class Exercises
         menu: 
-          - text: Exercise 1
+          - text: Exercise 1 - Intro to R
             href: in_class_ex/in_class_ex01/in_class_ex01.html
             
-          - text: Exercise 2
-            href: in_class_ex/in_class_ex02/in_class_ex02.html
-            
-          - text: Exercise 3
+          - text: Exercise 3 - Visulisation on Tableau
             href: in_class_ex/in_class_ex03/in_class_ex03.html
             
-          - text: Exercise 4
-            href: in_class_ex/in_class_ex04/in_class_ex04.html
-            
-          - text: Exercise 5
-            href: in_class_ex/in_class_ex05/in_class_ex05.html
-            
-          - text: Exercise 6
+          - text: Exercise 6 - Time Series Visualisation on Tableau and R
             href: in_class_ex/in_class_ex06/in_class_ex06.html
             
           - text: Exercise 7
