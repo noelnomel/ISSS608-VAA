@@ -1,5 +1,5 @@
 ---
-title: "In-class Exercise 05"
+title: "In-class Exercise 05 - ShinyApp"
 date: "13 January 2024"
 date-modified: "last-modified"
 format: html
@@ -9,3 +9,5 @@ execute:
   warning: false # do not display warning message
 editor: visual
 ---
+
+Link to [Prototype 1](https://noelnomel.shinyapps.io/prototype1/)
