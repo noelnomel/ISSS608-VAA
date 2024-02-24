@@ -1160,5 +1160,68 @@
     "title": "In-class Exercise 05 - ShinyApp",
     "section": "",
     "text": "Link to Prototype 1"
+  },
+  {
+    "objectID": "in_class_ex/in_class_ex06/in_class_ex06.html",
+    "href": "in_class_ex/in_class_ex06/in_class_ex06.html",
+    "title": "In-class Exercise 06 - Time Series on Tableau and R",
+    "section": "",
+    "text": "Select from Republic of South Africa to New Zealand while holding down the shift key. Click on down arrow &gt; pivot.\n\nRename the pivoted columns.\n\n\n\n\nWe can now plot Year against Sum(Arrivals). We can toggle the display to show Year-Month aggregation by selecting Month in the dropdown list.\n\nPivoting allows us to apply Country as a filter to show the aggregated arrival numbers by country of our choice.\n\nWe can change the style of the filter using the following option:\n\n\n\n\nWe can create a cycle plot on Tableau by adding Year as a Column argument in addition to Month.\n\n\n\n\nNext, we create a dashboard with an “automatic” size.\n\nPutting both graphs together as a Dashboard, we see that the filter functions work separately. We can link the filter function for both plots using the following function:\n\nNow that the filters are linked, we can remove one of them on the Dashboard, for clarity.\n\n\n\n\nFinally, we publish our completed dashboard to Tableau Public. To do so, we first extract the data on Tableau:\n\n\nPublish to Tableau Public:\n\nAll done :)"
+  },
+  {
+    "objectID": "in_class_ex/in_class_ex06/in_class_ex06.html#pivot-data",
+    "href": "in_class_ex/in_class_ex06/in_class_ex06.html#pivot-data",
+    "title": "In-class Exercise 06 - Time Series on Tableau and R",
+    "section": "",
+    "text": "Select from Republic of South Africa to New Zealand while holding down the shift key. Click on down arrow &gt; pivot.\n\nRename the pivoted columns."
+  },
+  {
+    "objectID": "in_class_ex/in_class_ex06/in_class_ex06.html#line-plot",
+    "href": "in_class_ex/in_class_ex06/in_class_ex06.html#line-plot",
+    "title": "In-class Exercise 06 - Time Series on Tableau and R",
+    "section": "",
+    "text": "We can now plot Year against Sum(Arrivals). We can toggle the display to show Year-Month aggregation by selecting Month in the dropdown list.\n\nPivoting allows us to apply Country as a filter to show the aggregated arrival numbers by country of our choice.\n\nWe can change the style of the filter using the following option:"
+  },
+  {
+    "objectID": "in_class_ex/in_class_ex06/in_class_ex06.html#line-plot-1",
+    "href": "in_class_ex/in_class_ex06/in_class_ex06.html#line-plot-1",
+    "title": "In-class Exercise 06 - Time Series on Tableau and R",
+    "section": "",
+    "text": "We can create a cycle plot on Tableau by adding Year as a Column argument in addition to Month."
+  },
+  {
+    "objectID": "in_class_ex/in_class_ex06/in_class_ex06.html#dashboard",
+    "href": "in_class_ex/in_class_ex06/in_class_ex06.html#dashboard",
+    "title": "In-class Exercise 06 - Time Series on Tableau and R",
+    "section": "",
+    "text": "Next, we create a dashboard with an “automatic” size.\n\nPutting both graphs together as a Dashboard, we see that the filter functions work separately. We can link the filter function for both plots using the following function:\n\nNow that the filters are linked, we can remove one of them on the Dashboard, for clarity."
+  },
+  {
+    "objectID": "in_class_ex/in_class_ex06/in_class_ex06.html#publish-to-tableau-public",
+    "href": "in_class_ex/in_class_ex06/in_class_ex06.html#publish-to-tableau-public",
+    "title": "In-class Exercise 06 - Time Series on Tableau and R",
+    "section": "",
+    "text": "Finally, we publish our completed dashboard to Tableau Public. To do so, we first extract the data on Tableau:\n\n\nPublish to Tableau Public:\n\nAll done :)"
+  },
+  {
+    "objectID": "in_class_ex/in_class_ex06/in_class_ex06.html#overview",
+    "href": "in_class_ex/in_class_ex06/in_class_ex06.html#overview",
+    "title": "In-class Exercise 06 - Time Series on Tableau and R",
+    "section": "3.1. Overview",
+    "text": "3.1. Overview\nA horizon graph is designed to visualise large numbers of time series by overcoming the issue of highly-overlapping time-series graphs."
+  },
+  {
+    "objectID": "in_class_ex/in_class_ex06/in_class_ex06.html#getting-started",
+    "href": "in_class_ex/in_class_ex06/in_class_ex06.html#getting-started",
+    "title": "In-class Exercise 06 - Time Series on Tableau and R",
+    "section": "3.2. Getting Started",
+    "text": "3.2. Getting Started\n\n3.2.1. Installing and Loading Packages\nWe will use the following R packages in addition to tidyverse for this exercise:\n\nggHoriPlot: ggplot2 extension to create horizon graphs\n\nThe packages to be used can be installed and loaded into the R environment using the p_load() function from the pacman package:\n\npacman::p_load(tidyverse, ggHoriPlot, ggthemes)\n\n\n\n3.2.2. Import Data\nNext, we will read the data, Average Retail Prices Of Selected Consumer Items, downloaded and processed by the Course Instructor into the R environment. We will use the read_csv() function from the readr package found in tidyverse.\n\naverp &lt;- read_csv(\"data/AVERP.csv\") %&gt;%\n  mutate(`Date` = dmy(`Date`))"
+  },
+  {
+    "objectID": "in_class_ex/in_class_ex06/in_class_ex06.html#plotting-horizon-graph",
+    "href": "in_class_ex/in_class_ex06/in_class_ex06.html#plotting-horizon-graph",
+    "title": "In-class Exercise 06 - Time Series on Tableau and R",
+    "section": "3.3. Plotting Horizon Graph",
+    "text": "3.3. Plotting Horizon Graph\nLastly, we plot the horizon graph using the geom_horizon() function from ggHoriPlot package:\n\naverp %&gt;% \n  filter(Date &gt;= \"2018-01-01\") %&gt;%\n  ggplot() +\n  geom_horizon(aes(x = Date, \n                   y = Values),\n               origin = \"midpoint\", \n               horizonscale = 6) +\n  facet_grid(`Consumer Items`~.) +\n  theme_few() +\n  scale_fill_hcl(palette = 'RdBu') +\n  theme(panel.spacing.y = unit(0, \"lines\"), \n        strip.text.y = element_text(size = 5, angle = 0, hjust = 0),\n        legend.position = 'none',\n        axis.text.y = element_blank(),\n        axis.text.x = element_text(size=7),\n        axis.title.y = element_blank(),\n        axis.title.x = element_blank(),\n        axis.ticks.y = element_blank(),\n        panel.border = element_blank()) +\n  scale_x_date(expand = c(0,0), \n               date_breaks = \"3 month\", \n               date_labels = \"%b%y\") +\n  ggtitle('Average Retail Prices of Selected Consumer Items (Jan 2018 to Dec 2022)')"
   }
 ]
