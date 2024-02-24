@@ -58,17 +58,14 @@ website:
           - text: Exercise 7.3 Analytical Mapping
             href: hands_on_ex/hands_on_ex07/hands_on_ex07_3.html
             
-          - text: Exercise 8 Geographic Data
+          - text: Exercise 8 Network Data
             href: hands_on_ex/hands_on_ex08/hands_on_ex08.html
             
-          - text: Exercise 9 Network Data
+          - text: Exercise 9 Text Data
             href: hands_on_ex/hands_on_ex09/hands_on_ex09.html
             
-          - text: Exercise 10 Text Data
+          - text: Exercise 10 Information Dashboard
             href: hands_on_ex/hands_on_ex10/hands_on_ex10.html
-            
-          - text: Exercise 11 Information Dashboard
-            href: hands_on_ex/hands_on_ex10/hands_on_ex11.html
             
       - text: In-class Exercises
         menu: 
