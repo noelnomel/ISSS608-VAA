@@ -11,7 +11,7 @@ execute:
 editor: visual
 ---
 
-# 1.  Time Series Line and Cycle Plots Using arrivals_by_air
+# 1. Time Series Line and Cycle Plots Using arrivals_by_air
 
 ## 1.1. Pivot Data
 
@@ -87,12 +87,15 @@ We can drag and drop the field into Color to display on the chart.
 
 ![](images/Screenshot%202024-02-24%20145904.png)
 
+We follow the same steps listed in [1.5. Publish to Tableau Public] to publish the visualisation to Tableau Public:
+
+[![](images/Screenshot%202024-02-24%20152736.png)](https://public.tableau.com/app/profile/noel4429/viz/ISSS608In_Class_Ex06-EventLog/Sheet1?publish=yes)
 
 # 3. Time on Horizon using `ggHoriPlot`
 
 ## 3.1. Overview
 
-A horizon graph is designed to visualise large numbers of time series by overcoming the issue of highly-overlapping time-series graphs. 
+A horizon graph is designed to visualise large numbers of time series by overcoming the issue of highly-overlapping time-series graphs.
 
 ## 3.2. Getting Started
 
@@ -119,9 +122,11 @@ averp <- read_csv("data/AVERP.csv") %>%
 
 ## 3.3. Plotting Horizon Graph
 
-Lastly, we plot the horizon graph using the `geom_horizon()` function from `ggHoriPlot` package: 
+Lastly, we plot the horizon graph using the `geom_horizon()` function from `ggHoriPlot` package:
 
 ```{r}
+#| fig-width: 12
+#| fig-height: 10
 averp %>% 
   filter(Date >= "2018-01-01") %>%
   ggplot() +
@@ -146,19 +151,3 @@ averp %>%
                date_labels = "%b%y") +
   ggtitle('Average Retail Prices of Selected Consumer Items (Jan 2018 to Dec 2022)')
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
