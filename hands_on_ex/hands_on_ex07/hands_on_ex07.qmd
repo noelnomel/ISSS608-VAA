@@ -7,6 +7,8 @@ execute:
   echo: true # all code chunks will appear
   eval: true # all code chunks will run live
   warning: false # do not display warning message
+  freeze: true # do not render if no changes made
+  message: false
 editor: visual
 ---
 
