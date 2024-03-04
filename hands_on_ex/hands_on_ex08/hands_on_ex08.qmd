@@ -130,28 +130,347 @@ A network graph can be plotted using three functions: `ggraph()`, `geom_edge_lin
 ```{r}
 ggraph(gas_graph) +
   geom_edge_link() +
-  geom_node_point()
+  geom_node_point() +
+  ggtitle("Basic Network Graph")  +
+  theme(plot.title = element_text(size = 12))
+```
+
+## 4.2. Customising Network Graphs
+
+::: panel-tabset
+#### Change Theme
+
+`ggraph` introduces a special ggplot theme, `theme_graph()`, suitable for network graphs. This theme removes axes, grids, borders and changes font to Arial Narrow. 
+
+```{r}
+g <- ggraph(gas_graph) +
+  geom_edge_link(aes()) +
+  geom_node_point(aes()) +
+  ggtitle("Network Graph with Theme Applied")
+
+g + 
+  theme_graph()  +
+  theme(plot.title = element_text(size = 12))
+```
+
+#### Change Colour
+
+`theme_graph()` also makes it easy to change the colour on the network graph:
+
+```{r}
+g <- ggraph(gas_graph) +
+  geom_edge_link(aes(colour = "grey50")) +
+  geom_node_point(aes(colour = "grey40")) +
+  ggtitle("Network Graph with Colours Changed")
+
+g + 
+  theme_graph(background = "grey20",
+              text_colour = "white")  +
+  theme(plot.title = element_text(size = 12))
+```
+
+#### Change Layout
+
+`ggraph` supports many layouts:star, circle, nicely (default), dh, gem, graphopt, grid, mds, spahere, randomly, fr, kk, drl and lgl. In the example below, we use the "Fruchterman and Reingold" layout.
+
+```{r}
+g <- ggraph(gas_graph,
+            layout = "fr") +
+  geom_edge_link(aes()) +
+  geom_node_point(aes()) +
+  ggtitle("Network Graph with FR Layout")
+
+g + 
+  theme_graph()  +
+  theme(plot.title = element_text(size = 12))
+```
+
+#### Modify Nodes
+We can use the `aes` argument to change the colour and size of each node according to a variable:
+
+```{r}
+g <- ggraph(gas_graph,
+            layout = "nicely") +
+  geom_edge_link(aes()) +
+  geom_node_point(aes(color = Department,
+                      size = 3)) +
+  ggtitle("Network Graph with Coloured Nodes")
+
+g + 
+  theme_graph()  +
+  theme(plot.title = element_text(size = 12))
+```
+
+The `geom_node_point()` has similar functionalities as the `geom_point()` function of `ggplot2`, which allows for the customisations in the shape, colour and size of the nodes.  
+
+#### Modify Edges
+We can use the `aes` argument to change the width of the edges according to a variable:
+
+```{r}
+g <- ggraph(gas_graph,
+            layout = "nicely") +
+  geom_edge_link(aes(width = Weight,
+                     alpha = 0.2)) +
+  scale_edge_width(range = c(0.1, 5)) +
+  geom_node_point(aes(color = Department,
+                      size = 3)) +
+  ggtitle("Network Graph with Modified Edges")
+
+g + 
+  theme_graph()  +
+  theme(plot.title = element_text(size = 12))
+```
+
+`geom_edge_link()` draws edges as straight lines between the start and end nodes. It can take in arguments such as `width` to map line widths that are proportionate to a assigned variable. 
+
+:::
+
+## 4.3. Creating Facet Graphs
+
+::: panel-tabset
+#### `facet_edges()`
+We can use the `facet_edges()` function to facet edges and nodes are repeated in every panel. 
+
+```{r}
+set_graph_style()
+
+g <- ggraph(gas_graph,
+            layout = "nicely") +
+  geom_edge_link(aes(width = Weight,
+                     alpha = 0.2)) +
+  scale_edge_width(range = c(0.1, 5)) +
+  geom_node_point(aes(color = Department,
+                      size = 3)) +
+  ggtitle("Network Graph with Facet Edges") +
+  theme(plot.title = element_text(size = 12))
+
+g + facet_edges(~Weekday)
 ```
 
 
 
+#### Change Legend Position
 
+`ggplot2` functions such as `theme()` and `legend.position()` can be used to make further aesthetic adjustments to the plot. 
+```{r}
+set_graph_style()
 
+g <- ggraph(gas_graph,
+            layout = "nicely") +
+  geom_edge_link(aes(width = Weight,
+                     alpha = 0.2)) +
+  scale_edge_width(range = c(0.1, 5)) +
+  geom_node_point(aes(color = Department,
+                      size = 3)) +
+  ggtitle("Network Graph with Adjusted Legend Position") +
+  theme(plot.title = element_text(size = 12),
+        legend.position = "bottom")
 
+g + facet_edges(~Weekday)
+```
 
+#### Framed Facet Graphs
 
+We can add frames to each graph using the following code:
 
+```{r}
+set_graph_style()
 
+g <- ggraph(gas_graph,
+            layout = "nicely") +
+  geom_edge_link(aes(width = Weight,
+                     alpha = 0.2)) +
+  scale_edge_width(range = c(0.1, 5)) +
+  geom_node_point(aes(color = Department,
+                      size = 3)) +
+  ggtitle("Network Graph with Framed Facet Graphs") +
+  theme(plot.title = element_text(size = 12)) +
+  theme(plot.title = element_text(size = 12),
+        legend.position = "bottom")
 
+g + 
+  facet_edges(~Weekday) +
+  th_foreground(foreground = "grey80",
+                border = TRUE)
+```
 
+#### `facet_nodes()`
 
+Finally, we can use the `facet_nodes()` function to facet nodes and edges are drawn if both terminal nodes are present in a panel. 
 
+```{r}
+set_graph_style()
 
+g <- ggraph(gas_graph,
+            layout = "nicely") +
+  geom_edge_link(aes(width = Weight,
+                     alpha = 0.2)) +
+  scale_edge_width(range = c(0.1, 5)) +
+  geom_node_point(aes(color = Department,
+                      size = 3)) +
+  ggtitle("Network Graph with Framed Facet Graphs") +
+  theme(plot.title = element_text(size = 12),
+        legend.position = "bottom")
 
+g + 
+  facet_nodes(~Department) +
+  th_foreground(foreground = "grey80",
+                border = TRUE)
+```
 
+:::
 
+# 5. Network Metrics Analysis
 
+## 5.1. Computing Centrality Indices
 
+Centrality measures are a collection of statistical indices used to describe the relative importance of the actors to a network. There are four well-known centrality measures: degree, betweenness, closeness, and eigenvector. In this example, we use betweenness to compute the centrality index.
+
+```{r}
+g <- gas_graph %>%
+  mutate(betweenness_centrality = centrality_betweenness()) %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(aes(width = Weight),
+                 alpha = 0.2) +
+  scale_edge_width(range = c(0.1, 5)) +
+  geom_node_point(aes(color = Department,
+                      size = betweenness_centrality)) +
+  ggtitle("Network Graph with Centrality Indices") 
+
+g + 
+  theme_graph() +
+  theme(plot.title = element_text(size = 12))
+```
+
+## 5.2. Accessing Centrality Measures Directly
+
+From `ggraph` v2.0 onward, centrality measures can be accessed directly from ggraph without having to precompute and store the centrality measures.
+
+```{r}
+g <- gas_graph %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(aes(width = Weight),
+                 alpha = 0.2) +
+  scale_edge_width(range = c(0.1, 5)) +
+  geom_node_point(aes(color = Department,
+                      size = centrality_betweenness())) +
+  ggtitle("Network Graph with Centrality Indices") 
+
+g + 
+  theme_graph() +
+  theme(plot.title = element_text(size = 12))
+```
+
+## 5.3. Visualising Community
+
+The `tidygraph` package inherits many of the community detection algorithms available in the `igraph` package:
+-   Edge-betweenness (group_edge_betweenness)
+-   Leading eigenvector (group_leading_eigen)
+-   Fast-greedy (group_fast_greedy)
+-   Louvain (group_louvain), Walktrap (group_walktrap)
+-   Label propagation (group_label_prop)
+-   InfoMAP (group_infomap)
+-   Spinglass (group_spinglass), and 
+-   Optimal (group_optimal).
+
+Some community algorithms are designed to take into account direction or weight, while others ignore it. In this example, we use the `group_edge_betweenness()` to visualise community:
+
+```{r}
+g <- gas_graph %>%
+  mutate(community = as.factor(group_edge_betweenness(
+    weights = Weight,
+    directed = TRUE))) %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(aes(width = Weight),
+                 alpha = 0.2) +
+  scale_edge_width(range = c(0.1, 5)) +
+  geom_node_point(aes(color = community)) +
+  ggtitle("Network Graph with Betweenness Community") 
+
+g + 
+  theme_graph() +
+  theme(plot.title = element_text(size = 12))
+```
+
+# 6. Building Interactive Network Graphs with `visNetwork`
+
+We can use the `vizNetwork` package to create interactive network graphs. The `vizNetwork()` function uses a nodes list and a edges list to create an interactive graph.
+
+-   The nodes list must include an 'id' column
+-   The edges list must include 'to' and 'from' columns
+
+## 6.1. Data Preparation
+
+We prepare the data to create an interactive network graph:
+
+```{r}
+gas_edges_agg <- gas_edges %>%
+  left_join(gas_nodes, by = c("sourceLabel" = "label")) %>%
+  rename(from = id) %>%
+  left_join(gas_nodes, by = c("targetLabel" = "label")) %>%
+  rename(to = id) %>%
+  filter(MainSubject == "Work related") %>%
+  group_by(from, to) %>%
+  summarise(weight = n()) %>%
+  filter(from != to) %>%
+  filter(weight > 1) %>%
+  ungroup()
+```
+
+## 6.2. Plotting An Interactive Network Graph
+
+```{r}
+visNetwork(gas_nodes, gas_edges_agg)
+```
+
+## 6.3. Changing Layout
+
+We can change the layout as with the static plot. We use the FR layout again in this example:
+
+```{r}
+visNetwork(gas_nodes, gas_edges_agg) %>%
+  visIgraphLayout(layout = "layout_with_fr")
+```
+
+## 6.4. Changing Nodes Attributes
+
+`visNetwork()` looks for a field called "group" in the nodes object to assign the same colour to nodes of the same values in the "group" field. Hence, we have to change the desired column field name to "group".
+
+```{r}
+gas_nodes <- gas_nodes %>%
+  rename(group = Department)
+
+visNetwork(gas_nodes, gas_edges_agg) %>%
+  visIgraphLayout(layout = "layout_with_fr") %>%
+  visLegend() %>%
+  visLayout(randomSeed = 123)
+```
+
+## 6.4. Changing Edges Attributes
+
+`visEdges()` can be used to adjust the attributes of edges, such as defining arrows and smoothing curves.
+
+```{r}
+visNetwork(gas_nodes, gas_edges_agg) %>%
+  visIgraphLayout(layout = "layout_with_fr") %>%
+  visEdges(arrows = "to",
+           smooth = list(enabled = TRUE, type = "curvedCW")) %>%
+  visLegend() %>%
+  visLayout(randomSeed = 123)
+```
+
+## 6.5. Adding Interactivity 
+
+We can use `visOptions()` to add interactive features to the visualisation: 
+
+```{r}
+visNetwork(gas_nodes, gas_edges_agg) %>%
+  visIgraphLayout(layout = "layout_with_fr") %>%
+  visOptions(highlightNearest = TRUE,
+             nodesIdSelection = TRUE) %>%
+  visLegend() %>%
+  visLayout(randomSeed = 123)
+```
 
 
 

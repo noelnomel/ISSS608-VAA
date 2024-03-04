@@ -1348,6 +1348,83 @@
     "href": "hands_on_ex/hands_on_ex08/hands_on_ex08.html#basic-network-graph",
     "title": "Hands-on Exercise 08 - Modelling, Visualising, and Analysing Network Data",
     "section": "4.1. Basic Network Graph",
-    "text": "4.1. Basic Network Graph\nA network graph can be plotted using three functions: ggraph(), geom_edge_link(), and geom_node_point().\n\nggraph(gas_graph) +\n  geom_edge_link() +\n  geom_node_point()"
+    "text": "4.1. Basic Network Graph\nA network graph can be plotted using three functions: ggraph(), geom_edge_link(), and geom_node_point().\n\nggraph(gas_graph) +\n  geom_edge_link() +\n  geom_node_point() +\n  ggtitle(\"Basic Network Graph\")  +\n  theme(plot.title = element_text(size = 12))"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex08/hands_on_ex08.html#customising-network-graphs",
+    "href": "hands_on_ex/hands_on_ex08/hands_on_ex08.html#customising-network-graphs",
+    "title": "Hands-on Exercise 08 - Modelling, Visualising, and Analysing Network Data",
+    "section": "4.2. Customising Network Graphs",
+    "text": "4.2. Customising Network Graphs\n\nChange ThemeChange ColourChange LayoutModify NodesModify Edges\n\n\nggraph introduces a special ggplot theme, theme_graph(), suitable for network graphs. This theme removes axes, grids, borders and changes font to Arial Narrow.\n\ng &lt;- ggraph(gas_graph) +\n  geom_edge_link(aes()) +\n  geom_node_point(aes()) +\n  ggtitle(\"Network Graph with Theme Applied\")\n\ng + \n  theme_graph()  +\n  theme(plot.title = element_text(size = 12))\n\n\n\n\n\n\ntheme_graph() also makes it easy to change the colour on the network graph:\n\ng &lt;- ggraph(gas_graph) +\n  geom_edge_link(aes(colour = \"grey50\")) +\n  geom_node_point(aes(colour = \"grey40\")) +\n  ggtitle(\"Network Graph with Colours Changed\")\n\ng + \n  theme_graph(background = \"grey20\",\n              text_colour = \"white\")  +\n  theme(plot.title = element_text(size = 12))\n\n\n\n\n\n\nggraph supports many layouts:star, circle, nicely (default), dh, gem, graphopt, grid, mds, spahere, randomly, fr, kk, drl and lgl. In the example below, we use the “Fruchterman and Reingold” layout.\n\ng &lt;- ggraph(gas_graph,\n            layout = \"fr\") +\n  geom_edge_link(aes()) +\n  geom_node_point(aes()) +\n  ggtitle(\"Network Graph with FR Layout\")\n\ng + \n  theme_graph()  +\n  theme(plot.title = element_text(size = 12))\n\n\n\n\n\n\nWe can use the aes argument to change the colour and size of each node according to a variable:\n\ng &lt;- ggraph(gas_graph,\n            layout = \"nicely\") +\n  geom_edge_link(aes()) +\n  geom_node_point(aes(color = Department,\n                      size = 3)) +\n  ggtitle(\"Network Graph with Coloured Nodes\")\n\ng + \n  theme_graph()  +\n  theme(plot.title = element_text(size = 12))\n\n\n\n\nThe geom_node_point() has similar functionalities as the geom_point() function of ggplot2, which allows for the customisations in the shape, colour and size of the nodes.\n\n\nWe can use the aes argument to change the width of the edges according to a variable:\n\ng &lt;- ggraph(gas_graph,\n            layout = \"nicely\") +\n  geom_edge_link(aes(width = Weight,\n                     alpha = 0.2)) +\n  scale_edge_width(range = c(0.1, 5)) +\n  geom_node_point(aes(color = Department,\n                      size = 3)) +\n  ggtitle(\"Network Graph with Modified Edges\")\n\ng + \n  theme_graph()  +\n  theme(plot.title = element_text(size = 12))\n\n\n\n\ngeom_edge_link() draws edges as straight lines between the start and end nodes. It can take in arguments such as width to map line widths that are proportionate to a assigned variable."
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex08/hands_on_ex08.html#creating-facet-graphs",
+    "href": "hands_on_ex/hands_on_ex08/hands_on_ex08.html#creating-facet-graphs",
+    "title": "Hands-on Exercise 08 - Modelling, Visualising, and Analysing Network Data",
+    "section": "4.3. Creating Facet Graphs",
+    "text": "4.3. Creating Facet Graphs\n\nfacet_edges()Change Legend PositionFramed Facet Graphsfacet_nodes()\n\n\nWe can use the facet_edges() function to facet edges and nodes are repeated in every panel.\n\nset_graph_style()\n\ng &lt;- ggraph(gas_graph,\n            layout = \"nicely\") +\n  geom_edge_link(aes(width = Weight,\n                     alpha = 0.2)) +\n  scale_edge_width(range = c(0.1, 5)) +\n  geom_node_point(aes(color = Department,\n                      size = 3)) +\n  ggtitle(\"Network Graph with Facet Edges\") +\n  theme(plot.title = element_text(size = 12))\n\ng + facet_edges(~Weekday)\n\n\n\n\n\n\nggplot2 functions such as theme() and legend.position() can be used to make further aesthetic adjustments to the plot.\n\nset_graph_style()\n\ng &lt;- ggraph(gas_graph,\n            layout = \"nicely\") +\n  geom_edge_link(aes(width = Weight,\n                     alpha = 0.2)) +\n  scale_edge_width(range = c(0.1, 5)) +\n  geom_node_point(aes(color = Department,\n                      size = 3)) +\n  ggtitle(\"Network Graph with Adjusted Legend Position\") +\n  theme(plot.title = element_text(size = 12),\n        legend.position = \"bottom\")\n\ng + facet_edges(~Weekday)\n\n\n\n\n\n\nWe can add frames to each graph using the following code:\n\nset_graph_style()\n\ng &lt;- ggraph(gas_graph,\n            layout = \"nicely\") +\n  geom_edge_link(aes(width = Weight,\n                     alpha = 0.2)) +\n  scale_edge_width(range = c(0.1, 5)) +\n  geom_node_point(aes(color = Department,\n                      size = 3)) +\n  ggtitle(\"Network Graph with Framed Facet Graphs\") +\n  theme(plot.title = element_text(size = 12)) +\n  theme(plot.title = element_text(size = 12),\n        legend.position = \"bottom\")\n\ng + \n  facet_edges(~Weekday) +\n  th_foreground(foreground = \"grey80\",\n                border = TRUE)\n\n\n\n\n\n\nFinally, we can use the facet_nodes() function to facet nodes and edges are drawn if both terminal nodes are present in a panel.\n\nset_graph_style()\n\ng &lt;- ggraph(gas_graph,\n            layout = \"nicely\") +\n  geom_edge_link(aes(width = Weight,\n                     alpha = 0.2)) +\n  scale_edge_width(range = c(0.1, 5)) +\n  geom_node_point(aes(color = Department,\n                      size = 3)) +\n  ggtitle(\"Network Graph with Framed Facet Graphs\") +\n  theme(plot.title = element_text(size = 12),\n        legend.position = \"bottom\")\n\ng + \n  facet_nodes(~Department) +\n  th_foreground(foreground = \"grey80\",\n                border = TRUE)"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex08/hands_on_ex08.html#computing-centrality-indices",
+    "href": "hands_on_ex/hands_on_ex08/hands_on_ex08.html#computing-centrality-indices",
+    "title": "Hands-on Exercise 08 - Modelling, Visualising, and Analysing Network Data",
+    "section": "5.1. Computing Centrality Indices",
+    "text": "5.1. Computing Centrality Indices\nCentrality measures are a collection of statistical indices used to describe the relative importance of the actors to a network. There are four well-known centrality measures: degree, betweenness, closeness, and eigenvector. In this example, we use betweenness to compute the centrality index.\n\ng &lt;- gas_graph %&gt;%\n  mutate(betweenness_centrality = centrality_betweenness()) %&gt;%\n  ggraph(layout = \"fr\") +\n  geom_edge_link(aes(width = Weight),\n                 alpha = 0.2) +\n  scale_edge_width(range = c(0.1, 5)) +\n  geom_node_point(aes(color = Department,\n                      size = betweenness_centrality)) +\n  ggtitle(\"Network Graph with Centrality Indices\") \n\ng + \n  theme_graph() +\n  theme(plot.title = element_text(size = 12))"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex08/hands_on_ex08.html#accessing-centrality-measures-directly",
+    "href": "hands_on_ex/hands_on_ex08/hands_on_ex08.html#accessing-centrality-measures-directly",
+    "title": "Hands-on Exercise 08 - Modelling, Visualising, and Analysing Network Data",
+    "section": "5.2. Accessing Centrality Measures Directly",
+    "text": "5.2. Accessing Centrality Measures Directly\nFrom ggraph v2.0 onward, centrality measures can be accessed directly from ggraph without having to precompute and store the centrality measures.\n\ng &lt;- gas_graph %&gt;%\n  ggraph(layout = \"fr\") +\n  geom_edge_link(aes(width = Weight),\n                 alpha = 0.2) +\n  scale_edge_width(range = c(0.1, 5)) +\n  geom_node_point(aes(color = Department,\n                      size = centrality_betweenness())) +\n  ggtitle(\"Network Graph with Centrality Indices\") \n\ng + \n  theme_graph() +\n  theme(plot.title = element_text(size = 12))"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex08/hands_on_ex08.html#visualising-community",
+    "href": "hands_on_ex/hands_on_ex08/hands_on_ex08.html#visualising-community",
+    "title": "Hands-on Exercise 08 - Modelling, Visualising, and Analysing Network Data",
+    "section": "5.3. Visualising Community",
+    "text": "5.3. Visualising Community\nThe tidygraph package inherits many of the community detection algorithms available in the igraph package: - Edge-betweenness (group_edge_betweenness) - Leading eigenvector (group_leading_eigen) - Fast-greedy (group_fast_greedy) - Louvain (group_louvain), Walktrap (group_walktrap) - Label propagation (group_label_prop) - InfoMAP (group_infomap) - Spinglass (group_spinglass), and - Optimal (group_optimal).\nSome community algorithms are designed to take into account direction or weight, while others ignore it. In this example, we use the group_edge_betweenness() to visualise community:\n\ng &lt;- gas_graph %&gt;%\n  mutate(community = as.factor(group_edge_betweenness(\n    weights = Weight,\n    directed = TRUE))) %&gt;%\n  ggraph(layout = \"fr\") +\n  geom_edge_link(aes(width = Weight),\n                 alpha = 0.2) +\n  scale_edge_width(range = c(0.1, 5)) +\n  geom_node_point(aes(color = community)) +\n  ggtitle(\"Network Graph with Betweenness Community\") \n\ng + \n  theme_graph() +\n  theme(plot.title = element_text(size = 12))"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex08/hands_on_ex08.html#data-preparation-1",
+    "href": "hands_on_ex/hands_on_ex08/hands_on_ex08.html#data-preparation-1",
+    "title": "Hands-on Exercise 08 - Modelling, Visualising, and Analysing Network Data",
+    "section": "6.1. Data Preparation",
+    "text": "6.1. Data Preparation\nWe prepare the data to create an interactive network graph:\n\ngas_edges_agg &lt;- gas_edges %&gt;%\n  left_join(gas_nodes, by = c(\"sourceLabel\" = \"label\")) %&gt;%\n  rename(from = id) %&gt;%\n  left_join(gas_nodes, by = c(\"targetLabel\" = \"label\")) %&gt;%\n  rename(to = id) %&gt;%\n  filter(MainSubject == \"Work related\") %&gt;%\n  group_by(from, to) %&gt;%\n  summarise(weight = n()) %&gt;%\n  filter(from != to) %&gt;%\n  filter(weight &gt; 1) %&gt;%\n  ungroup()"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex08/hands_on_ex08.html#plotting-an-interactive-network-graph",
+    "href": "hands_on_ex/hands_on_ex08/hands_on_ex08.html#plotting-an-interactive-network-graph",
+    "title": "Hands-on Exercise 08 - Modelling, Visualising, and Analysing Network Data",
+    "section": "6.2. Plotting An Interactive Network Graph",
+    "text": "6.2. Plotting An Interactive Network Graph\n\nvisNetwork(gas_nodes, gas_edges_agg)"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex08/hands_on_ex08.html#changing-layout",
+    "href": "hands_on_ex/hands_on_ex08/hands_on_ex08.html#changing-layout",
+    "title": "Hands-on Exercise 08 - Modelling, Visualising, and Analysing Network Data",
+    "section": "6.3. Changing Layout",
+    "text": "6.3. Changing Layout\nWe can change the layout as with the static plot. We use the FR layout again in this example:\n\nvisNetwork(gas_nodes, gas_edges_agg) %&gt;%\n  visIgraphLayout(layout = \"layout_with_fr\")"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex08/hands_on_ex08.html#changing-nodes-attributes",
+    "href": "hands_on_ex/hands_on_ex08/hands_on_ex08.html#changing-nodes-attributes",
+    "title": "Hands-on Exercise 08 - Modelling, Visualising, and Analysing Network Data",
+    "section": "6.4. Changing Nodes Attributes",
+    "text": "6.4. Changing Nodes Attributes\nvisNetwork() looks for a field called “group” in the nodes object to assign the same colour to nodes of the same values in the “group” field. Hence, we have to change the desired column field name to “group”.\n\ngas_nodes &lt;- gas_nodes %&gt;%\n  rename(group = Department)\n\nvisNetwork(gas_nodes, gas_edges_agg) %&gt;%\n  visIgraphLayout(layout = \"layout_with_fr\") %&gt;%\n  visLegend() %&gt;%\n  visLayout(randomSeed = 123)"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex08/hands_on_ex08.html#changing-edges-attributes",
+    "href": "hands_on_ex/hands_on_ex08/hands_on_ex08.html#changing-edges-attributes",
+    "title": "Hands-on Exercise 08 - Modelling, Visualising, and Analysing Network Data",
+    "section": "6.4. Changing Edges Attributes",
+    "text": "6.4. Changing Edges Attributes\nvisEdges() can be used to adjust the attributes of edges, such as defining arrows and smoothing curves.\n\nvisNetwork(gas_nodes, gas_edges_agg) %&gt;%\n  visIgraphLayout(layout = \"layout_with_fr\") %&gt;%\n  visEdges(arrows = \"to\",\n           smooth = list(enabled = TRUE, type = \"curvedCW\")) %&gt;%\n  visLegend() %&gt;%\n  visLayout(randomSeed = 123)"
+  },
+  {
+    "objectID": "hands_on_ex/hands_on_ex08/hands_on_ex08.html#adding-interactivity",
+    "href": "hands_on_ex/hands_on_ex08/hands_on_ex08.html#adding-interactivity",
+    "title": "Hands-on Exercise 08 - Modelling, Visualising, and Analysing Network Data",
+    "section": "6.5. Adding Interactivity",
+    "text": "6.5. Adding Interactivity\nWe can use visOptions() to add interactive features to the visualisation:\n\nvisNetwork(gas_nodes, gas_edges_agg) %&gt;%\n  visIgraphLayout(layout = \"layout_with_fr\") %&gt;%\n  visOptions(highlightNearest = TRUE,\n             nodesIdSelection = TRUE) %&gt;%\n  visLegend() %&gt;%\n  visLayout(randomSeed = 123)"
   }
 ]
