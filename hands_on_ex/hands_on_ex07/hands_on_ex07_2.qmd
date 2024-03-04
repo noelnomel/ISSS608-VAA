@@ -14,7 +14,7 @@ editor: visual
 
 # 1. Overview
 
-In the second part of the seventh lesson, we learn to create proportional symbol maps that use visusal variable of size to represent differences in the magnitude of a discrete, abruptly changing phenomenon. This can be done using the [`tmap`](https://cran.r-project.org/web/packages/tmap/) package.
+In the second part of the seventh lesson, we learn to create proportional symbol maps that use visual variable of size to represent differences in the magnitude of a discrete, abruptly changing phenomenon. This can be done using the [`tmap`](https://cran.r-project.org/web/packages/tmap/) package.
 
 # 2. Getting Started
 
@@ -45,7 +45,7 @@ sgpools <- read_csv("data/aspatial/SGPools_svy21.csv")
 list(sgpools)
 ```
 
-We can observe from above that the data contains 306 records with 7 features, and that the data frame is imported to R as a tibble data frame. 
+We can observe from above that the data contains 306 records with 7 features, and that the data frame is imported to R as a tibble data frame.
 
 ## 2.3. Data Preparation
 
@@ -124,19 +124,3 @@ tm_shape(sgpools_sf) +
             nrow = 1,
             sync = TRUE)
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
