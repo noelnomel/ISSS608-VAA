@@ -1,6 +1,6 @@
 ---
 title: "Hands-on Exercise 08 - Modelling, Visualising, and Analysing Network Data"
-date: "13 January 2024"
+date: "4 March 2024"
 date-modified: "last-modified"
 format: html
 execute: 
@@ -40,7 +40,7 @@ pacman::p_load(tidyverse, lubridate, clock,
 
 ## 2.2. Import Data
 
-Next, we will read the data provided by the Course Instructor into the R environment. The datasets are from an oil exploration and extraction company, one set contains the nodes data while the second set contains the edges or link data. 
+Next, we will read the data provided by the Course Instructor into the R environment. The datasets are from an oil exploration and extraction company, one set contains the nodes data while the second set contains the edges or link data.
 
 Both sets are in csv format, and We will use the `read_csv()` function from the `readr` package found in `tidyverse` to import both datasets into R.
 
@@ -56,13 +56,14 @@ gas_edges <- read_csv("data/GAStech_email_edge-v2.csv")
 glimpse(gas_edges)
 ```
 
-Using `glimpse` to view the data, it is observed that the edges dataset contains 9063 observations and 8 columns. However, we can also see that the "SentDate" field is treated as "chr" data type instead of "date". Hence, we have to change the data type. 
+Using `glimpse` to view the data, it is observed that the edges dataset contains 9063 observations and 8 columns. However, we can also see that the "SentDate" field is treated as "chr" data type instead of "date". Hence, we have to change the data type.
 
 ## 2.3. Data Preparation
 
 ### 2.3.1. Wrangling Time Data
 
 We can use the `dmy()` function from the `lubdridate` package to convert the wrongly classified SentDate field into "date" format.
+
 ```{r}
 gas_edges <- gas_edges %>%
   mutate(SentDate = dmy(SentDate)) %>%
@@ -75,7 +76,7 @@ glimpse(gas_edges)
 
 We can confirm that the data type of the SentDate field has been corrected.
 
-### 2.3.2. Wrangling Attributes 
+### 2.3.2. Wrangling Attributes
 
 Examining the gas_edges dataframe, we can see that it contains individual email records. We will aggregate the data by date, source (sender), target (receiver), main subject, and day of the week.
 
@@ -93,13 +94,11 @@ glimpse(gas_edges_agg)
 
 # 3. Create Network Objects Using `tidygraph`
 
-In this section, we learn to create a network graph data model using the `tidygraph` package. 
+In this section, we learn to create a network graph data model using the `tidygraph` package.
 
-Two functions in the `tidygraph` package can be used to create network objects:
--   [`tbl_graph()`](https://tidygraph.data-imaginist.com/reference/tbl_graph.html) creates a `tbl_graph` network object from nodes and edges data
--   [`as_tbl_graph()`](https://tidygraph.data-imaginist.com/reference/tbl_graph.html) converts network data and objects to a `tbl_graph` network.
+Two functions in the `tidygraph` package can be used to create network objects: - [`tbl_graph()`](https://tidygraph.data-imaginist.com/reference/tbl_graph.html) creates a `tbl_graph` network object from nodes and edges data - [`as_tbl_graph()`](https://tidygraph.data-imaginist.com/reference/tbl_graph.html) converts network data and objects to a `tbl_graph` network.
 
-Furthermore, all `dplyr` verbs can be applied to `tbl_graph` objects. The `activate()` verb from `tidygraph` serves as a switch between tibbles for nodes and edges. 
+Furthermore, all `dplyr` verbs can be applied to `tbl_graph` objects. The `activate()` verb from `tidygraph` serves as a switch between tibbles for nodes and edges.
 
 ## 3.1. Using `tbl_graph()` to Build `tidygraph` Data Model
 
@@ -113,7 +112,7 @@ gas_graph
 
 ## 3.2. Changing the Active Object
 
-The nodes tibble data frame is activated by default, and this can be changed by using the `activate()` function. 
+The nodes tibble data frame is activated by default, and this can be changed by using the `activate()` function.
 
 ```{r}
 gas_graph %>%
@@ -140,7 +139,7 @@ ggraph(gas_graph) +
 ::: panel-tabset
 #### Change Theme
 
-`ggraph` introduces a special ggplot theme, `theme_graph()`, suitable for network graphs. This theme removes axes, grids, borders and changes font to Arial Narrow. 
+`ggraph` introduces a special ggplot theme, `theme_graph()`, suitable for network graphs. This theme removes axes, grids, borders and changes font to Arial Narrow.
 
 ```{r}
 g <- ggraph(gas_graph) +
@@ -186,6 +185,7 @@ g +
 ```
 
 #### Modify Nodes
+
 We can use the `aes` argument to change the colour and size of each node according to a variable:
 
 ```{r}
@@ -201,9 +201,10 @@ g +
   theme(plot.title = element_text(size = 12))
 ```
 
-The `geom_node_point()` has similar functionalities as the `geom_point()` function of `ggplot2`, which allows for the customisations in the shape, colour and size of the nodes.  
+The `geom_node_point()` has similar functionalities as the `geom_point()` function of `ggplot2`, which allows for the customisations in the shape, colour and size of the nodes.
 
 #### Modify Edges
+
 We can use the `aes` argument to change the width of the edges according to a variable:
 
 ```{r}
@@ -221,15 +222,15 @@ g +
   theme(plot.title = element_text(size = 12))
 ```
 
-`geom_edge_link()` draws edges as straight lines between the start and end nodes. It can take in arguments such as `width` to map line widths that are proportionate to a assigned variable. 
-
+`geom_edge_link()` draws edges as straight lines between the start and end nodes. It can take in arguments such as `width` to map line widths that are proportionate to a assigned variable.
 :::
 
 ## 4.3. Creating Facet Graphs
 
 ::: panel-tabset
 #### `facet_edges()`
-We can use the `facet_edges()` function to facet edges and nodes are repeated in every panel. 
+
+We can use the `facet_edges()` function to facet edges and nodes are repeated in every panel.
 
 ```{r}
 set_graph_style()
@@ -247,11 +248,10 @@ g <- ggraph(gas_graph,
 g + facet_edges(~Weekday)
 ```
 
-
-
 #### Change Legend Position
 
-`ggplot2` functions such as `theme()` and `legend.position()` can be used to make further aesthetic adjustments to the plot. 
+`ggplot2` functions such as `theme()` and `legend.position()` can be used to make further aesthetic adjustments to the plot.
+
 ```{r}
 set_graph_style()
 
@@ -296,7 +296,7 @@ g +
 
 #### `facet_nodes()`
 
-Finally, we can use the `facet_nodes()` function to facet nodes and edges are drawn if both terminal nodes are present in a panel. 
+Finally, we can use the `facet_nodes()` function to facet nodes and edges are drawn if both terminal nodes are present in a panel.
 
 ```{r}
 set_graph_style()
@@ -317,7 +317,6 @@ g +
   th_foreground(foreground = "grey80",
                 border = TRUE)
 ```
-
 :::
 
 # 5. Network Metrics Analysis
@@ -364,14 +363,22 @@ g +
 ## 5.3. Visualising Community
 
 The `tidygraph` package inherits many of the community detection algorithms available in the `igraph` package:
+
 -   Edge-betweenness (group_edge_betweenness)
+
 -   Leading eigenvector (group_leading_eigen)
+
 -   Fast-greedy (group_fast_greedy)
+
 -   Louvain (group_louvain), Walktrap (group_walktrap)
+
 -   Label propagation (group_label_prop)
+
 -   InfoMAP (group_infomap)
--   Spinglass (group_spinglass), and 
--   Optimal (group_optimal).
+
+-   Spinglass (group_spinglass), and
+
+-   Optimal (group_optimal)
 
 Some community algorithms are designed to take into account direction or weight, while others ignore it. In this example, we use the `group_edge_betweenness()` to visualise community:
 
@@ -459,9 +466,9 @@ visNetwork(gas_nodes, gas_edges_agg) %>%
   visLayout(randomSeed = 123)
 ```
 
-## 6.5. Adding Interactivity 
+## 6.5. Adding Interactivity
 
-We can use `visOptions()` to add interactive features to the visualisation: 
+We can use `visOptions()` to add interactive features to the visualisation:
 
 ```{r}
 visNetwork(gas_nodes, gas_edges_agg) %>%
@@ -471,11 +478,3 @@ visNetwork(gas_nodes, gas_edges_agg) %>%
   visLegend() %>%
   visLayout(randomSeed = 123)
 ```
-
-
-
-
-
-
-
-
