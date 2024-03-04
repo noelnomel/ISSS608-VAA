@@ -100,6 +100,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <body class="nav-fixed">
 
+
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg navbar-dark ">
@@ -209,27 +210,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="dropdown-menu" aria-labelledby="nav-menu-in-class-exercises">    
         <li>
     <a class="dropdown-item" href="../../in_class_ex/in_class_ex01/in_class_ex01.html" rel="" target="">
- <span class="dropdown-text">Exercise 1</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../in_class_ex/in_class_ex02/in_class_ex02.html" rel="" target="">
- <span class="dropdown-text">Exercise 2</span></a>
+ <span class="dropdown-text">Exercise 1 - Intro to R</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../../in_class_ex/in_class_ex03/in_class_ex03.html" rel="" target="">
- <span class="dropdown-text">Exercise 3</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../in_class_ex/in_class_ex04/in_class_ex04.html" rel="" target="">
- <span class="dropdown-text">Exercise 4</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../in_class_ex/in_class_ex05/in_class_ex05.html" rel="" target="">
- <span class="dropdown-text">Exercise 5</span></a>
+ <span class="dropdown-text">Exercise 3 - Visulisation on Tableau</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../../in_class_ex/in_class_ex06/in_class_ex06.html" rel="" target="">
- <span class="dropdown-text">Exercise 6</span></a>
+ <span class="dropdown-text">Exercise 6 - Time Series Visualisation on Tableau and R</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../../in_class_ex/in_class_ex07/in_class_ex07.html" rel="" target="">
@@ -295,7 +284,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#the-data" id="toc-the-data" class="nav-link" data-scroll-target="#the-data">2.2. The Data</a>
   <ul class="collapse">
   <li><a href="#import-geospatial-data" id="toc-import-geospatial-data" class="nav-link" data-scroll-target="#import-geospatial-data">2.2.1. Import Geospatial Data</a></li>
-  <li><a href="#import-aspatial-data" id="toc-import-aspatial-data" class="nav-link" data-scroll-target="#import-aspatial-data">2.3.2. Import Aspatial Data</a></li>
+  <li><a href="#import-aspatial-data" id="toc-import-aspatial-data" class="nav-link" data-scroll-target="#import-aspatial-data">2.2.2. Import Aspatial Data</a></li>
   </ul></li>
   <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">2.3. Data Preparation</a>
   <ul class="collapse">
@@ -340,7 +329,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">February 24, 2024</p>
+      <p class="date-modified">March 4, 2024</p>
     </div>
   </div>
     
@@ -456,7 +445,7 @@ First 10 features:
 <p>Looking at the data, it is observed that the simple feature data frame contains 323 features and 15 fields. The data frame contains multipolygons and it is projected using SVY21, Singapore’s coordinate system.</p>
 </section>
 <section id="import-aspatial-data" class="level3">
-<h3 class="anchored" data-anchor-id="import-aspatial-data">2.3.2. Import Aspatial Data</h3>
+<h3 class="anchored" data-anchor-id="import-aspatial-data">2.2.2. Import Aspatial Data</h3>
 <p>Lastly, we will read the aspatial data into the R environment using the <code>read_csv()</code> function from the <code>readr</code> package found in <code>tidyverse</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>popdata <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/aspatial/respopagesextod2011to2020.csv"</span>)</span>

@@ -85,6 +85,17 @@ attacks <- attacks %>%
 kable(head(attacks))
 ```
 
+Alternative method:
+```{r}
+#| eval: false
+attacks <- attacks %>%
+  mutate(wkday = lubridate::wday(timestamp, 
+                                 label = TRUE,
+                                 abbr = FALSE),
+         hour = lubridate::hour(timestamp))
+```
+
+
 Lastly, we create the plot:
 
 ```{r}

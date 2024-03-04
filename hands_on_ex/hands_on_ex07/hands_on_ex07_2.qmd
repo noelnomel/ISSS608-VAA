@@ -14,7 +14,7 @@ editor: visual
 
 # 1. Overview
 
-In the first part of the seventh lesson, we learn to create choropleth maps to visualise spaital distributions of data. This will be done using the [`tmap`](https://cran.r-project.org/web/packages/tmap/) package.
+In the second part of the seventh lesson, we learn to create proportional symbol maps that use visusal variable of size to represent differences in the magnitude of a discrete, abruptly changing phenomenon. This can be done using the [`tmap`](https://cran.r-project.org/web/packages/tmap/) package.
 
 # 2. Getting Started
 
@@ -34,95 +34,109 @@ pacman::p_load(tidyverse, tmap, sf)
 
 ## 2.2. The Data
 
-We will use the following data sets for this exercise:
+We will use a dataset showing number of wins by each Singapore Pools outlet prepared by the Course Instructor. The data is in csv format, and it contains the x- and y-coordinates (in [SVY21, Singapore's Projected Coordinate System](https://app.sla.gov.sg/sirent/About/PlaneCoordinateSystem)) of each Singapore Pools outlet.
 
-| Data                                                                                                | Format         | Source                                                                                                                          | Description                                                                                  |
-|----------------------|------------|-------------|--------------------------|
-| Master Plan 2014 Subzone Boundary (Web)                                                             | ESRI shapefile | [data.gov.sg](https://beta.data.gov.sg/collections?query=Master%20Plan%202014%20Subzone%20Boundary%20(Web)&sort=Last%20updated) | Geospatial data containing geographical boundary of Singapore at the planning subzone level. |
-| Singapore Residents by Planning Area / Subzone, Age Group, Sex and Type of Dwelling, June 2011-2020 | CSV            | [singstat.gov.sg](https://www.singstat.gov.sg/find-data/search-by-theme/population/geographic-distribution/latest-data)         | Aspatial data containing demographics by Planning Area (PA) and Subzone (SZ).                |
+### 2.2.1. Import Data
 
-### 2.2.1. Import Geospatial Data
-
-We will read the geospatial data into the R environment using the `st_read()` function from the `sf` package. We will import the `MP14_SUBZONE_WEB_PL` shapefile into into R as a simple feature data frame.
+We will read the asaptial data into the R environment using the `read_csv()` function from the `readr` package found in `tidyverse`.
 
 ```{r}
-mpsz <- st_read(dsn = "data/geospatial", 
-                layer = "MP14_SUBZONE_WEB_PL")
-
-mpsz
+sgpools <- read_csv("data/aspatial/SGPools_svy21.csv")
+list(sgpools)
 ```
 
-Looking at the data, it is observed that the simple feature data frame contains 323 features and 15 fields. The data frame contains multipolygons and it is projected using SVY21, Singapore's coordinate system.
-
-### 2.3.2. Import Aspatial Data
-
-Lastly, we will read the aspatial data into the R environment using the `read_csv()` function from the `readr` package found in `tidyverse`.
-
-```{r}
-popdata <- read_csv("data/aspatial/respopagesextod2011to2020.csv")
-glimpse(popdata)
-```
-
-Using `glimpse` to view the data, it is observed that the data contains 984,656 records with 7 columns including the Planning Area, Subzone (SZ), and Age Group (AG).
+We can observe from above that the data contains 306 records with 7 features, and that the data frame is imported to R as a tibble data frame. 
 
 ## 2.3. Data Preparation
 
-We will first prepare a data table with values from year 2020 containing the variables PA, SZ, YOUNG, ECONOMICALLY ACTIVE, AGED, TOTAL, DEPENDENCY based on the following definitions:
-
--   YOUNG: AG 0_to_4 to AG 20_to_24
--   ECONOMICALLY ACTIVE: AG 25_to_29 to AG 60_to_64
--   AGED: AG 65_to_69 to AG 90_and_over
--   TOTAL: Sum of population of all age groups
--   DEPENDENCY: Ratio of YOUNG and AGED to ECONOMICALLY ACTIVE
-
-### 2.3.1. Data Wrangling
-
-We will create the desired data frame using the following code:
+To plot the data as a map, we need to convert the tibble dataframe into a simple feature dataframe using the coordinates provided. We can do this by using the `st_as_sf()` function from the `sf` package:
 
 ```{r}
-#| eval: false
-popdata2020 <- popdata %>%
-  filter(Time == 2020) %>%
-  group_by(PA, SZ, AG) %>%
-  summarise(`POP` = sum(`Pop`)) %>%
-  ungroup() %>%
-  pivot_wider(names_from=AG, 
-              values_from=POP) %>%
-  mutate(YOUNG = rowSums(.[3:6])
-         +rowSums(.[12])) %>% 
-  mutate(`ECONOMY ACTIVE` = rowSums(.[7:11])+ 
-           rowSums(.[13:15])) %>%
-  mutate(`AGED`=rowSums(.[16:21])) %>% 
-  mutate(`TOTAL`=rowSums(.[3:21])) %>%  
-  mutate(`DEPENDENCY` = (`YOUNG` + `AGED`)
-         /`ECONOMY ACTIVE`) %>%
-  select(`PA`, `SZ`, `YOUNG`, 
-         `ECONOMY ACTIVE`, `AGED`, 
-         `TOTAL`, `DEPENDENCY`) %>%
-  mutate_at(.vars = vars(PA, SZ), 
-            .funs = funs(toupper)) %>%
-  filter(`ECONOMY ACTIVE` > 0)
+sgpools_sf <- st_as_sf(sgpools,
+                       coords = c("XCOORD", "YCOORD"),
+                       crs = 3414)
+
+list(sgpools_sf)
 ```
 
-### 2.3.2. Joining Geospatial and Aspatial Data
+It is observed that the dataframe is now converted to a sf dataframe, and a new 'geometry' column has been added.
 
-We will use the `left_join()` function from the `dplyr` package to merge the aspatial data to the geospatial data. This ensures that the simple feature data frame is retained.
+::: callout-note
+-   The `coords` argument requires the column names where the x-coordinates and y-coordinates can be found.
+-   The `crs` argument requires an input of the coordinates system in the [EPSG](https://www.earthdatascience.org/courses/use-data-open-source-python/intro-vector-data-python/spatial-data-vector-shapefiles/epsg-proj4-coordinate-reference-system-formats-python/) format. EPSG:3414 refers to Singapore's SVY21 Projected Coordinate System.
+:::
+
+# 3. Creating Proportional Symbol Maps
+
+The `view` mode of tmap will be used to create an interactive proportional symbol map. We can turn on the `view` mode using the following code:
 
 ```{r}
-#| eval: false
-mpsz_pop2020 <- left_join(mpsz, popdata2020,
-                          by = c("SUBZONE_N" = "SZ"))
+tmap_mode("view")
 ```
 
-To save this merged data frame for future use, we can use `write_rds()` function from the `readr` package to create a RDS file locally.
+## 3.1. Create An Interactive Point Symbol Map
+
+First, we create an interactive point symbol map:
 
 ```{r}
-#| eval: false
-write_rds(mpsz_pop2020, "data/rds/mpszpop2020.rds")
+tm_shape(sgpools_sf) +
+  tm_bubbles(col = "red",
+             size = 1,
+             border.col = "black",
+             border.lwd = 1)
 ```
 
-The RDS file can be imported into R using the `read_rds()` function from the `readr` package:
+## 3.2. Adjusting `size` According to Variable
+
+Next, we can assign a numerical variable to the `size` argument to draw a proportional symbol map:
 
 ```{r}
-mpsz_pop2020 <- read_rds("data/rds/mpszpop2020.rds")
+tm_shape(sgpools_sf) +
+  tm_bubbles(col = "red",
+             size = "Gp1Gp2 Winnings",
+             border.col = "black",
+             border.lwd = 1)
 ```
+
+## 3.3. Using Colours to Differentiate
+
+We can provide additional information to the map by changing the `col` argument to take in a variable as well:
+
+```{r}
+tm_shape(sgpools_sf) +
+  tm_bubbles(col = "OUTLET TYPE",
+             size = "Gp1Gp2 Winnings",
+             border.col = "black",
+             border.lwd = 1)
+```
+
+## 3.4. Creating Faceted Plots
+
+We can use the `tm_facets()` function to create faceted plots with synchronised selection, zoom and pan settings.
+
+```{r}
+tm_shape(sgpools_sf) +
+  tm_bubbles(col = "OUTLET TYPE", 
+          size = "Gp1Gp2 Winnings",
+          border.col = "black",
+          border.lwd = 1) +
+  tm_facets(by= "OUTLET TYPE",
+            nrow = 1,
+            sync = TRUE)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

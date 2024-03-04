@@ -54,7 +54,7 @@ mpsz
 
 Looking at the data, it is observed that the simple feature data frame contains 323 features and 15 fields. The data frame contains multipolygons and it is projected using SVY21, Singapore's coordinate system.
 
-### 2.3.2. Import Aspatial Data
+### 2.2.2. Import Aspatial Data
 
 Lastly, we will read the aspatial data into the R environment using the `read_csv()` function from the `readr` package found in `tidyverse`.
 
