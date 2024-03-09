@@ -66,7 +66,7 @@ mpsz2019 <- st_read(dsn = "data/geospatial",
   st_transform(3414)
 ```
 
-# 3. Plot
+# 3. Plot Rainfall Data on Map
 
 ```{r}
 tmap_options(check.and.fix = TRUE)
@@ -78,6 +78,16 @@ tm_shape(mpsz2019) +
 tmap_mode("plot")
 ```
 
+## 3.1. Interpolation Method
+
+```{r}
+grid <- terra::rast(mpsz2019,
+                    nrow = 690,
+                    ncols = 1075)
+
+xy <- terra::xyFromCell(grid,
+                        1:ncell(grid))
+```
 
 
 

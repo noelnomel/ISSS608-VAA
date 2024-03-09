@@ -1,0 +1,101 @@
+---
+title: "In-class Exercise 07"
+date: "9 March 2024"
+date-modified: "last-modified"
+format: html
+execute: 
+  echo: true # all code chunks will appear
+  eval: true # all code chunks will run live
+  warning: false # do not display warning message
+  freeze: true
+editor: visual
+---
+
+
+# 1. Overview
+In this in-class exercise, we explore methods to interpolate rainfall data obtained from the [Meteorological Service Singapore Website](https://www.weather.gov.sg/climate-historical-daily/).
+
+# 2. Getting Started
+
+## 2.1. Loading Relevant Packages
+
+```{r}
+pacman::p_load(sf, terra, gstat, tmap,
+               viridis, tidyverse)
+```
+
+
+## 2.2. Loading Data
+
+### 2.2.1. Import Aspatial Data
+
+```{r}
+rfstation <- read_csv("data/aspatial/RainfallStation.csv")
+```
+
+```{r}
+rfdata <- read_csv("data/aspatial/DAILYDATA_202402.csv")
+```
+
+```{r}
+rfdata <- rfdata %>%
+  select(c(1, 5)) %>%
+  group_by(Station) %>%
+  summarise(MonthSum = sum(`Daily Rainfall Total (mm)`)) %>%
+  ungroup()
+
+rfdata
+```
+
+```{r}
+rfdata <- rfdata %>%
+  left_join(rfstation)
+
+rfdata
+```
+
+```{r}
+rfdata_sf <- st_as_sf(rfdata,
+                      coords = c("Longitude",
+                                 "Latitude"),
+                      crs = 4326) %>%
+  st_transform(crs = 3414)
+```
+
+
+
+### 2.2.2. Import Geospatial Data
+
+```{r}
+mpsz2019 <- st_read(dsn = "data/geospatial",
+                    layer = "MPSZ-2019") %>%
+  st_transform(3414)
+```
+
+
+# 3. Plot Rainfall Data on Map
+
+
+```{r}
+tmap_options(check.and.fix = TRUE)
+tmap_mode("view")
+tm_shape(mpsz2019) +
+  tm_borders() +
+  tm_shape(rfdata_sf) +
+  tm_dots(col = 'MonthSum')
+tmap_mode("plot")
+```
+
+
+## 3.1. Interpolation Method
+
+
+```{r}
+grid <- terra::rast(mpsz2019,
+                    nrow = 690,
+                    ncols = 1075)
+
+xy <- terra::xyFromCell(grid,
+                        1:ncell(grid))
+```
+
