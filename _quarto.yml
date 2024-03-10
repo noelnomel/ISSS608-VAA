@@ -61,11 +61,8 @@ website:
           - text: Exercise 8 Network Data
             href: hands_on_ex/hands_on_ex08/hands_on_ex08.html
             
-          - text: Exercise 9 Text Data
+          - text: Exercise 9 Information Dashboard
             href: hands_on_ex/hands_on_ex09/hands_on_ex09.html
-            
-          - text: Exercise 10 Information Dashboard
-            href: hands_on_ex/hands_on_ex10/hands_on_ex10.html
             
       - text: In-class Exercises
         menu: 
