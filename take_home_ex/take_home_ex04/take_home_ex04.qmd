@@ -1,6 +1,6 @@
 ---
 title: "Take-home Exercise 04"
-date: "13 January 2024"
+date: "26 Febuary 2024"
 date-modified: "last-modified"
 format: html
 execute: 
@@ -9,3 +9,827 @@ execute:
   warning: false # do not display warning message
 editor: visual
 ---
+
+# 1. Overview
+
+This take-home exercise serves as a prototype for [Group 11's Visual Analytics Project](https://merrycheesecake-isss608.netlify.app/). In this exercise, we will focus on Confirmatory Data Analysis.
+
+# 2. Getting Started
+
+## 2.1. Loading Relevant Packages
+
+We will load the following R packages for this exercise:
+
+```{r}
+pacman::p_load(tidyverse, ggstatsplot, ExPanDaR)
+```
+
+## 2.2. Loading Data
+
+The data used in this exercise are obtained from the [Meteorological Service Singapore Website](https://www.weather.gov.sg/climate-historical-daily/). To better align the outputs of the individual assignment to the project, my team has standardised the data cleaning steps on our [project website](https://merrycheesecake-isss608.netlify.app/eda/data_preparation). As the cleaned data set were saved as RDS files, we will load them into R for this exercise.
+
+### 2.2.1. Load `temperature` data
+
+```{r}
+temperature <- read_rds("data/temperature.rds")
+glimpse(temperature)
+```
+
+### 2.2.2. Load `rainfall` data
+
+```{r}
+rainfall <- read_rds("data/rainfall.rds")
+glimpse(rainfall)
+```
+
+# 3. Confirmatory Data Analysis (CDA)
+
+For the purpose of the project, CDA will be conducted to compare the following: - Is there a significant difference in the mean temperature recorded at the selected weather stations across the years? - Is there a significant difference in the mean temperature recorded at the selected weather stations across certain year-month periods? - Is there a significant difference in the mean total rainfall recorded at the selected weather stations across the years? - Is there a significant difference in the mean total rainfall recorded at the selected weather stations across certain year-month periods?
+
+# 4. Creating Static Plots
+
+First, we begin by creating static plots to check the feasibility of each plot. Before we do so, we will create an additional table to hold the aggregated values to be used in the plots.
+
+## 4.1. Creating Table with Aggregated Values
+
+Create annual average of mean, min, and max temperatures recorded at each station and region.
+
+```{r}
+temp_agg_annual <- temperature %>%
+  group_by(Station, Region, Year) %>%
+  summarise(Avg_Mean_Temp = mean(MeanTemp),
+            Avg_Max_Temp = mean(AvgMaxTemp),
+            Avg_Min_Temp = mean(AvgMinTemp),
+            Max_Temp = max(MaxTemp),
+            Min_Temp = min(MinTemp)) %>%
+  ungroup() 
+```
+
+```{r}
+temp_agg_yrmth <- temperature %>%
+  group_by(Station, Region, Year, Month) %>%
+  summarise(Avg_Mean_Temp = mean(MeanTemp),
+            Avg_Max_Temp = mean(AvgMaxTemp),
+            Avg_Min_Temp = mean(AvgMinTemp),
+            Max_Temp = max(MaxTemp),
+            Min_Temp = min(MinTemp)) %>%
+  ungroup() 
+```
+
+```{r}
+rf_agg_annual <- rainfall %>%
+  group_by(Station, Region, Year) %>%
+  summarise(Avg_Total_Rf = mean(TotalRainfall),
+            Avg_Total_Rf30 = mean(TotalRainfall30),
+            Avg_Total_Rf60 = mean(TotalRainfall60),
+            Avg_Total_Rf120 = mean(TotalRainfall120),
+            Min_Total_Rf = min(TotalRainfall),
+            Max_Total_Rf = max(TotalRainfall)) %>%
+  ungroup() 
+```
+
+```{r}
+rf_agg_yrmth <- rainfall %>%
+  group_by(Station, Region, Year, Month) %>%
+  summarise(Avg_Total_Rf = mean(TotalRainfall),
+            Avg_Total_Rf30 = mean(TotalRainfall30),
+            Avg_Total_Rf60 = mean(TotalRainfall60),
+            Avg_Total_Rf120 = mean(TotalRainfall120),
+            Min_Total_Rf = min(TotalRainfall),
+            Max_Total_Rf = max(TotalRainfall)) %>%
+  ungroup() 
+```
+
+## 4.2. Plotting Without Functions
+
+First, we create a static plot without functions to visualise the output.
+
+```{r}
+ggbetweenstats(data = temp_agg_yrmth,
+               x = Station, 
+               y = Avg_Max_Temp,
+               plot.type = "boxviolin",
+               type = "nonparametric",
+               pairwise.display = "non-significant",
+               messages = FALSE)
+```
+
+::: {.callout-note title="UI Considerations"}
+With the Shiny app in mind, some parameters that can allow user-input in this plot include:
+-   `plot.type`: accepts `boxviolin`, `box`, `violin`
+-   `type`: accepts `nonparametric`, `parametric`, `robust`, `bayes`
+-   `pairwise.display` = accepts `significant`, `non-significant`, `everything`, `all` 
+:::
+
+# 5. Compare Annual Temperature 
+
+## 5.1. Create Function - Annual Temperature of Top 3 Station by Average Annual Temperature Recorded
+
+From the plot above, it is difficult to compare the metric of all stations at once. Due to the number of stations available, each plot becomes very small and much of the details are lost. We will now attempt to create a function to display only the top3 stations of the chosen metric.
+
+```{r}
+temp_agg_annual_sorted <-  temp_agg_annual %>%
+  arrange(desc(Avg_Mean_Temp))
+
+top3 <- temp_agg_annual_sorted$Station[1:3]
+```
+
+```{r}
+Annual_Top3_Temp_Station <- function(metric = "Avg_Mean_Temp", 
+                                selected_station,
+                                p_type = "boxviolin",
+                                t_type = "nonparametric",
+                                pair_disp = "non-significant",
+                                pair.comp = T,
+                                conf = 0.95,
+                                nooutliers = T){
+  
+  metric_label = case_when(metric == "Avg_Mean_Temp" ~ "Average Mean Temperature",
+                           metric == "Avg_Max_Temp" ~ "Average of Max Temperature",
+                           metric == "Avg_Min_Temp" ~ "Average of Minimum Temperature",
+                           metric == "Max_Temp" ~ "Maximum Temperature",
+                           metric == "Min_Temp" ~ "Minimum Temperature",
+                           TRUE ~ metric)
+  
+  test_label = case_when(t_type == "parametric" ~ "Mean (Parametric)",
+                         t_type == "nonparametric" ~ "Median (Non-Parametric)",
+                         t_type == "robust" ~ "Mean (Robust t-test)",
+                         t_type == "bayes" ~ "Mean (Bayesian)",)
+  
+  temp_annual_anova <- temp_agg_annual %>%
+    filter(Station %in% selected_station) %>%
+    mutate(Station = fct_reorder(Station, !!sym(metric), .desc = TRUE))
+  
+  if(nooutliers == T){
+  temp_annual_anova <- temp_annual_anova %>%
+      treat_outliers() 
+  }
+  
+  temp_annual_anova %>%
+    ggbetweenstats(x = Station,
+                   y = !!sym(metric),
+                   plot.type = p_type,
+                   type = t_type,
+                   pairwise.comparisons = T,
+                   pairwise.display = pair_disp,
+                   mean.ci = T, 
+                   p.adjust.method = "fdr",
+                   conf.level = conf,
+                   xlab = "Station", ylab = metric_label,)
+}
+```   
+
+::: panel-tabset
+
+#### Test 1
+```{r}
+Annual_Top3_Temp_Station(metric = "Avg_Mean_Temp", 
+                         selected_station = top3,
+                         p_type = "boxviolin",
+                         t_type = "nonparametric",
+                         pair_disp = "non-significant",
+                         pair.comp = T,
+                         conf = 0.95,
+                         nooutliers = T)
+```
+
+#### Test 2
+```{r}
+Annual_Top3_Temp_Station(metric = "Max_Temp", 
+                         selected_station = top3,
+                         p_type = "box",
+                         t_type = "nonparametric",
+                         pair_disp = "non-significant",
+                         pair.comp = T,
+                         conf = 0.95,
+                         nooutliers = T)
+```
+
+#### Test 3
+
+```{r}
+Annual_Top3_Temp_Station(metric = "Avg_Min_Temp", 
+                         selected_station = top3,
+                         p_type = "violin",
+                         t_type = "nonparametric",
+                         pair_disp = "non-significant",
+                         pair.comp = T,
+                         conf = 0.99,
+                         nooutliers = T)
+```
+:::
+
+## 5.3. Create Function - Annual temperature by Region
+
+```{r}
+Annual_Temp_Region <- function(metric = "Avg_Mean_Temp", 
+                               p_type = "boxviolin",
+                               t_type = "nonparametric",
+                               pair_disp = "non-significant",
+                               pair.comp = T,
+                               conf = 0.95,
+                               nooutliers = T){
+  
+  metric_label = case_when(metric == "Avg_Mean_Temp" ~ "Average Mean Temperature",
+                           metric == "Avg_Max_Temp" ~ "Average of Max Temperature",
+                           metric == "Avg_Min_Temp" ~ "Average of Minimum Temperature",
+                           metric == "Max_Temp" ~ "Maximum Temperature",
+                           metric == "Min_Temp" ~ "Minimum Temperature",
+                           TRUE ~ metric)
+  
+  test_label = case_when(t_type == "parametric" ~ "Mean (Parametric)",
+                         t_type == "nonparametric" ~ "Median (Non-Parametric)",
+                         t_type == "robust" ~ "Mean (Robust t-test)",
+                         t_type == "bayes" ~ "Mean (Bayesian)",)
+  
+  if(nooutliers == T){
+  temp_agg_annual <- temp_agg_annual %>%
+      treat_outliers() 
+  }
+  
+  temp_agg_annual %>%
+    ggbetweenstats(x = Region,
+                   y = !!sym(metric),
+                   plot.type = p_type,
+                   type = t_type,
+                   pairwise.comparisons = T,
+                   pairwise.display = pair_disp,
+                   mean.ci = T, 
+                   p.adjust.method = "fdr",
+                   conf.level = conf,
+                   xlab = "Region", ylab = metric_label,)
+}
+```
+
+::: panel-tabset
+
+#### Test 1
+```{r}
+Annual_Temp_Region(metric = "Avg_Mean_Temp", 
+                   p_type = "boxviolin",
+                   t_type = "nonparametric",
+                   pair_disp = "non-significant",
+                   pair.comp = T,
+                   conf = 0.95,
+                   nooutliers = T)
+```
+
+#### Test 2
+```{r}
+Annual_Temp_Region(metric = "Max_Temp",
+                   p_type = "box",
+                   t_type = "nonparametric",
+                   pair_disp = "non-significant",
+                   pair.comp = T,
+                   conf = 0.95,
+                   nooutliers = T)
+```
+
+#### Test 3
+
+```{r}
+Annual_Temp_Region(metric = "Avg_Min_Temp", 
+                   p_type = "violin",
+                   t_type = "nonparametric",
+                   pair_disp = "non-significant",
+                   pair.comp = T,
+                   conf = 0.99,
+                   nooutliers = T)
+```
+:::
+
+# 6. Compare Monthly Temperature 
+
+## 6.1. Create Function - Monthly temperature by Station:
+
+```{r}
+temp_agg_monthly_sorted <-  temp_agg_yrmth %>%
+  arrange(desc(Avg_Mean_Temp))
+
+top3 <- temp_agg_monthly_sorted$Station[1:3]
+```
+
+
+```{r}
+Monthly_Top3_Temp_Station <- function(metric = "Avg_Mean_Temp", 
+                                      selected_station,
+                                      p_type = "boxviolin",
+                                      t_type = "nonparametric",
+                                      pair_disp = "non-significant",
+                                      pair.comp = T,
+                                      conf = 0.95,
+                                      nooutliers = T){
+  
+  metric_label = case_when(metric == "Avg_Mean_Temp" ~ "Average Mean Temperature",
+                           metric == "Avg_Max_Temp" ~ "Average of Max Temperature",
+                           metric == "Avg_Min_Temp" ~ "Average of Minimum Temperature",
+                           metric == "Max_Temp" ~ "Maximum Temperature",
+                           metric == "Min_Temp" ~ "Minimum Temperature",
+                           TRUE ~ metric)
+  
+  test_label = case_when(t_type == "parametric" ~ "Mean (Parametric)",
+                         t_type == "nonparametric" ~ "Median (Non-Parametric)",
+                         t_type == "robust" ~ "Mean (Robust t-test)",
+                         t_type == "bayes" ~ "Mean (Bayesian)",)
+  
+  temp_monthly_anova <- temp_agg_yrmth %>%
+    filter(Station %in% selected_station) %>%
+    mutate(Station = fct_reorder(Station, !!sym(metric), .desc = TRUE))
+  
+  if(nooutliers == T){
+  temp_monthly_anova <- temp_monthly_anova %>%
+      treat_outliers() 
+  }
+  
+  temp_monthly_anova %>%
+    ggbetweenstats(x = Station,
+                   y = !!sym(metric),
+                   plot.type = p_type,
+                   type = t_type,
+                   pairwise.comparisons = T,
+                   pairwise.display = pair_disp,
+                   mean.ci = T, 
+                   p.adjust.method = "fdr",
+                   conf.level = conf,
+                   xlab = "Station", ylab = metric_label,)
+}
+```   
+
+::: panel-tabset
+
+#### Test 1
+```{r}
+Monthly_Top3_Temp_Station(metric = "Avg_Mean_Temp", 
+                          selected_station = top3,
+                          p_type = "boxviolin",
+                          t_type = "nonparametric",
+                          pair_disp = "non-significant",
+                          pair.comp = T,
+                          conf = 0.95,
+                          nooutliers = T)
+```
+
+#### Test 2
+```{r}
+Monthly_Top3_Temp_Station(metric = "Max_Temp", 
+                          selected_station = top3,
+                          p_type = "box",
+                          t_type = "nonparametric",
+                          pair_disp = "non-significant",
+                          pair.comp = T,
+                          conf = 0.95,
+                          nooutliers = T)
+```
+
+#### Test 3
+
+```{r}
+Monthly_Top3_Temp_Station(metric = "Avg_Min_Temp", 
+                          selected_station = top3,
+                          p_type = "violin",
+                          t_type = "nonparametric",
+                          pair_disp = "non-significant",
+                          pair.comp = T,
+                          conf = 0.99,
+                          nooutliers = T)
+```
+:::
+
+## 6.2. Create Function - Monthly temperature by Region
+
+```{r}
+Monthly_Temp_Region <- function(metric = "Avg_Mean_Temp", 
+                                p_type = "boxviolin",
+                                t_type = "nonparametric",
+                                pair_disp = "non-significant",
+                                pair.comp = T,
+                                conf = 0.95,
+                                nooutliers = T){
+  
+  metric_label = case_when(metric == "Avg_Mean_Temp" ~ "Average Mean Temperature",
+                           metric == "Avg_Max_Temp" ~ "Average of Max Temperature",
+                           metric == "Avg_Min_Temp" ~ "Average of Minimum Temperature",
+                           metric == "Max_Temp" ~ "Maximum Temperature",
+                           metric == "Min_Temp" ~ "Minimum Temperature",
+                           TRUE ~ metric)
+  
+  test_label = case_when(t_type == "parametric" ~ "Mean (Parametric)",
+                         t_type == "nonparametric" ~ "Median (Non-Parametric)",
+                         t_type == "robust" ~ "Mean (Robust t-test)",
+                         t_type == "bayes" ~ "Mean (Bayesian)",)
+  
+  if(nooutliers == T){
+  temp_agg_yrmth <- temp_agg_yrmth %>%
+      treat_outliers() 
+  }
+  
+  temp_agg_yrmth %>%
+    ggbetweenstats(x = Region,
+                   y = !!sym(metric),
+                   plot.type = p_type,
+                   type = t_type,
+                   pairwise.comparisons = T,
+                   pairwise.display = pair_disp,
+                   mean.ci = T, 
+                   p.adjust.method = "fdr",
+                   conf.level = conf,
+                   xlab = "Region", ylab = metric_label,)
+}
+```
+
+::: panel-tabset
+
+#### Test 1
+```{r}
+Monthly_Temp_Region(metric = "Avg_Mean_Temp", 
+                    p_type = "boxviolin",
+                    t_type = "nonparametric",
+                    pair_disp = "non-significant",
+                    pair.comp = T,
+                    conf = 0.95,
+                   nooutliers = T)
+```
+
+#### Test 2
+```{r}
+Monthly_Temp_Region(metric = "Max_Temp",
+                    p_type = "box",
+                    t_type = "nonparametric",
+                    pair_disp = "non-significant",
+                    pair.comp = T,
+                    conf = 0.95,
+                    nooutliers = T)
+```
+
+#### Test 3
+
+```{r}
+Monthly_Temp_Region(metric = "Avg_Min_Temp", 
+                    p_type = "violin",
+                    t_type = "nonparametric",
+                    pair_disp = "non-significant",
+                    pair.comp = T,
+                    conf = 0.99,
+                    nooutliers = T)
+```
+
+:::
+
+# 7. Compare Annual Rainfall 
+
+## 7.1. Create Function - Annual Rainfall of Top 3 Stations by Average Annual Rainfall Recorded
+
+```{r}
+rf_agg_annual_sorted <-  rf_agg_annual %>%
+  arrange(desc(Avg_Total_Rf))
+
+top3 <- rf_agg_annual_sorted$Station[1:3]
+```
+
+```{r}
+Annual_Top3_Rf_Station <- function(metric = "Avg_Total_Rf", 
+                                selected_station,
+                                p_type = "boxviolin",
+                                t_type = "nonparametric",
+                                pair_disp = "non-significant",
+                                pair.comp = T,
+                                conf = 0.95,
+                                nooutliers = T){
+  
+  metric_label = case_when(metric == "Avg_Total_Rf" ~ "Average Total Rainfall",
+                           metric == "Avg_Total_Rf30" ~ "Average of Total Rainfall in 30 min",
+                           metric == "Avg_Total_Rf60" ~ "Average of Total Rainfall in 60 min",
+                           metric == "Avg_Total_Rf120" ~ "Average of Total Rainfall in 120 min",
+                           metric == "Max_Total_Rf" ~ "Maximum Total Rainfall",
+                           metric == "Min_Total_Rf" ~ "Minimum Total Rainfall",
+                           TRUE ~ metric)
+
+  test_label = case_when(t_type == "parametric" ~ "Mean (Parametric)",
+                         t_type == "nonparametric" ~ "Median (Non-Parametric)",
+                         t_type == "robust" ~ "Mean (Robust t-test)",
+                         t_type == "bayes" ~ "Mean (Bayesian)",)
+  
+  rf_annual_anova <- rf_agg_annual %>%
+    filter(Station %in% selected_station) %>%
+    mutate(Station = fct_reorder(Station, !!sym(metric), .desc = TRUE))
+  
+  if(nooutliers == T){
+  rf_annual_anova <- rf_annual_anova %>%
+      treat_outliers() 
+  }
+  
+  rf_annual_anova %>%
+    ggbetweenstats(x = Station,
+                   y = !!sym(metric),
+                   plot.type = p_type,
+                   type = t_type,
+                   pairwise.comparisons = T,
+                   pairwise.display = pair_disp,
+                   mean.ci = T, 
+                   p.adjust.method = "fdr",
+                   conf.level = conf,
+                   xlab = "Station", ylab = metric_label,)
+}
+```   
+
+::: panel-tabset
+
+#### Test 1
+```{r}
+Annual_Top3_Rf_Station(metric = "Avg_Total_Rf", 
+                         selected_station = top3,
+                         p_type = "boxviolin",
+                         t_type = "nonparametric",
+                         pair_disp = "non-significant",
+                         pair.comp = T,
+                         conf = 0.95,
+                         nooutliers = T)
+```
+
+#### Test 2
+```{r}
+Annual_Top3_Rf_Station(metric = "Avg_Total_Rf60", 
+                         selected_station = top3,
+                         p_type = "box",
+                         t_type = "nonparametric",
+                         pair_disp = "non-significant",
+                         pair.comp = T,
+                         conf = 0.95,
+                         nooutliers = T)
+```
+
+#### Test 3
+
+```{r}
+Annual_Top3_Rf_Station(metric = "Max_Total_Rf", 
+                         selected_station = top3,
+                         p_type = "violin",
+                         t_type = "nonparametric",
+                         pair_disp = "non-significant",
+                         pair.comp = T,
+                         conf = 0.99,
+                         nooutliers = T)
+```
+:::
+
+## 7.2. Create Function - Annual Rainfall by Region
+
+```{r}
+Annual_Rf_Region <- function(metric = "Avg_Total_Rf", 
+                               p_type = "boxviolin",
+                               t_type = "nonparametric",
+                               pair_disp = "non-significant",
+                               pair.comp = T,
+                               conf = 0.95,
+                               nooutliers = T){
+  
+  metric_label = case_when(metric == "Avg_Total_Rf" ~ "Average Total Rainfall",
+                           metric == "Avg_Total_Rf30" ~ "Average of Total Rainfall in 30 min",
+                           metric == "Avg_Total_Rf60" ~ "Average of Total Rainfall in 60 min",
+                           metric == "Avg_Total_Rf120" ~ "Average of Total Rainfall in 120 min",
+                           metric == "Max_Total_Rf" ~ "Maximum Total Rainfall",
+                           metric == "Min_Total_Rf" ~ "Minimum Total Rainfall",
+                           TRUE ~ metric)
+  
+  test_label = case_when(t_type == "parametric" ~ "Mean (Parametric)",
+                         t_type == "nonparametric" ~ "Median (Non-Parametric)",
+                         t_type == "robust" ~ "Mean (Robust t-test)",
+                         t_type == "bayes" ~ "Mean (Bayesian)",)
+  
+  if(nooutliers == T){
+  rf_agg_annual <- rf_agg_annual %>%
+      treat_outliers() 
+  }
+  
+  rf_agg_annual %>%
+    ggbetweenstats(x = Region,
+                   y = !!sym(metric),
+                   plot.type = p_type,
+                   type = t_type,
+                   pairwise.comparisons = T,
+                   pairwise.display = pair_disp,
+                   mean.ci = T, 
+                   p.adjust.method = "fdr",
+                   conf.level = conf,
+                   xlab = "Region", ylab = metric_label,)
+}
+```
+
+::: panel-tabset
+
+#### Test 1
+```{r}
+Annual_Rf_Region(metric = "Avg_Total_Rf", 
+                   p_type = "boxviolin",
+                   t_type = "nonparametric",
+                   pair_disp = "non-significant",
+                   pair.comp = T,
+                   conf = 0.95,
+                   nooutliers = T)
+```
+
+#### Test 2
+```{r}
+Annual_Rf_Region(metric = "Avg_Total_Rf60",
+                   p_type = "box",
+                   t_type = "nonparametric",
+                   pair_disp = "non-significant",
+                   pair.comp = T,
+                   conf = 0.95,
+                   nooutliers = T)
+```
+
+#### Test 3
+
+```{r}
+Annual_Rf_Region(metric = "Max_Total_Rf", 
+                   p_type = "violin",
+                   t_type = "nonparametric",
+                   pair_disp = "non-significant",
+                   pair.comp = T,
+                   conf = 0.99,
+                   nooutliers = T)
+```
+:::
+
+# 8. Compare Monthly Rainfall 
+
+## 8.1. Create Function - Monthly Rainfall of Top 3 Stations by Average Annual Rainfall Recorded
+
+```{r}
+rf_agg_monthly_sorted <-  rf_agg_yrmth %>%
+  arrange(desc(Avg_Total_Rf))
+
+top3 <- rf_agg_monthly_sorted$Station[1:3]
+```
+
+```{r}
+Monthly_Rf_Station <- function(metric = "Avg_Total_Rf", 
+                                selected_station,
+                                p_type = "boxviolin",
+                                t_type = "nonparametric",
+                                pair_disp = "non-significant",
+                                pair.comp = T,
+                                conf = 0.95,
+                                nooutliers = T){
+  
+  metric_label = case_when(metric == "Avg_Total_Rf" ~ "Average Total Rainfall",
+                           metric == "Avg_Total_Rf30" ~ "Average of Total Rainfall in 30 min",
+                           metric == "Avg_Total_Rf60" ~ "Average of Total Rainfall in 60 min",
+                           metric == "Avg_Total_Rf120" ~ "Average of Total Rainfall in 120 min",
+                           metric == "Max_Total_Rf" ~ "Maximum Total Rainfall",
+                           metric == "Min_Total_Rf" ~ "Minimum Total Rainfall",
+                           TRUE ~ metric)
+
+  test_label = case_when(t_type == "parametric" ~ "Mean (Parametric)",
+                         t_type == "nonparametric" ~ "Median (Non-Parametric)",
+                         t_type == "robust" ~ "Mean (Robust t-test)",
+                         t_type == "bayes" ~ "Mean (Bayesian)",)
+  
+  rf_monthly_anova <- rf_agg_yrmth %>%
+    filter(Station %in% selected_station) %>%
+    mutate(Station = fct_reorder(Station, !!sym(metric), .desc = TRUE))
+  
+  if(nooutliers == T){
+  rf_monthly_anova <- rf_monthly_anova %>%
+      treat_outliers() 
+  }
+  
+  rf_monthly_anova %>%
+    ggbetweenstats(x = Station,
+                   y = !!sym(metric),
+                   plot.type = p_type,
+                   type = t_type,
+                   pairwise.comparisons = T,
+                   pairwise.display = pair_disp,
+                   mean.ci = T, 
+                   p.adjust.method = "fdr",
+                   conf.level = conf,
+                   xlab = "Station", ylab = metric_label,)
+}
+```   
+
+::: panel-tabset
+
+#### Test 1
+```{r}
+Monthly_Rf_Station(metric = "Avg_Total_Rf", 
+                         selected_station = top3,
+                         p_type = "boxviolin",
+                         t_type = "nonparametric",
+                         pair_disp = "non-significant",
+                         pair.comp = T,
+                         conf = 0.95,
+                         nooutliers = T)
+```
+
+#### Test 2
+```{r}
+Monthly_Rf_Station(metric = "Avg_Total_Rf60", 
+                         selected_station = top3,
+                         p_type = "box",
+                         t_type = "nonparametric",
+                         pair_disp = "non-significant",
+                         pair.comp = T,
+                         conf = 0.95,
+                         nooutliers = T)
+```
+
+#### Test 3
+
+```{r}
+Monthly_Rf_Station(metric = "Max_Total_Rf", 
+                         selected_station = top3,
+                         p_type = "violin",
+                         t_type = "nonparametric",
+                         pair_disp = "non-significant",
+                         pair.comp = T,
+                         conf = 0.99,
+                         nooutliers = T)
+```
+:::
+
+## 8.2. Create Function - Monthly Rainfall by Region
+
+```{r}
+Monthly_Rf_Region <- function(metric = "Avg_Total_Rf", 
+                               p_type = "boxviolin",
+                               t_type = "nonparametric",
+                               pair_disp = "non-significant",
+                               pair.comp = T,
+                               conf = 0.95,
+                               nooutliers = T){
+  
+  metric_label = case_when(metric == "Avg_Total_Rf" ~ "Average Total Rainfall",
+                           metric == "Avg_Total_Rf30" ~ "Average of Total Rainfall in 30 min",
+                           metric == "Avg_Total_Rf60" ~ "Average of Total Rainfall in 60 min",
+                           metric == "Avg_Total_Rf120" ~ "Average of Total Rainfall in 120 min",
+                           metric == "Max_Total_Rf" ~ "Maximum Total Rainfall",
+                           metric == "Min_Total_Rf" ~ "Minimum Total Rainfall",
+                           TRUE ~ metric)
+  
+  test_label = case_when(t_type == "parametric" ~ "Mean (Parametric)",
+                         t_type == "nonparametric" ~ "Median (Non-Parametric)",
+                         t_type == "robust" ~ "Mean (Robust t-test)",
+                         t_type == "bayes" ~ "Mean (Bayesian)",)
+  
+  if(nooutliers == T){
+  rf_agg_yrmth <- rf_agg_yrmth %>%
+      treat_outliers() 
+  }
+  
+  rf_agg_yrmth %>%
+    ggbetweenstats(x = Region,
+                   y = !!sym(metric),
+                   plot.type = p_type,
+                   type = t_type,
+                   pairwise.comparisons = T,
+                   pairwise.display = pair_disp,
+                   mean.ci = T, 
+                   p.adjust.method = "fdr",
+                   conf.level = conf,
+                   xlab = "Region", ylab = metric_label,)
+}
+```
+
+::: panel-tabset
+
+#### Test 1
+```{r}
+Monthly_Rf_Region(metric = "Avg_Total_Rf", 
+                   p_type = "boxviolin",
+                   t_type = "nonparametric",
+                   pair_disp = "non-significant",
+                   pair.comp = T,
+                   conf = 0.95,
+                   nooutliers = T)
+```
+
+#### Test 2
+```{r}
+Monthly_Rf_Region(metric = "Avg_Total_Rf60",
+                   p_type = "box",
+                   t_type = "nonparametric",
+                   pair_disp = "non-significant",
+                   pair.comp = T,
+                   conf = 0.95,
+                   nooutliers = T)
+```
+
+#### Test 3
+
+```{r}
+Monthly_Rf_Region(metric = "Max_Total_Rf", 
+                   p_type = "violin",
+                   t_type = "nonparametric",
+                   pair_disp = "non-significant",
+                   pair.comp = T,
+                   conf = 0.99,
+                   nooutliers = T)
+```
+
+:::
+
+
+
+

@@ -44,7 +44,7 @@ stu_qqq_SG <- read_rds("data/stu_qqq_SG.rds")
 As the dataset contains too many columns, we will extract only the relevant columns required for this exercise and keep the data as `stu_sg_data`. The columns we need are:
 
 | Col Name            | Label                                          | Reason                                                                                             |
-|---------------------|------------------------------------------------|----------------------------------------------------------------------------------------------------|
+|----------------|------------------|---------------------------------------|
 | STRATUM             | School Type                                    | To explore relationships between the student's chosen school and their academic performance        |
 | ST004D01T           | Gender, where 1 is Female and 2 is Male        | To explore if there are any relationships between gender and performance in the test               |
 | ESCS                | Index of economic, social, and cultural status | To explore if there are any relationships between socioeconomic status and performance in the test |
