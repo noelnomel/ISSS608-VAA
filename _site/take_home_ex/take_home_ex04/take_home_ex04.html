@@ -296,22 +296,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#compare-annual-temperature" id="toc-compare-annual-temperature" class="nav-link" data-scroll-target="#compare-annual-temperature">5. Compare Annual Temperature</a>
   <ul class="collapse">
-  <li><a href="#create-function---annual-temperature-of-top-3-station-by-average-annual-temperature-recorded" id="toc-create-function---annual-temperature-of-top-3-station-by-average-annual-temperature-recorded" class="nav-link" data-scroll-target="#create-function---annual-temperature-of-top-3-station-by-average-annual-temperature-recorded">5.1. Create Function - Annual Temperature of Top 3 Station by Average Annual Temperature Recorded</a></li>
-  <li><a href="#create-function---annual-temperature-by-region" id="toc-create-function---annual-temperature-by-region" class="nav-link" data-scroll-target="#create-function---annual-temperature-by-region">5.3. Create Function - Annual temperature by Region</a></li>
+  <li><a href="#create-function---annual-temperature-by-station" id="toc-create-function---annual-temperature-by-station" class="nav-link" data-scroll-target="#create-function---annual-temperature-by-station">5.1. Create Function - Annual Temperature by Station</a></li>
+  <li><a href="#create-function---annual-temperature-by-region" id="toc-create-function---annual-temperature-by-region" class="nav-link" data-scroll-target="#create-function---annual-temperature-by-region">5.2. Create Function - Annual temperature by Region</a></li>
   </ul></li>
   <li><a href="#compare-monthly-temperature" id="toc-compare-monthly-temperature" class="nav-link" data-scroll-target="#compare-monthly-temperature">6. Compare Monthly Temperature</a>
   <ul class="collapse">
-  <li><a href="#create-function---monthly-temperature-by-station" id="toc-create-function---monthly-temperature-by-station" class="nav-link" data-scroll-target="#create-function---monthly-temperature-by-station">6.1. Create Function - Monthly temperature by Station:</a></li>
+  <li><a href="#create-function---monthly-temperature-by-station" id="toc-create-function---monthly-temperature-by-station" class="nav-link" data-scroll-target="#create-function---monthly-temperature-by-station">6.1. Create Function - Monthly temperature by Station</a></li>
   <li><a href="#create-function---monthly-temperature-by-region" id="toc-create-function---monthly-temperature-by-region" class="nav-link" data-scroll-target="#create-function---monthly-temperature-by-region">6.2. Create Function - Monthly temperature by Region</a></li>
   </ul></li>
   <li><a href="#compare-annual-rainfall" id="toc-compare-annual-rainfall" class="nav-link" data-scroll-target="#compare-annual-rainfall">7. Compare Annual Rainfall</a>
   <ul class="collapse">
-  <li><a href="#create-function---annual-rainfall-of-top-3-stations-by-average-annual-rainfall-recorded" id="toc-create-function---annual-rainfall-of-top-3-stations-by-average-annual-rainfall-recorded" class="nav-link" data-scroll-target="#create-function---annual-rainfall-of-top-3-stations-by-average-annual-rainfall-recorded">7.1. Create Function - Annual Rainfall of Top 3 Stations by Average Annual Rainfall Recorded</a></li>
+  <li><a href="#create-function---annual-rainfall-by-station" id="toc-create-function---annual-rainfall-by-station" class="nav-link" data-scroll-target="#create-function---annual-rainfall-by-station">7.1. Create Function - Annual Rainfall by Station</a></li>
   <li><a href="#create-function---annual-rainfall-by-region" id="toc-create-function---annual-rainfall-by-region" class="nav-link" data-scroll-target="#create-function---annual-rainfall-by-region">7.2. Create Function - Annual Rainfall by Region</a></li>
   </ul></li>
   <li><a href="#compare-monthly-rainfall" id="toc-compare-monthly-rainfall" class="nav-link" data-scroll-target="#compare-monthly-rainfall">8. Compare Monthly Rainfall</a>
   <ul class="collapse">
-  <li><a href="#create-function---monthly-rainfall-of-top-3-stations-by-average-annual-rainfall-recorded" id="toc-create-function---monthly-rainfall-of-top-3-stations-by-average-annual-rainfall-recorded" class="nav-link" data-scroll-target="#create-function---monthly-rainfall-of-top-3-stations-by-average-annual-rainfall-recorded">8.1. Create Function - Monthly Rainfall of Top 3 Stations by Average Annual Rainfall Recorded</a></li>
+  <li><a href="#create-function---monthly-rainfall-by-station" id="toc-create-function---monthly-rainfall-by-station" class="nav-link" data-scroll-target="#create-function---monthly-rainfall-by-station">8.1. Create Function - Monthly Rainfall by Station</a></li>
   <li><a href="#create-function---monthly-rainfall-by-region" id="toc-create-function---monthly-rainfall-by-region" class="nav-link" data-scroll-target="#create-function---monthly-rainfall-by-region">8.2. Create Function - Monthly Rainfall by Region</a></li>
   </ul></li>
   <li><a href="#mock-up-of-ui-design" id="toc-mock-up-of-ui-design" class="nav-link" data-scroll-target="#mock-up-of-ui-design">9. Mock-up of UI Design</a></li>
@@ -544,8 +544,8 @@ UI Considerations
 </section>
 <section id="compare-annual-temperature" class="level1">
 <h1>5. Compare Annual Temperature</h1>
-<section id="create-function---annual-temperature-of-top-3-station-by-average-annual-temperature-recorded" class="level2">
-<h2 class="anchored" data-anchor-id="create-function---annual-temperature-of-top-3-station-by-average-annual-temperature-recorded">5.1. Create Function - Annual Temperature of Top 3 Station by Average Annual Temperature Recorded</h2>
+<section id="create-function---annual-temperature-by-station" class="level2">
+<h2 class="anchored" data-anchor-id="create-function---annual-temperature-by-station">5.1. Create Function - Annual Temperature by Station</h2>
 <p>From the plots above, it is difficult to compare the chosen metric of all stations at once. Due to the number of stations available, each plot becomes very small and much of the details are lost. We will now attempt to create a function to display only the top3 stations by average annual temperature recorded.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>temp_agg_annual_sorted <span class="ot">&lt;-</span>  temp_agg_annual <span class="sc">%&gt;%</span></span>
@@ -649,7 +649,7 @@ UI Considerations
 </div>
 </section>
 <section id="create-function---annual-temperature-by-region" class="level2">
-<h2 class="anchored" data-anchor-id="create-function---annual-temperature-by-region">5.3. Create Function - Annual temperature by Region</h2>
+<h2 class="anchored" data-anchor-id="create-function---annual-temperature-by-region">5.2. Create Function - Annual temperature by Region</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>Annual_Temp_Region <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">metric =</span> <span class="st">"Avg_Mean_Temp"</span>, </span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>                               <span class="at">p_type =</span> <span class="st">"boxviolin"</span>,</span>
@@ -741,7 +741,7 @@ UI Considerations
 <section id="compare-monthly-temperature" class="level1">
 <h1>6. Compare Monthly Temperature</h1>
 <section id="create-function---monthly-temperature-by-station" class="level2">
-<h2 class="anchored" data-anchor-id="create-function---monthly-temperature-by-station">6.1. Create Function - Monthly temperature by Station:</h2>
+<h2 class="anchored" data-anchor-id="create-function---monthly-temperature-by-station">6.1. Create Function - Monthly temperature by Station</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>temp_agg_monthly_sorted <span class="ot">&lt;-</span>  temp_agg_yrmth <span class="sc">%&gt;%</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Avg_Mean_Temp))</span>
@@ -935,8 +935,8 @@ UI Considerations
 </section>
 <section id="compare-annual-rainfall" class="level1">
 <h1>7. Compare Annual Rainfall</h1>
-<section id="create-function---annual-rainfall-of-top-3-stations-by-average-annual-rainfall-recorded" class="level2">
-<h2 class="anchored" data-anchor-id="create-function---annual-rainfall-of-top-3-stations-by-average-annual-rainfall-recorded">7.1. Create Function - Annual Rainfall of Top 3 Stations by Average Annual Rainfall Recorded</h2>
+<section id="create-function---annual-rainfall-by-station" class="level2">
+<h2 class="anchored" data-anchor-id="create-function---annual-rainfall-by-station">7.1. Create Function - Annual Rainfall by Station</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>rf_agg_annual_sorted <span class="ot">&lt;-</span>  rf_agg_annual <span class="sc">%&gt;%</span></span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Avg_Total_Rf))</span>
@@ -1132,8 +1132,8 @@ UI Considerations
 </section>
 <section id="compare-monthly-rainfall" class="level1">
 <h1>8. Compare Monthly Rainfall</h1>
-<section id="create-function---monthly-rainfall-of-top-3-stations-by-average-annual-rainfall-recorded" class="level2">
-<h2 class="anchored" data-anchor-id="create-function---monthly-rainfall-of-top-3-stations-by-average-annual-rainfall-recorded">8.1. Create Function - Monthly Rainfall of Top 3 Stations by Average Annual Rainfall Recorded</h2>
+<section id="create-function---monthly-rainfall-by-station" class="level2">
+<h2 class="anchored" data-anchor-id="create-function---monthly-rainfall-by-station">8.1. Create Function - Monthly Rainfall by Station</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>rf_agg_monthly_sorted <span class="ot">&lt;-</span>  rf_agg_yrmth <span class="sc">%&gt;%</span></span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Avg_Total_Rf))</span>

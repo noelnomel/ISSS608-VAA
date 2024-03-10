@@ -166,7 +166,7 @@ With the Shiny app in mind, some parameters that can allow user-input in this pl
 
 # 5. Compare Annual Temperature
 
-## 5.1. Create Function - Annual Temperature of Top 3 Station by Average Annual Temperature Recorded
+## 5.1. Create Function - Annual Temperature by Station
 
 From the plots above, it is difficult to compare the chosen metric of all stations at once. Due to the number of stations available, each plot becomes very small and much of the details are lost. We will now attempt to create a function to display only the top3 stations by average annual temperature recorded.
 
@@ -263,7 +263,7 @@ Annual_Top3_Temp_Station(metric = "Avg_Min_Temp",
 ```
 :::
 
-## 5.3. Create Function - Annual temperature by Region
+## 5.2. Create Function - Annual temperature by Region
 
 ```{r}
 Annual_Temp_Region <- function(metric = "Avg_Mean_Temp", 
@@ -345,7 +345,7 @@ Annual_Temp_Region(metric = "Avg_Min_Temp",
 
 # 6. Compare Monthly Temperature
 
-## 6.1. Create Function - Monthly temperature by Station:
+## 6.1. Create Function - Monthly temperature by Station
 
 ```{r}
 temp_agg_monthly_sorted <-  temp_agg_yrmth %>%
@@ -522,7 +522,7 @@ Monthly_Temp_Region(metric = "Avg_Min_Temp",
 
 # 7. Compare Annual Rainfall
 
-## 7.1. Create Function - Annual Rainfall of Top 3 Stations by Average Annual Rainfall Recorded
+## 7.1. Create Function - Annual Rainfall by Station
 
 ```{r}
 rf_agg_annual_sorted <-  rf_agg_annual %>%
@@ -701,7 +701,7 @@ Annual_Rf_Region(metric = "Max_Total_Rf",
 
 # 8. Compare Monthly Rainfall
 
-## 8.1. Create Function - Monthly Rainfall of Top 3 Stations by Average Annual Rainfall Recorded
+## 8.1. Create Function - Monthly Rainfall by Station
 
 ```{r}
 rf_agg_monthly_sorted <-  rf_agg_yrmth %>%
