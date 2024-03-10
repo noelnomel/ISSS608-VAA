@@ -44,11 +44,19 @@ glimpse(rainfall)
 
 # 3. Confirmatory Data Analysis (CDA)
 
-For the purpose of the project, CDA will be conducted to compare the following: - Is there a significant difference in the mean temperature recorded at the selected weather stations across the years? - Is there a significant difference in the mean temperature recorded at the selected weather stations across certain year-month periods? - Is there a significant difference in the mean total rainfall recorded at the selected weather stations across the years? - Is there a significant difference in the mean total rainfall recorded at the selected weather stations across certain year-month periods?
+For the purpose of the project, CDA will be conducted to compare the following:
+
+-   Is there a significant difference in the annual temperature recorded at the selected weather stations or regions?
+
+-   Is there a significant difference in the monthly temperature recorded at the selected weather stations or regions?
+
+-   Is there a significant difference in the annual total rainfall recorded at the selected weather stations or regions?
+
+-   Is there a significant difference in the monthly total rainfall recorded at the selected weather stations or regions?
 
 # 4. Creating Static Plots
 
-First, we begin by creating static plots to check the feasibility of each plot. Before we do so, we will create an additional table to hold the aggregated values to be used in the plots.
+First, we begin by creating a static plots to check the feasibility of each plot. Before we do so, we will create an additional table to hold the aggregated values to be used in the plots.
 
 ## 4.1. Creating Table with Aggregated Values
 
@@ -100,12 +108,12 @@ rf_agg_yrmth <- rainfall %>%
   ungroup() 
 ```
 
-## 4.2. Plotting Without Functions
+## 4.2. Comparing Temperature Without Functions
 
 First, we create a static plot without functions to visualise the output.
 
 ```{r}
-ggbetweenstats(data = temp_agg_yrmth,
+ggbetweenstats(data = temp_agg_annual,
                x = Station, 
                y = Avg_Max_Temp,
                plot.type = "boxviolin",
@@ -114,14 +122,49 @@ ggbetweenstats(data = temp_agg_yrmth,
                messages = FALSE)
 ```
 
+```{r}
+ggbetweenstats(data = temp_agg_yrmth,
+               x = Region, 
+               y = Avg_Max_Temp,
+               plot.type = "boxviolin",
+               type = "nonparametric",
+               pairwise.display = "non-significant",
+               messages = FALSE)
+```
+
+## 4.3. Comparing Rainfall Without Functions
+
+```{r}
+ggbetweenstats(data = rf_agg_annual,
+               x = Station, 
+               y = Avg_Total_Rf,
+               plot.type = "boxviolin",
+               type = "nonparametric",
+               pairwise.display = "non-significant",
+               messages = FALSE)
+```
+
+```{r}
+ggbetweenstats(data = rf_agg_yrmth,
+               x = Region, 
+               y = Min_Total_Rf,
+               plot.type = "boxviolin",
+               type = "nonparametric",
+               pairwise.display = "non-significant",
+               messages = FALSE)
+```
+
 ::: {.callout-note title="UI Considerations"}
 With the Shiny app in mind, some parameters that can allow user-input in this plot include:
+
 -   `plot.type`: accepts `boxviolin`, `box`, `violin`
+
 -   `type`: accepts `nonparametric`, `parametric`, `robust`, `bayes`
--   `pairwise.display` = accepts `significant`, `non-significant`, `everything`, `all` 
+
+-   `pairwise.display` = accepts `significant`, `non-significant`, `everything`, `all`
 :::
 
-# 5. Compare Annual Temperature 
+# 5. Compare Annual Temperature
 
 ## 5.1. Create Function - Annual Temperature of Top 3 Station by Average Annual Temperature Recorded
 
@@ -177,11 +220,11 @@ Annual_Top3_Temp_Station <- function(metric = "Avg_Mean_Temp",
                    conf.level = conf,
                    xlab = "Station", ylab = metric_label,)
 }
-```   
+```
 
 ::: panel-tabset
-
 #### Test 1
+
 ```{r}
 Annual_Top3_Temp_Station(metric = "Avg_Mean_Temp", 
                          selected_station = top3,
@@ -194,6 +237,7 @@ Annual_Top3_Temp_Station(metric = "Avg_Mean_Temp",
 ```
 
 #### Test 2
+
 ```{r}
 Annual_Top3_Temp_Station(metric = "Max_Temp", 
                          selected_station = top3,
@@ -262,8 +306,8 @@ Annual_Temp_Region <- function(metric = "Avg_Mean_Temp",
 ```
 
 ::: panel-tabset
-
 #### Test 1
+
 ```{r}
 Annual_Temp_Region(metric = "Avg_Mean_Temp", 
                    p_type = "boxviolin",
@@ -275,6 +319,7 @@ Annual_Temp_Region(metric = "Avg_Mean_Temp",
 ```
 
 #### Test 2
+
 ```{r}
 Annual_Temp_Region(metric = "Max_Temp",
                    p_type = "box",
@@ -298,7 +343,7 @@ Annual_Temp_Region(metric = "Avg_Min_Temp",
 ```
 :::
 
-# 6. Compare Monthly Temperature 
+# 6. Compare Monthly Temperature
 
 ## 6.1. Create Function - Monthly temperature by Station:
 
@@ -308,7 +353,6 @@ temp_agg_monthly_sorted <-  temp_agg_yrmth %>%
 
 top3 <- temp_agg_monthly_sorted$Station[1:3]
 ```
-
 
 ```{r}
 Monthly_Top3_Temp_Station <- function(metric = "Avg_Mean_Temp", 
@@ -353,11 +397,11 @@ Monthly_Top3_Temp_Station <- function(metric = "Avg_Mean_Temp",
                    conf.level = conf,
                    xlab = "Station", ylab = metric_label,)
 }
-```   
+```
 
 ::: panel-tabset
-
 #### Test 1
+
 ```{r}
 Monthly_Top3_Temp_Station(metric = "Avg_Mean_Temp", 
                           selected_station = top3,
@@ -370,6 +414,7 @@ Monthly_Top3_Temp_Station(metric = "Avg_Mean_Temp",
 ```
 
 #### Test 2
+
 ```{r}
 Monthly_Top3_Temp_Station(metric = "Max_Temp", 
                           selected_station = top3,
@@ -438,8 +483,8 @@ Monthly_Temp_Region <- function(metric = "Avg_Mean_Temp",
 ```
 
 ::: panel-tabset
-
 #### Test 1
+
 ```{r}
 Monthly_Temp_Region(metric = "Avg_Mean_Temp", 
                     p_type = "boxviolin",
@@ -451,6 +496,7 @@ Monthly_Temp_Region(metric = "Avg_Mean_Temp",
 ```
 
 #### Test 2
+
 ```{r}
 Monthly_Temp_Region(metric = "Max_Temp",
                     p_type = "box",
@@ -472,10 +518,9 @@ Monthly_Temp_Region(metric = "Avg_Min_Temp",
                     conf = 0.99,
                     nooutliers = T)
 ```
-
 :::
 
-# 7. Compare Annual Rainfall 
+# 7. Compare Annual Rainfall
 
 ## 7.1. Create Function - Annual Rainfall of Top 3 Stations by Average Annual Rainfall Recorded
 
@@ -530,11 +575,11 @@ Annual_Top3_Rf_Station <- function(metric = "Avg_Total_Rf",
                    conf.level = conf,
                    xlab = "Station", ylab = metric_label,)
 }
-```   
+```
 
 ::: panel-tabset
-
 #### Test 1
+
 ```{r}
 Annual_Top3_Rf_Station(metric = "Avg_Total_Rf", 
                          selected_station = top3,
@@ -547,6 +592,7 @@ Annual_Top3_Rf_Station(metric = "Avg_Total_Rf",
 ```
 
 #### Test 2
+
 ```{r}
 Annual_Top3_Rf_Station(metric = "Avg_Total_Rf60", 
                          selected_station = top3,
@@ -616,8 +662,8 @@ Annual_Rf_Region <- function(metric = "Avg_Total_Rf",
 ```
 
 ::: panel-tabset
-
 #### Test 1
+
 ```{r}
 Annual_Rf_Region(metric = "Avg_Total_Rf", 
                    p_type = "boxviolin",
@@ -629,6 +675,7 @@ Annual_Rf_Region(metric = "Avg_Total_Rf",
 ```
 
 #### Test 2
+
 ```{r}
 Annual_Rf_Region(metric = "Avg_Total_Rf60",
                    p_type = "box",
@@ -652,7 +699,7 @@ Annual_Rf_Region(metric = "Max_Total_Rf",
 ```
 :::
 
-# 8. Compare Monthly Rainfall 
+# 8. Compare Monthly Rainfall
 
 ## 8.1. Create Function - Monthly Rainfall of Top 3 Stations by Average Annual Rainfall Recorded
 
@@ -707,11 +754,11 @@ Monthly_Rf_Station <- function(metric = "Avg_Total_Rf",
                    conf.level = conf,
                    xlab = "Station", ylab = metric_label,)
 }
-```   
+```
 
 ::: panel-tabset
-
 #### Test 1
+
 ```{r}
 Monthly_Rf_Station(metric = "Avg_Total_Rf", 
                          selected_station = top3,
@@ -724,6 +771,7 @@ Monthly_Rf_Station(metric = "Avg_Total_Rf",
 ```
 
 #### Test 2
+
 ```{r}
 Monthly_Rf_Station(metric = "Avg_Total_Rf60", 
                          selected_station = top3,
@@ -793,19 +841,20 @@ Monthly_Rf_Region <- function(metric = "Avg_Total_Rf",
 ```
 
 ::: panel-tabset
-
 #### Test 1
+
 ```{r}
 Monthly_Rf_Region(metric = "Avg_Total_Rf", 
-                   p_type = "boxviolin",
+                   p_type = "violin",
                    t_type = "nonparametric",
                    pair_disp = "non-significant",
                    pair.comp = T,
-                   conf = 0.95,
+                   conf = 0.99,
                    nooutliers = T)
 ```
 
 #### Test 2
+
 ```{r}
 Monthly_Rf_Region(metric = "Avg_Total_Rf60",
                    p_type = "box",
@@ -827,9 +876,10 @@ Monthly_Rf_Region(metric = "Max_Total_Rf",
                    conf = 0.99,
                    nooutliers = T)
 ```
-
 :::
 
+# 9. Mock-up of UI Design
 
+![](images/Slide2.JPG)
 
-
+![](images/Slide3.JPG)
