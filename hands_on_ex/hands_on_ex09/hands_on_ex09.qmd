@@ -1,6 +1,6 @@
 ---
-title: "Hands-on Exercise 09 - Visualising Text Data"
-date: "13 January 2024"
+title: "Hands-on Exercise 09 - Information Dashboard"
+date: "10 March 2024"
 date-modified: "last-modified"
 format: html
 execute: 
@@ -11,3 +11,176 @@ execute:
   message: false
 editor: visual
 ---
+
+# 1. Overview
+
+In the ninth lesson, we learn to create bullet charts and sparklines using `ggplot2` and dashboards using Shiny.
+
+# 2. Getting Started
+
+## 2.1. Installing and Loading Packages
+
+The following new R packages are introduced in this lesson in addition to other packages that have been previously introduced:
+
+1.  [`gtExtras`](https://jthomasmock.github.io/gtExtras/): to create beautiful tables with `gt`
+
+2.  [`reactable``](https://glin.github.io/reactable/): to create interactive data tables on R 
+
+3.  [`reactablefmtr`](https://kcuilla.github.io/reactablefmtr/): to streamline and enhance styling of interactive reactable tables
+
+The packages to be used can be installed and loaded into the R environment using the `p_load()` function from the `pacman` package:
+
+```{r}
+pacman::p_load(tidyverse, ggthemes, lubridate, ggthemes,
+               gtExtras, reactable, reactablefmtr, RODBC)
+```
+
+## 2.2. Import Data
+
+Next, we will use the Coffee Chain data set, which is a personal database in the Microsoft Access mdb format. We will use the RODBC package to import the database query table into R.
+
+```{r}
+#| eval: false
+con <- odbcConnectAccess2007('data/Coffee Chain.mdb')
+coffeechain <- sqlFetch(con, 'CoffeeChain Query')
+write_rds(coffeechain, "data/CoffeeChain.rds")
+odbcClose(con)
+```
+
+After writing the data into RDS format, we can read the file into R using `read_rds()`:
+
+```{r}
+coffeechain <- read_rds('data/rds/CoffeeChain.rds')
+glimpse(coffeechain)
+```
+## 2.3. Data Preparation
+
+Next, we create another table containing Sales and Budgeted Sales data aggregated at the Product level.
+```{r}
+product <- coffeechain %>%
+  group_by(`Product`) %>%
+  summarise(`target` = sum(`Budget Sales`),
+            `current` = sum(`Sales`)) %>%
+  ungroup()
+```
+
+# 3. Bullet Chart
+
+We can use the following `ggplot2` functions to create a bullet chart:
+
+```{r}
+ggplot(product,
+       aes(Product, current)) +
+  geom_col(aes(Product, max(target) * 1.01),
+           fill = "grey90", width = 0.85) +
+  geom_col(aes(Product, target * 0.75),
+           fill = "grey75", width = 0.85) +
+  geom_col(aes(Product, target * 0.5),
+           fill = "grey50", width = 0.85) +
+  geom_col(aes(Product, current),
+           fill = "black", width = 0.35) +
+  geom_errorbar(aes(y= target, x = Product,
+                    ymin = target, ymax = target),
+                width = 0.4, colour = 'red', size = 1) +
+  coord_flip()
+  
+```
+
+# 4. Sparklines
+
+## 4.1. Preparing the Data
+
+First, we create a table recording the total sales of products by month:
+```{r}
+sales_report <- coffeechain %>%
+  filter(Date >= "2013-01-01") %>%
+  mutate(Month = month(Date)) %>%
+  group_by(Month, Product) %>%
+  summarise(Sales = sum(Sales)) %>%
+  ungroup() %>%
+  select(Month, Product, Sales)
+
+sales_report
+```
+
+Next, we find the minimum, maximum, and the end-of-the-month sales:
+
+```{r}
+min <- group_by(sales_report, Product) %>%
+  slice(which.min(Sales))
+
+max <- group_by(sales_report, Product) %>%
+  slice(which.max(Sales))
+
+eom <- group_by(sales_report, Product) %>%
+  filter(Month == max(Month))
+
+```
+
+Lastly, we compute the 25th and 75th quantiles:
+
+```{r}
+quant <- sales_report %>%
+  group_by(Product) %>%
+  summarise(quant1 = quantile(Sales, 0.25),
+            quant2 = quantile(Sales, 0.75)) %>%
+  right_join(sales_report)
+
+```
+
+## 4.2. Creating the Plot
+
+Now, we use the following methods to create the sparklines plot using `ggplot2` methods:
+
+```{r}
+ggplot(sales_report, 
+       aes(x=Month, y=Sales)) + 
+  facet_grid(Product ~ ., 
+             scales = "free_y") + 
+  geom_ribbon(data = quant, 
+              aes(ymin = quant1, max = quant2), 
+              fill = 'grey90') +
+  geom_line(size = 0.3) +
+  geom_point(data = min, 
+             col = 'red') +
+  geom_point(data = max, 
+             col = 'blue') +
+  geom_text(data = min, 
+            aes(label = Sales), 
+            vjust = -1) +
+  geom_text(data = max, 
+            aes(label = Sales), 
+            vjust = 2.5) +
+  geom_text(data = eom, 
+            aes(label = Sales), 
+            hjust = 0, nudge_x = 0.5) +
+  geom_text(data = eom, 
+            aes(label = Product), 
+            hjust = 0, nudge_x = 1.0) +
+  expand_limits(x = max(sales_report$Month) + 
+                  (0.25 * (max(sales_report$Month) - 
+                             min(sales_report$Month)))) +
+  scale_x_continuous(breaks = seq(1, 12, 1)) +
+  scale_y_continuous(expand = c(0.1, 0)) +
+  theme_tufte(base_size = 3, base_family = "Helvetica") +
+  theme(axis.title = element_blank(), 
+        axis.text.y = element_blank(), 
+        axis.ticks = element_blank(), 
+        strip.text = element_blank())
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

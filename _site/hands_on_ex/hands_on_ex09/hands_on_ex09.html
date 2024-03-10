@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-01-13">
+<meta name="dcterms.date" content="2024-03-10">
 
-<title>Noel’s Learning Journey in Visual Analytics - Hands-on Exercise 09 - Visualising Text Data</title>
+<title>Noel’s Learning Journey in Visual Analytics - Hands-on Exercise 09 - Information Dashboard</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -65,6 +99,7 @@ ul.task-list li input[type="checkbox"] {
 </head>
 
 <body class="nav-fixed">
+
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -160,11 +195,7 @@ ul.task-list li input[type="checkbox"] {
   </li>  
         <li>
     <a class="dropdown-item" href="../../hands_on_ex/hands_on_ex09/hands_on_ex09.html" rel="" target="">
- <span class="dropdown-text">Exercise 9 Text Data</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../hands_on_ex/hands_on_ex10/hands_on_ex10.html" rel="" target="">
- <span class="dropdown-text">Exercise 10 Information Dashboard</span></a>
+ <span class="dropdown-text">Exercise 9 Information Dashboard</span></a>
   </li>  
     </ul>
   </li>
@@ -175,27 +206,15 @@ ul.task-list li input[type="checkbox"] {
     <ul class="dropdown-menu" aria-labelledby="nav-menu-in-class-exercises">    
         <li>
     <a class="dropdown-item" href="../../in_class_ex/in_class_ex01/in_class_ex01.html" rel="" target="">
- <span class="dropdown-text">Exercise 1</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../in_class_ex/in_class_ex02/in_class_ex02.html" rel="" target="">
- <span class="dropdown-text">Exercise 2</span></a>
+ <span class="dropdown-text">Exercise 1 - Intro to R</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../../in_class_ex/in_class_ex03/in_class_ex03.html" rel="" target="">
- <span class="dropdown-text">Exercise 3</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../in_class_ex/in_class_ex04/in_class_ex04.html" rel="" target="">
- <span class="dropdown-text">Exercise 4</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../in_class_ex/in_class_ex05/in_class_ex05.html" rel="" target="">
- <span class="dropdown-text">Exercise 5</span></a>
+ <span class="dropdown-text">Exercise 3 - Visulisation on Tableau</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../../in_class_ex/in_class_ex06/in_class_ex06.html" rel="" target="">
- <span class="dropdown-text">Exercise 6</span></a>
+ <span class="dropdown-text">Exercise 6 - Time Series Visualisation on Tableau and R</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../../in_class_ex/in_class_ex07/in_class_ex07.html" rel="" target="">
@@ -250,14 +269,32 @@ ul.task-list li input[type="checkbox"] {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">1. Overview</a></li>
+  <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started">2. Getting Started</a>
+  <ul class="collapse">
+  <li><a href="#installing-and-loading-packages" id="toc-installing-and-loading-packages" class="nav-link" data-scroll-target="#installing-and-loading-packages">2.1. Installing and Loading Packages</a></li>
+  <li><a href="#import-data" id="toc-import-data" class="nav-link" data-scroll-target="#import-data">2.2. Import Data</a></li>
+  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">2.3. Data Preparation</a></li>
+  </ul></li>
+  <li><a href="#bullet-chart" id="toc-bullet-chart" class="nav-link" data-scroll-target="#bullet-chart">3. Bullet Chart</a></li>
+  <li><a href="#sparklines" id="toc-sparklines" class="nav-link" data-scroll-target="#sparklines">4. Sparklines</a>
+  <ul class="collapse">
+  <li><a href="#preparing-the-data" id="toc-preparing-the-data" class="nav-link" data-scroll-target="#preparing-the-data">4.1. Preparing the Data</a></li>
+  <li><a href="#creating-the-plot" id="toc-creating-the-plot" class="nav-link" data-scroll-target="#creating-the-plot">4.2. Creating the Plot</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Hands-on Exercise 09 - Visualising Text Data</h1>
+<h1 class="title">Hands-on Exercise 09 - Information Dashboard</h1>
 </div>
 
 
@@ -268,14 +305,14 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">January 13, 2024</p>
+      <p class="date">March 10, 2024</p>
     </div>
   </div>
   
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">February 24, 2024</p>
+      <p class="date-modified">March 10, 2024</p>
     </div>
   </div>
     
@@ -284,8 +321,197 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
+<section id="overview" class="level1">
+<h1>1. Overview</h1>
+<p>In the ninth lesson, we learn to create bullet charts and sparklines using <code>ggplot2</code> and dashboards using Shiny.</p>
+</section>
+<section id="getting-started" class="level1">
+<h1>2. Getting Started</h1>
+<section id="installing-and-loading-packages" class="level2">
+<h2 class="anchored" data-anchor-id="installing-and-loading-packages">2.1. Installing and Loading Packages</h2>
+<p>The following new R packages are introduced in this lesson in addition to other packages that have been previously introduced:</p>
+<ol type="1">
+<li><p><a href="https://jthomasmock.github.io/gtExtras/"><code>gtExtras</code></a>: to create beautiful tables with <code>gt</code></p></li>
+<li><p><a href="https://glin.github.io/reactable/">`reactable``</a>: to create interactive data tables on R</p></li>
+<li><p><a href="https://kcuilla.github.io/reactablefmtr/"><code>reactablefmtr</code></a>: to streamline and enhance styling of interactive reactable tables</p></li>
+</ol>
+<p>The packages to be used can be installed and loaded into the R environment using the <code>p_load()</code> function from the <code>pacman</code> package:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, ggthemes, lubridate, ggthemes,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>               gtExtras, reactable, reactablefmtr, RODBC)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="import-data" class="level2">
+<h2 class="anchored" data-anchor-id="import-data">2.2. Import Data</h2>
+<p>Next, we will use the Coffee Chain data set, which is a personal database in the Microsoft Access mdb format. We will use the RODBC package to import the database query table into R.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>con <span class="ot">&lt;-</span> <span class="fu">odbcConnectAccess2007</span>(<span class="st">'data/Coffee Chain.mdb'</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>coffeechain <span class="ot">&lt;-</span> <span class="fu">sqlFetch</span>(con, <span class="st">'CoffeeChain Query'</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(coffeechain, <span class="st">"data/CoffeeChain.rds"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">odbcClose</span>(con)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>After writing the data into RDS format, we can read the file into R using <code>read_rds()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>coffeechain <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">'data/rds/CoffeeChain.rds'</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(coffeechain)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 4,248
+Columns: 19
+$ Profit           &lt;dbl&gt; 94, 68, 101, 30, 54, 53, 99, 0, 33, 17, 36, 111, 87, …
+$ Margin           &lt;dbl&gt; 130, 107, 139, 56, 80, 108, 171, 87, 80, 72, 76, 201,…
+$ Sales            &lt;dbl&gt; 219, 190, 234, 100, 134, 180, 341, 150, 140, 130, 140…
+$ COGS             &lt;dbl&gt; 89, 83, 95, 44, 54, 72, 170, 63, 60, 58, 64, 144, 95,…
+$ `Total Expenses` &lt;dbl&gt; 36, 39, 38, 26, 26, 55, 72, 87, 47, 55, 40, 90, 52, 1…
+$ Marketing        &lt;dbl&gt; 24, 27, 26, 14, 15, 23, 47, 57, 19, 22, 19, 47, 30, 7…
+$ Inventory        &lt;dbl&gt; 777, 623, 821, 623, 456, 558, 1091, 435, 336, 338, 96…
+$ `Budget Profit`  &lt;dbl&gt; 100, 80, 110, 30, 70, 80, 110, 20, 40, 20, 40, 130, 1…
+$ `Budget Margin`  &lt;dbl&gt; 130, 110, 140, 50, 90, 130, 160, 80, 70, 70, 70, 210,…
+$ `Budget Sales`   &lt;dbl&gt; 220, 190, 240, 80, 150, 210, 300, 130, 120, 110, 120,…
+$ `Budget COGS`    &lt;dbl&gt; 90, 80, 100, 30, 60, 80, 140, 50, 50, 40, 50, 150, 10…
+$ Date             &lt;dttm&gt; 2012-01-01, 2012-01-01, 2012-01-01, 2012-01-01, 2012…
+$ Market           &lt;chr&gt; "Central", "Central", "Central", "Central", "Central"…
+$ State            &lt;chr&gt; "Colorado", "Colorado", "Colorado", "Colorado", "Colo…
+$ `Area Code`      &lt;int&gt; 719, 970, 970, 303, 303, 720, 970, 719, 970, 719, 303…
+$ `Market Size`    &lt;chr&gt; "Major Market", "Major Market", "Major Market", "Majo…
+$ `Product Type`   &lt;chr&gt; "Coffee", "Coffee", "Coffee", "Tea", "Espresso", "Esp…
+$ Product          &lt;chr&gt; "Amaretto", "Colombian", "Decaf Irish Cream", "Green …
+$ Type             &lt;chr&gt; "Regular", "Regular", "Decaf", "Regular", "Regular", …</code></pre>
+</div>
+</div>
+</section>
+<section id="data-preparation" class="level2">
+<h2 class="anchored" data-anchor-id="data-preparation">2.3. Data Preparation</h2>
+<p>Next, we create another table containing Sales and Budgeted Sales data aggregated at the Product level.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>product <span class="ot">&lt;-</span> coffeechain <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(<span class="st">`</span><span class="at">Product</span><span class="st">`</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="st">`</span><span class="at">target</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sum</span>(<span class="st">`</span><span class="at">Budget Sales</span><span class="st">`</span>),</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>            <span class="st">`</span><span class="at">current</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sum</span>(<span class="st">`</span><span class="at">Sales</span><span class="st">`</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="bullet-chart" class="level1">
+<h1>3. Bullet Chart</h1>
+<p>We can use the following <code>ggplot2</code> functions to create a bullet chart:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(product,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(Product, current)) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(Product, <span class="fu">max</span>(target) <span class="sc">*</span> <span class="fl">1.01</span>),</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> <span class="st">"grey90"</span>, <span class="at">width =</span> <span class="fl">0.85</span>) <span class="sc">+</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(Product, target <span class="sc">*</span> <span class="fl">0.75</span>),</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> <span class="st">"grey75"</span>, <span class="at">width =</span> <span class="fl">0.85</span>) <span class="sc">+</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(Product, target <span class="sc">*</span> <span class="fl">0.5</span>),</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> <span class="st">"grey50"</span>, <span class="at">width =</span> <span class="fl">0.85</span>) <span class="sc">+</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(Product, current),</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> <span class="st">"black"</span>, <span class="at">width =</span> <span class="fl">0.35</span>) <span class="sc">+</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">y=</span> target, <span class="at">x =</span> Product,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymin =</span> target, <span class="at">ymax =</span> target),</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">width =</span> <span class="fl">0.4</span>, <span class="at">colour =</span> <span class="st">'red'</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hands_on_ex09_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="sparklines" class="level1">
+<h1>4. Sparklines</h1>
+<section id="preparing-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="preparing-the-data">4.1. Preparing the Data</h2>
+<p>First, we create a table recording the total sales of products by month:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>sales_report <span class="ot">&lt;-</span> coffeechain <span class="sc">%&gt;%</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Date <span class="sc">&gt;=</span> <span class="st">"2013-01-01"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Month =</span> <span class="fu">month</span>(Date)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Month, Product) <span class="sc">%&gt;%</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Sales =</span> <span class="fu">sum</span>(Sales)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Month, Product, Sales)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>sales_report</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 156 × 3
+   Month Product           Sales
+   &lt;dbl&gt; &lt;chr&gt;             &lt;dbl&gt;
+ 1     1 Amaretto           1210
+ 2     1 Caffe Latte        1653
+ 3     1 Caffe Mocha        3604
+ 4     1 Chamomile          3313
+ 5     1 Colombian          5439
+ 6     1 Darjeeling         3178
+ 7     1 Decaf Espresso     3493
+ 8     1 Decaf Irish Cream  2656
+ 9     1 Earl Grey          2867
+10     1 Green Tea          1399
+# ℹ 146 more rows</code></pre>
+</div>
+</div>
+<p>Next, we find the minimum, maximum, and the end-of-the-month sales:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>min <span class="ot">&lt;-</span> <span class="fu">group_by</span>(sales_report, Product) <span class="sc">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="fu">which.min</span>(Sales))</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>max <span class="ot">&lt;-</span> <span class="fu">group_by</span>(sales_report, Product) <span class="sc">%&gt;%</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="fu">which.max</span>(Sales))</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>eom <span class="ot">&lt;-</span> <span class="fu">group_by</span>(sales_report, Product) <span class="sc">%&gt;%</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Month <span class="sc">==</span> <span class="fu">max</span>(Month))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Lastly, we compute the 25th and 75th quantiles:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>quant <span class="ot">&lt;-</span> sales_report <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Product) <span class="sc">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">quant1 =</span> <span class="fu">quantile</span>(Sales, <span class="fl">0.25</span>),</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">quant2 =</span> <span class="fu">quantile</span>(Sales, <span class="fl">0.75</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">right_join</span>(sales_report)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="creating-the-plot" class="level2">
+<h2 class="anchored" data-anchor-id="creating-the-plot">4.2. Creating the Plot</h2>
+<p>Now, we use the following methods to create the sparklines plot using <code>ggplot2</code> methods:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sales_report, </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x=</span>Month, <span class="at">y=</span>Sales)) <span class="sc">+</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(Product <span class="sc">~</span> ., </span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span> </span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> quant, </span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>              <span class="fu">aes</span>(<span class="at">ymin =</span> quant1, <span class="at">max =</span> quant2), </span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">fill =</span> <span class="st">'grey90'</span>) <span class="sc">+</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">size =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> min, </span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>             <span class="at">col =</span> <span class="st">'red'</span>) <span class="sc">+</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> max, </span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>             <span class="at">col =</span> <span class="st">'blue'</span>) <span class="sc">+</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">data =</span> min, </span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">label =</span> Sales), </span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>            <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">data =</span> max, </span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">label =</span> Sales), </span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>            <span class="at">vjust =</span> <span class="fl">2.5</span>) <span class="sc">+</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">data =</span> eom, </span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">label =</span> Sales), </span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>            <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">nudge_x =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">data =</span> eom, </span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">label =</span> Product), </span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>            <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">nudge_x =</span> <span class="fl">1.0</span>) <span class="sc">+</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expand_limits</span>(<span class="at">x =</span> <span class="fu">max</span>(sales_report<span class="sc">$</span>Month) <span class="sc">+</span> </span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>                  (<span class="fl">0.25</span> <span class="sc">*</span> (<span class="fu">max</span>(sales_report<span class="sc">$</span>Month) <span class="sc">-</span> </span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">min</span>(sales_report<span class="sc">$</span>Month)))) <span class="sc">+</span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">12</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_tufte</span>(<span class="at">base_size =</span> <span class="dv">3</span>, <span class="at">base_family =</span> <span class="st">"Helvetica"</span>) <span class="sc">+</span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title =</span> <span class="fu">element_blank</span>(), </span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(), </span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks =</span> <span class="fu">element_blank</span>(), </span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.text =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hands_on_ex09_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
