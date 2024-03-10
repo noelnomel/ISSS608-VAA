@@ -8,7 +8,7 @@
 
 <meta name="dcterms.date" content="2024-02-26">
 
-<title>Noel’s Learning Journey in Visual Analytics - Take-home Exercise 04</title>
+<title>Noel’s Learning Journey in Visual Analytics - Visual Analytics Project Prototype</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -323,7 +323,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Take-home Exercise 04</h1>
+<h1 class="title">Visual Analytics Project Prototype</h1>
 </div>
 
 
@@ -365,7 +365,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="loading-data" class="level2">
 <h2 class="anchored" data-anchor-id="loading-data">2.2. Loading Data</h2>
-<p>The data used in this exercise are obtained from the <a href="https://www.weather.gov.sg/climate-historical-daily/">Meteorological Service Singapore Website</a>. To better align the outputs of the individual assignment to the project, my team has standardised the data cleaning steps on our <a href="https://merrycheesecake-isss608.netlify.app/eda/data_preparation">project website</a>. As the cleaned data set were saved as RDS files, we will load them into R for this exercise.</p>
+<p>The data used in this exercise are obtained from the <a href="https://www.weather.gov.sg/climate-historical-daily/">Meteorological Service Singapore Website</a>. To better align the outputs of the individual assignment to the project, my team has standardised the data cleaning steps on our <a href="https://merrycheesecake-isss608.netlify.app/eda/data_preparation">project website</a>. As the cleaned data sets were saved as RDS files, we will load them using <code>read_rds()</code> for this exercise.</p>
 <section id="load-temperature-data" class="level3">
 <h3 class="anchored" data-anchor-id="load-temperature-data">2.2.1. Load <code>temperature</code> data</h3>
 <div class="cell">
@@ -546,7 +546,7 @@ UI Considerations
 <h1>5. Compare Annual Temperature</h1>
 <section id="create-function---annual-temperature-of-top-3-station-by-average-annual-temperature-recorded" class="level2">
 <h2 class="anchored" data-anchor-id="create-function---annual-temperature-of-top-3-station-by-average-annual-temperature-recorded">5.1. Create Function - Annual Temperature of Top 3 Station by Average Annual Temperature Recorded</h2>
-<p>From the plot above, it is difficult to compare the metric of all stations at once. Due to the number of stations available, each plot becomes very small and much of the details are lost. We will now attempt to create a function to display only the top3 stations of the chosen metric.</p>
+<p>From the plots above, it is difficult to compare the chosen metric of all stations at once. Due to the number of stations available, each plot becomes very small and much of the details are lost. We will now attempt to create a function to display only the top3 stations by average annual temperature recorded.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>temp_agg_annual_sorted <span class="ot">&lt;-</span>  temp_agg_annual <span class="sc">%&gt;%</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Avg_Mean_Temp))</span>
@@ -1087,11 +1087,11 @@ UI Considerations
 <div id="tabset-6-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-6-1-tab">
 <div class="cell">
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Annual_Rf_Region</span>(<span class="at">metric =</span> <span class="st">"Avg_Total_Rf"</span>, </span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">p_type =</span> <span class="st">"boxviolin"</span>,</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">p_type =</span> <span class="st">"violin"</span>,</span>
 <span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">t_type =</span> <span class="st">"nonparametric"</span>,</span>
 <span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">pair_disp =</span> <span class="st">"non-significant"</span>,</span>
 <span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">pair.comp =</span> T,</span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">conf =</span> <span class="fl">0.95</span>,</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">conf =</span> <span class="fl">0.99</span>,</span>
 <span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">nooutliers =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="take_home_ex04_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid" width="672"></p>
@@ -1329,8 +1329,9 @@ UI Considerations
 </section>
 <section id="mock-up-of-ui-design" class="level1">
 <h1>9. Mock-up of UI Design</h1>
-<p><img src="images/Slide2.JPG" class="img-fluid"></p>
-<p><img src="images/Slide3.JPG" class="img-fluid"></p>
+<p>After submitting the individual assignments, the analysis will be transferred to the group’s Shiny app. Based on the identified parameters available for user input, we envision that the Shiny app will look like the following mock-up:</p>
+<p><img src="images/Slide2-03.JPG" class="img-fluid"></p>
+<p><img src="images/Slide3-02.JPG" class="img-fluid"></p>
 
 
 </section>

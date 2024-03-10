@@ -1,5 +1,5 @@
 ---
-title: "Take-home Exercise 04"
+title: "Visual Analytics Project Prototype"
 date: "26 Febuary 2024"
 date-modified: "last-modified"
 format: html
@@ -26,7 +26,7 @@ pacman::p_load(tidyverse, ggstatsplot, ExPanDaR)
 
 ## 2.2. Loading Data
 
-The data used in this exercise are obtained from the [Meteorological Service Singapore Website](https://www.weather.gov.sg/climate-historical-daily/). To better align the outputs of the individual assignment to the project, my team has standardised the data cleaning steps on our [project website](https://merrycheesecake-isss608.netlify.app/eda/data_preparation). As the cleaned data set were saved as RDS files, we will load them into R for this exercise.
+The data used in this exercise are obtained from the [Meteorological Service Singapore Website](https://www.weather.gov.sg/climate-historical-daily/). To better align the outputs of the individual assignment to the project, my team has standardised the data cleaning steps on our [project website](https://merrycheesecake-isss608.netlify.app/eda/data_preparation). As the cleaned data sets were saved as RDS files, we will load them using `read_rds()` for this exercise.
 
 ### 2.2.1. Load `temperature` data
 
@@ -168,7 +168,7 @@ With the Shiny app in mind, some parameters that can allow user-input in this pl
 
 ## 5.1. Create Function - Annual Temperature of Top 3 Station by Average Annual Temperature Recorded
 
-From the plot above, it is difficult to compare the metric of all stations at once. Due to the number of stations available, each plot becomes very small and much of the details are lost. We will now attempt to create a function to display only the top3 stations of the chosen metric.
+From the plots above, it is difficult to compare the chosen metric of all stations at once. Due to the number of stations available, each plot becomes very small and much of the details are lost. We will now attempt to create a function to display only the top3 stations by average annual temperature recorded.
 
 ```{r}
 temp_agg_annual_sorted <-  temp_agg_annual %>%
@@ -666,11 +666,11 @@ Annual_Rf_Region <- function(metric = "Avg_Total_Rf",
 
 ```{r}
 Annual_Rf_Region(metric = "Avg_Total_Rf", 
-                   p_type = "boxviolin",
+                   p_type = "violin",
                    t_type = "nonparametric",
                    pair_disp = "non-significant",
                    pair.comp = T,
-                   conf = 0.95,
+                   conf = 0.99,
                    nooutliers = T)
 ```
 
@@ -880,6 +880,8 @@ Monthly_Rf_Region(metric = "Max_Total_Rf",
 
 # 9. Mock-up of UI Design
 
-![](images/Slide2.JPG)
+After submitting the individual assignments, the analysis will be transferred to the group's Shiny app. Based on the identified parameters available for user input, we envision that the Shiny app will look like the following mock-up:
 
-![](images/Slide3.JPG)
+![](images/Slide2-03.JPG)
+
+![](images/Slide3-02.JPG)
