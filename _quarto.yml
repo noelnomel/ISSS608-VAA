@@ -100,6 +100,11 @@ website:
             
           - text: Exercise 4
             href: take_home_ex/take_home_ex04/take_home_ex04.html
+            
+      - text: Shiny App
+        menu: 
+          - text: In-Class Exercise            
+            href: https://noelnomel.shinyapps.io/prototype1/
 format:
   html:
     theme: cosmo
